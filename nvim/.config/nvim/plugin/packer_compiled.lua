@@ -114,6 +114,16 @@ _G.packer_plugins = {
     path = "/Users/zyz/.local/share/nvim/site/pack/packer/start/lualine.nvim",
     url = "https://gitclone.com/github.com/nvim-lualine/lualine.nvim"
   },
+  ["mason-lspconfig.nvim"] = {
+    loaded = true,
+    path = "/Users/zyz/.local/share/nvim/site/pack/packer/start/mason-lspconfig.nvim",
+    url = "https://gitclone.com/github.com/williamboman/mason-lspconfig.nvim"
+  },
+  ["mason.nvim"] = {
+    loaded = true,
+    path = "/Users/zyz/.local/share/nvim/site/pack/packer/start/mason.nvim",
+    url = "https://gitclone.com/github.com/williamboman/mason.nvim"
+  },
   nightfly = {
     loaded = true,
     path = "/Users/zyz/.local/share/nvim/site/pack/packer/start/nightfly",
@@ -123,6 +133,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/zyz/.local/share/nvim/site/pack/packer/start/nvim-cmp",
     url = "https://gitclone.com/github.com/hrsh7th/nvim-cmp"
+  },
+  ["nvim-lspconfig"] = {
+    loaded = true,
+    path = "/Users/zyz/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
+    url = "https://gitclone.com/github.com/neovim/nvim-lspconfig"
   },
   ["nvim-tree.lua"] = {
     loaded = true,

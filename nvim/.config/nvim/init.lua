@@ -11,3 +11,7 @@ require "kevin.plugins.nvim-tree"
 require "kevin.plugins.lualine"
 
 require "kevin.plugins.telescope"
+
+require "kevin.plugins.nvim-cmp"
+
+require "kevin.plugins.lsp.mason"
