@@ -57,7 +57,10 @@ return packer.startup({
 	-- fuzzy finding w/ telescope
 	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" }) -- dependency for better sorting performance
 	use { 'nvim-telescope/telescope.nvim', tag = '0.1.1',
-  		requires = { {'nvim-lua/plenary.nvim'} }
+  		requires = { {'nvim-lua/plenary.nvim'}, { "nvim-telescope/telescope-live-grep-args.nvim" },}
+		,config = function()
+    require("telescope").load_extension("live_grep_args")
+  end
 	}
 
 	-- autocompletion
