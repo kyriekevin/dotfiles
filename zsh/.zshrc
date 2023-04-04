@@ -111,7 +111,7 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias c="clear"
-alias l="ls -ha"
+alias l="ls -al"
 alias s="neofetch"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
