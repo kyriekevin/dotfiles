@@ -1,17 +1,2 @@
-require "kevin.plugins-setup"
-require "kevin.core.options"
-require "kevin.core.colorscheme"
-require "kevin.core.keymaps"
-
--- plugins
-require "kevin.plugins.comment"
-
-require "kevin.plugins.nvim-tree"
-
-require "kevin.plugins.lualine"
-
-require "kevin.plugins.telescope"
-
-require "kevin.plugins.nvim-cmp"
-
-require "kevin.plugins.lsp.mason"
+-- bootstrap lazy.nvim, LazyVim and your plugins
+require("config.lazy")
