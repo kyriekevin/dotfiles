@@ -21,7 +21,6 @@ vim.g.maplocalleader = " "
 
 -- basic settings
 keymap("n", ";", ":", opts)
-keymap("n", "S", ":w<CR>", opts)
 keymap("n", "Q", ":q<CR>", opts)
 
 -- J/K keys for 5 times j/k (faster navigation)
@@ -46,3 +45,17 @@ keymap("i", "kj", "<ESC>", opts)
 -- Jump tot the end of the first line
 keymap("i", "<C-h>", "<ESC>I", opts)
 keymap("i", "<C-l>", "<ESC>A", opts)
+
+-- Press space j to jump to the next '<++>' and edit it
+keymap("n", "<leader>j", "<ESC>/<++><CR>:nohlsearch<CR>c4l", opts)
+
+-- Markdown settings
+keymap("i", ",f", "<ESC>/<++><CR>:nohlsearch<CR>c4l", opts)
+keymap("i", ",n", "---<Enter><Enter>", opts)
+keymap("i", ",b", "**** <++><ESC>F*hi", opts)
+keymap("i", ",p", "![](<++>) <++><ESC>F[a", opts)
+keymap("i", ",a", "[](<++>) <++><ESC>F[a", opts)
+keymap("i", ",1", "#<Space><Enter><++><ESC>kA", opts)
+keymap("i", ",2", "##<Space><Enter><++><ESC>kA", opts)
+keymap("i", ",3", "###<Space><Enter><++><ESC>kA", opts)
+keymap("i", ",4", "####<Space><Enter><++><ESC>kA", opts)
