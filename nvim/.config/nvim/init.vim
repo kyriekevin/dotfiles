@@ -87,6 +87,9 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 " Set <LEADER> as <SPACE>
 let mapleader=" "
 
+inoremap jk <ESC>
+inoremap kj <ESC>
+
 " Column (:) mods
 noremap ; :
 nnoremap Q :q<CR>
@@ -248,3 +251,30 @@ let g:lightline = {
 
 " ==================== rainbow ===================
 let g:rainbow_active = 1
+
+" ==================== MarkdownPreview  ==========================
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 0
+let g:mkdp_command_for_global = 0
+let g:mkdp_open_to_the_world = 0
+let g:mkdp_open_ip = ''
+let g:mkdp_browser = ''
+let g:mkdp_echo_preview_url = 0
+let g:mkdp_browserfunc = ''
+let g:mkdp_preview_options = {
+    \ 'mkit': {},
+    \ 'katex': {},
+    \ 'uml': {},
+    \ 'maid': {},
+    \ 'disable_sync_scroll': 0,
+    \ 'sync_scroll_type': 'middle',
+    \ 'hide_yaml_meta': 1
+    \ }
+let g:mkdp_markdown_css = ''
+let g:mkdp_highlight_css = ''
+let g:mkdp_port = ''
+let g:mkdp_page_title = '「${name}」'
+
+" ==================== vim-table-mode  ==========================
+map <LEADER>tm :TableModeToggle<CR>
