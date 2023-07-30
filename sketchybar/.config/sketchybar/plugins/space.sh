@@ -1,28 +1,39 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
-update() {
-  source "$CONFIG_DIR/colors.sh"
-  COLOR=$BACKGROUND_2
-  if [ "$SELECTED" = "true" ]; then
-    COLOR=$GREY
-  fi
-  sketchybar --set $NAME icon.highlight=$SELECTED \
-                         label.highlight=$SELECTED \
-                         background.border_color=$COLOR
-}
+args=()
+if [ "$NAME" != "space_template" ]; then
+  args+=(--set $NAME label=$NAME \
+                     icon.highlight=$SELECTED)
+fi
 
-mouse_clicked() {
-  if [ "$BUTTON" = "right" ]; then
-    yabai -m space --destroy $SID
-    sketchybar --trigger windows_on_spaces --trigger space_change
-  else
-    yabai -m space --focus $SID 2>/dev/null
-  fi
-}
+sketchybar -m --animate tanh 0 "${args[@]}"
 
-case "$SENDER" in
-  "mouse.clicked") mouse_clicked
-  ;;
-  *) update
-  ;;
-esac
+if [ "$SELECTED" = "true" ]; then
+  args+=(--set spaces_$DID.label label=${NAME#"spaces_$DID."} \
+         --set $NAME icon.background.y_offset=0               )
+fi
+
+WIN=$(yabai -m query --spaces --space $SID | jq '.windows[0]')
+HAS_WINDOWS_OR_IS_SELECTED="true"
+if [ "$WIN" = "null" ] && [ "$SELECTED" = "false" ];then
+  HAS_WINDOWS_OR_IS_SELECTED="false"
+fi
+
+if [ "$HAS_WINDOWS_OR_IS_SELECTED" = "true" ]; then
+   icon=
+   iconfont="Font Awesome 6 Free:Solid:15.0"
+   offset="1"
+   iconcolor=0xff7aa1f7
+else
+   icon=⬤
+   iconcolor=0xff583794
+fi
+
+if [ "$SELECTED" = "true" ]; then
+  icon=
+  iconfont="Pacman-Dots:Regular:15.5"
+  offset="1"
+fi
+
+
+sketchybar --set $NAME icon.highlight=$SELECTED icon.y_offset=$offset icon.font="$iconfont" icon.color=$iconcolor icon=$icon

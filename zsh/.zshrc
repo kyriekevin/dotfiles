@@ -183,6 +183,7 @@ alias sz="source ~/.zshrc; echo '~/.zshrc sourced'"
 alias ra="ranger"
 alias t="tmux"
 alias s="neofetch"
+alias jo="joshuto"
 
 # other useful alias
 alias c="clear"

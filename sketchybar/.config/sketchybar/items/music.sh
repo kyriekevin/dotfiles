@@ -2,7 +2,7 @@ APPLE_MUSIC_EVENT="com.apple.Music.playerInfo"
 POPUP_SCRIPT="sketchybar -m --set applemusic.anchor popup.drawing=toggle"
 
 sketchybar --add event applemusic_change $APPLE_MUSIC_EVENT \
-	--add item applemusic.anchor center \
+	--add item applemusic.anchor left \
 	--set applemusic.anchor script="$PLUGIN_DIR/applemusic.sh" \
 	click_script="$POPUP_SCRIPT" \
 	popup.horizontal=on \

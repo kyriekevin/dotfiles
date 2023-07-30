@@ -72,16 +72,16 @@ defaults=(
 )
 
 sketchybar --default "${defaults[@]}"
+sketchybar --animate sin 30 --bar y_offset=-100 y_offset=9
 
 # Left
 source "$ITEM_DIR/apple.sh"
 source "$ITEM_DIR/system.sh"
-source "$ITEM_DIR/spaces.sh"
-source "$ITEM_DIR/yabai.sh"
-source "$ITEM_DIR/front_app.sh"
+#source "$ITEM_DIR/yabai.sh"
+#source "$ITEM_DIR/front_app.sh"
 
 # Center
-source "$ITEM_DIR/music.sh"
+source "$ITEM_DIR/spaces.sh"
 
 # Right
 source "$ITEM_DIR/calendar.sh"
@@ -92,7 +92,7 @@ source "$ITEM_DIR/wifi.sh"
 source "$ITEM_DIR/volume.sh"
 source "$ITEM_DIR/cpu.sh"
 source "$ITEM_DIR/wechat.sh"
-#source "$ITEM_DIR/music.sh"
+source "$ITEM_DIR/music.sh"
 #source "$ITEM_DIR/playing.sh"
 
 # Forcing all item scripts to run (never do this outside of sketchybarrc)
