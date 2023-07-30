@@ -1,27 +1,29 @@
-#!/bin/sh
+#!/bin/bash
 
-source "$CONFIG_DIR/icons.sh"
-source "$CONFIG_DIR/colors.sh"
+update() {
+	source "$CONFIG_DIR/icons.sh"
+	LABEL="$INFO ($(ipconfig getifaddr en0))"
+	ICON="$([ -n "$INFO" ] && echo "$WIFI_CONNECTED" || echo "$WIFI_DISCONNECTED")"
 
-SPEED=$(ifstat -i en0 1 1 | awk 'NR==3 {print $1}')
+	sketchybar --set $NAME icon="$ICON" label="$LABEL"
+}
 
-if ( ($(echo "$SPEED > 1024*1024" | bc -l))); then
-	SPEED=$(echo "scale=0; $SPEED / (1024*1024)" | bc)
-	UNIT="GB/s"
-elif ( ($(echo "$SPEED > 1024" | bc -l))); then
-	SPEED=$(echo "scale=0; $SPEED / 1024" | bc)
-	UNIT="MB/s"
-else
-	SPEED=$(echo $SPEED | awk '{printf "%d", $1}')
-	UNIT="KB/s"
-fi
+click() {
+	CURRENT_WIDTH="$(sketchybar --query $NAME | jq -r .label.width)"
 
-COLOR=$WHITE
-if networksetup -getairportpower en0 | grep " On" >>/dev/null; then
-	ICON=$WIFI_ON
-else
-	ICON=$WIFI_OFF
-	COLOR=$RED
-fi
+	WIDTH=0
+	if [ "$CURRENT_WIDTH" -eq "0" ]; then
+		WIDTH=dynamic
+	fi
 
-sketchybar --set $NAME icon=$ICON icon.color=$COLOR label="${SPEED} ${UNIT}"
+	sketchybar --animate sin 20 --set $NAME label.width="$WIDTH"
+}
+
+case "$SENDER" in
+"wifi_change")
+	update
+	;;
+"mouse.clicked")
+	click
+	;;
+esac

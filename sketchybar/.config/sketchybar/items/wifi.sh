@@ -1,11 +1,14 @@
 #!/bin/bash
 
+source "$CONFIG_DIR/icons.sh"
+
 wifi=(
-	icon=$WIFI_ON
-	icon.font="$FONT:Regular:17.0"
+	padding_right=7
+	label.width=0
+	icon="$WIFI_DISCONNECTED"
 	script="$PLUGIN_DIR/wifi.sh"
-	update_freq=5
 )
 
 sketchybar --add item wifi right \
-	--set wifi "${wifi[@]}"
+	--set wifi "${wifi[@]}" \
+	--subscribe wifi wifi_change mouse.clicked

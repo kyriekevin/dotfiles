@@ -7,7 +7,7 @@ ITEM_DIR="$CONFIG_DIR/items"     # Directory where the items are configured
 PLUGIN_DIR="$CONFIG_DIR/plugins" # Directory where all the plugin scripts are stored
 
 FONT="SF Pro" # Needs to have Regular, Bold, Semibold, Heavy and Black variants
-PADDINGS=2    # All paddings use this value (icon, label, background)
+PADDINGS=3    # All paddings use this value (icon, label, background)
 
 # Setting up and starting the helper process
 HELPER=git.felix.helper
@@ -77,11 +77,10 @@ source "$ITEM_DIR/spotify.sh"
 source "$ITEM_DIR/calendar.sh"
 source "$ITEM_DIR/brew.sh"
 source "$ITEM_DIR/github.sh"
+source "$ITEM_DIR/wifi.sh"
 source "$ITEM_DIR/battery.sh"
 source "$ITEM_DIR/volume.sh"
-source "$ITEM_DIR/wifi.sh"
 source "$ITEM_DIR/wechat.sh"
-source "$ITEM_DIR/test.sh"
 source "$ITEM_DIR/cpu.sh"
 
 # Forcing all item scripts to run (never do this outside of sketchybarrc)
