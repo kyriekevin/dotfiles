@@ -8,6 +8,13 @@ PLUGIN_DIR="$CONFIG_DIR/plugins" # Directory where all the plugin scripts are st
 
 FONT="SF Pro" # Needs to have Regular, Bold, Semibold, Heavy and Black variants
 PADDINGS=3    # All paddings use this value (icon, label, background)
+LABEL_FONT_FAMILY="苹方-简"
+ICON_FONT_FAMILY="Hack Nerd Font"
+BAR_COLOR=0xee1a1c26
+LABEL_COLOR=0xffdfe1ea
+BACKGROUND_COLOR=0xff252731
+BACKGROUND_HEIGHT=33
+BACKGROUND_CORNER_RADIUS=20
 
 # Setting up and starting the helper process
 HELPER=git.felix.helper
@@ -49,6 +56,8 @@ defaults=(
 	label.color=$LABEL_COLOR
 	label.padding_left=$PADDINGS
 	label.padding_right=$PADDINGS
+	label.font.family="$LABEL_FONT_FAMILY"
+	icon.font.family="$ICON_FONT_FAMILY"
 	padding_right=$PADDINGS
 	padding_left=$PADDINGS
 	background.height=26
@@ -66,22 +75,25 @@ sketchybar --default "${defaults[@]}"
 
 # Left
 source "$ITEM_DIR/apple.sh"
+source "$ITEM_DIR/system.sh"
 source "$ITEM_DIR/spaces.sh"
 source "$ITEM_DIR/yabai.sh"
 source "$ITEM_DIR/front_app.sh"
 
 # Center
-source "$ITEM_DIR/spotify.sh"
+source "$ITEM_DIR/music.sh"
 
 # Right
 source "$ITEM_DIR/calendar.sh"
 source "$ITEM_DIR/brew.sh"
 source "$ITEM_DIR/github.sh"
+source "$ITEM_DIR/bluetooth.sh"
 source "$ITEM_DIR/wifi.sh"
-source "$ITEM_DIR/battery.sh"
 source "$ITEM_DIR/volume.sh"
-source "$ITEM_DIR/wechat.sh"
 source "$ITEM_DIR/cpu.sh"
+source "$ITEM_DIR/wechat.sh"
+#source "$ITEM_DIR/music.sh"
+#source "$ITEM_DIR/playing.sh"
 
 # Forcing all item scripts to run (never do this outside of sketchybarrc)
 sketchybar --update
