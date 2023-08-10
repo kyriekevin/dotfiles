@@ -1,3 +1,34 @@
--- Keymaps are automatically loaded on the VeryLazy event
--- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
+local function map(mode, lhs, rhs, opts)
+  local keys = require("lazy.core.handler").handlers.keys
+  ---@cast keys LazyKeysHandler
+  -- do not create the keymap if a lazy keys handler exists
+  if not keys.active[keys.parse({ lhs, mode = mode }).id] then
+    opts = opts or {}
+    opts.silent = opts.silent ~= false
+    if opts.remap and not vim.g.vscode then
+      opts.remap = nil
+    end
+    vim.keymap.set(mode, lhs, rhs, opts)
+  end
+end
+
+-- quit
+map("n", "<S-q>", ":q<CR>", { desc = "Quit" })
+
+-- save
+map("n", "<S-s>", ":w<CR>", { desc = "Save" })
+
+-- move
+map("n", "<S-j>", "5j", { desc = "Move down quickly" })
+map("n", "<S-k>", "5k", { desc = "Move up quickly" })
+map("n", "<S-h>", "0", { desc = "Move to the start of line" })
+map("n", "<S-l>", "$", { desc = "Move to the end of line" })
+
+-- tab
+map("n", "tn", ":tabnew<CR>", { desc = "New tab" })
+map("n", "th", ":tabp<CR>", { desc = "Prev tab" })
+map("n", "tl", ":tabn<CR>", { desc = "Next tab" })
+
+-- ESC
+map("i", "jk", "<ESC>")
+map("i", "kj", "<ESC>")
