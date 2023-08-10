@@ -183,7 +183,8 @@ alias sz="source ~/.zshrc; echo '~/.zshrc sourced'"
 alias ra="ranger"
 alias t="tmux"
 alias s="neofetch"
-alias jo="joshuto"
+alias j="joshuto"
+alias lg="lazygit"
 
 # other useful alias
 alias c="clear"
@@ -213,3 +214,5 @@ unset __conda_setup
 alias ip="ifconfig -a | egrep -A 7 '^en0' | grep inet | grep -oE '((1?[0-9][0-9]?|2[0-4][0-9]|25[0-5])\.){3}(1?[0-9][0-9]?|2[0-4][0-9]|25[0-5])' | head -n 1"
 alias myip="curl -s http://checkip.dyndns.org/ | sed 's/[a-zA-Z<>/ :]//g'"
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
