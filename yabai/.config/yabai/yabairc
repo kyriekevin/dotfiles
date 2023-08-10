@@ -28,10 +28,10 @@ sudo /opt/homebrew/bin/yabai --load-sa
 
 # general space settings
 /opt/homebrew/bin/yabai -m config layout bsp
-/opt/homebrew/bin/yabai -m config top_padding 60
-/opt/homebrew/bin/yabai -m config bottom_padding 5
-/opt/homebrew/bin/yabai -m config left_padding 10
-/opt/homebrew/bin/yabai -m config right_padding 10
+/opt/homebrew/bin/yabai -m config top_padding 00
+/opt/homebrew/bin/yabai -m config bottom_padding 00
+/opt/homebrew/bin/yabai -m config left_padding 00
+/opt/homebrew/bin/yabai -m config right_padding 00
 /opt/homebrew/bin/yabai -m config window_gap 10
 # yabai -m config window_animation_duration    0.00
 
