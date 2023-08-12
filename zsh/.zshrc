@@ -188,7 +188,8 @@ alias lg="lazygit"
 
 # other useful alias
 alias c="clear"
-alias l="ls -lah"
+alias l="exa -lah"
+alias ls="exa"
 alias av="conda activate"
 alias dv="conda deactivate"
 
