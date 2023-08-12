@@ -190,6 +190,7 @@ alias lg="lazygit"
 alias c="clear"
 alias l="exa -lah"
 alias ls="exa"
+alias bat="cat"
 alias av="conda activate"
 alias dv="conda deactivate"
 
