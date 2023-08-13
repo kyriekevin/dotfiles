@@ -1,0 +1,13 @@
+plugins=(git
+  z
+  brew
+	extract
+	zsh-autosuggestions
+	zsh-syntax-highlighting
+	sudo
+	web-search
+	copyfile
+	copybuffer
+	history
+	vi-mode
+)
