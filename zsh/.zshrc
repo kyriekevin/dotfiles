@@ -213,3 +213,32 @@ alias myip="curl -s http://checkip.dyndns.org/ | sed 's/[a-zA-Z<>/ :]//g'"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+fcd() {
+  local dir
+
+  local z_dirs=$(z -l 2>&1 | sed 's/^[0-9,.]* *//')
+
+  local all_dirs=$(fd --type d)
+
+  dir=$(echo "$z_dirs"$'\n'"$all_dirs" | sort -u | fzf)
+
+  if [[ ! -z "$dir" ]]; then
+    cd "$dir"
+  fi
+}
+
+fnvim() {
+  local file
+
+  local z_dirs=$(z -l 2>&1 | sed 's/^[0-9,.]* *//')
+
+  local all_files=$(fd)
+
+  file=$(echo "$z_dirs"$'\n'"$all_files" | sort -u | fzf)
+
+  if [[ ! -z "$file" ]]; then
+    nvim "$file"
+  fi
+}
+
