@@ -26,3 +26,7 @@ fnvim() {
   fi
 }
 
+dir() {
+    mkdir -p "$@" && cd "$@"
+}
+
