@@ -10,6 +10,7 @@ alias j="joshuto"
 alias lg="lazygit"
 
 # other useful alias
+alias p="pwd"
 alias c="clear"
 alias l="exa -lah"
 alias ls="exa"
