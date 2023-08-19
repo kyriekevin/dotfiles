@@ -30,3 +30,8 @@ dir() {
     mkdir -p "$@" && cd "$@"
 }
 
+cpwd() {
+    pwd | pbcopy && echo "Current path has been copied to clipboard!"
+}
+
+
