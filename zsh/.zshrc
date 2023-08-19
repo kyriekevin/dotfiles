@@ -8,4 +8,5 @@ source $zsh_config/funcs.zsh
 source $zsh_config/tmux.zsh
 source $zsh_config/plugins.zsh
 source $zsh_config/cursor.zsh
+source $zsh_config/fzf/completion.zsh
 
