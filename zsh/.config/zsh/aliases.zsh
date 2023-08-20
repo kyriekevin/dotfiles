@@ -8,6 +8,7 @@ alias t=tmux
 alias n=neofetch
 alias j=joshuto
 alias lg=lazygit
+alias du=dust
 
 # other useful alias
 alias pw=poweroff
@@ -15,6 +16,7 @@ alias rb=reboot
 
 alias p=pwd
 alias c=clear
+alias cd=z
 
 alias l="exa --icons -lah"
 alias ls="exa --icons"
@@ -26,6 +28,8 @@ alias cat=bat
 
 alias nv=nvim
 alias ne=neovide
+
+alias top=btm
 
 # IP alias and functions
 alias ip="ifconfig -a | egrep -A 7 '^en0' | grep inet | grep -oE '((1?[0-9][0-9]?|2[0-4][0-9]|25[0-5])\.){3}(1?[0-9][0-9]?|2[0-4][0-9]|25[0-5])' | head -n 1"
