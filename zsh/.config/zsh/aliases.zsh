@@ -9,6 +9,7 @@ alias n=neofetch
 alias j=joshuto
 alias lg=lazygit
 alias du=dust
+alias tl=tldr
 
 # other useful alias
 alias pw=poweroff
@@ -17,14 +18,15 @@ alias rb=reboot
 alias p=pwd
 alias c=clear
 alias cd=z
+alias cat=bat
+alias df=duf
+alias ping=gping
 
 alias l="exa --icons -lah"
 alias ls="exa --icons"
 
 alias av="conda activate"
 alias dv="conda deactivate"
-
-alias cat=bat
 
 alias nv=nvim
 alias ne=neovide

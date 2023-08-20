@@ -1,5 +1,4 @@
 plugins=(git
-  z
   fzf-tab
   brew
 	extract
