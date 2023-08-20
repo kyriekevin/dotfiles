@@ -14,5 +14,3 @@ else
 fi
 unset __conda_setup
 
-eval "$(zoxide init zsh)"
-
