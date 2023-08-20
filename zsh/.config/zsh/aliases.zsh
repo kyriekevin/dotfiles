@@ -1,11 +1,12 @@
 # quickly edit and source .zshrc
 alias vz="nvim ~/.dotfiles/zsh/.zshrc"
 alias sz="source ~/.zshrc; echo '~/.zshrc sourced'"
+alias vn="nvim ~/.dotfiles/nvim/.config/nvim/init.lua"
 
 # run other app
 alias ra=ranger
 alias t=tmux
-alias n=neofetch
+alias s=neofetch
 alias j=joshuto
 alias lg=lazygit
 alias du=dust
@@ -17,7 +18,6 @@ alias rb=reboot
 
 alias p=pwd
 alias c=clear
-alias cd=z
 alias cat=bat
 alias df=duf
 alias ping=gping
