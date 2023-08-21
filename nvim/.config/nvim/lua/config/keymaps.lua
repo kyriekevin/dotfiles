@@ -15,9 +15,6 @@ end
 -- quit
 map("n", "<S-q>", ":q<CR>", { desc = "Quit" })
 
--- save
-map("n", "<S-s>", ":w<CR>", { desc = "Save" })
-
 -- move
 map("n", "<S-j>", "5j", { desc = "Move down quickly" })
 map("n", "<S-k>", "5k", { desc = "Move up quickly" })
@@ -28,6 +25,10 @@ map("n", "<S-l>", "$", { desc = "Move to the end of line" })
 map("n", "tn", ":tabnew<CR>", { desc = "New tab" })
 map("n", "th", ":tabp<CR>", { desc = "Prev tab" })
 map("n", "tl", ":tabn<CR>", { desc = "Next tab" })
+
+-- buffer
+map("n", "<leader>bh", ":bp<CR>", { desc = "Prev buffer" })
+map("n", "<leader>bl", ":bn<CR>", { desc = "Next buffer" })
 
 -- ESC
 map("i", "jk", "<ESC>")

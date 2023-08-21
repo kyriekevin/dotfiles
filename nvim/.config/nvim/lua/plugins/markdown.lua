@@ -15,4 +15,7 @@ return {
       vim.g.mkdp_page_title = "${name}"
     end,
   },
+  {
+    "vimwiki/vimwiki",
+  },
 }
