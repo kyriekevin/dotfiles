@@ -1,4 +1,6 @@
-plugins=(git
+plugins=(
+  macos
+  git
   z
   fzf-tab
   brew
