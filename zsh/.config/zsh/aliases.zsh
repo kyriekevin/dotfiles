@@ -13,8 +13,8 @@ alias du=dust
 alias tl=tldr
 
 # other useful alias
-alias pw=poweroff
-alias rb=reboot
+alias pw="sudo poweroff"
+alias rb="sudo reboot"
 
 alias p=pwd
 alias c=clear
