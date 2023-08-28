@@ -11,7 +11,14 @@ export HOMEBREW_PIP_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"
 export EDITOR=nvim
 
 # vpn
-CURRENT_VPN="default"
+CPU_INFO=$(sysctl machdep.cpu.brand_string)
+
+if [[ $CPU_INFO == "machdep.cpu.brand_string: Apple M2" ]]; then
+  CURRENT_VPN="home"
+else
+  CURRENT_VPN="company"
+fi
+
 function sv() {
     if [[ $CURRENT_VPN == "company" ]]; then
         export http_proxy="http://127.0.0.1:7890"
@@ -19,8 +26,8 @@ function sv() {
         export all_proxy="socks5://127.0.0.1:7890"
         unset HTTP_PROXY
         unset HTTPS_PROXY
-        CURRENT_VPN="default"
-        echo "Switched to default VPN settings"
+        CURRENT_VPN="home"
+        echo "Switched to home VPN settings"
     else
         export http_proxy="http://proxy.sensetime.com:3128/"
         export https_proxy="http://proxy.sensetime.com:3128/"
@@ -32,4 +39,10 @@ function sv() {
     fi
 }
 
-
+function vpn() {
+    if [[ $CURRENT_VPN == "company" ]]; then
+        echo "You are currently using company VPN settings."
+    else
+        echo "You are currently using home VPN settings."
+    fi
+}
