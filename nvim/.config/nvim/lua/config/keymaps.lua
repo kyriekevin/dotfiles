@@ -21,3 +21,7 @@ map({ "n", "v" }, "<S-l>", "$")
 -- better indenting
 map({ "v" }, "<", "<gv")
 map({ "v" }, ">", ">gv")
+
+map({ "i" }, "jk", "<Esc>")
+map({ "i" }, "kj", "<Esc>")
+
