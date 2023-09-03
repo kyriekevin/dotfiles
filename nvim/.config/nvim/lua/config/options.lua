@@ -17,7 +17,12 @@ opt.showmode = false
 opt.wildmenu = true
 opt.backspace = { "indent", "eol", "start" }
 opt.list = true
+
+-- spell
+opt.spell = true
 opt.spelllang = { "en" }
+
+-- split
 opt.splitbelow = true -- Put new windows below current
 opt.splitright = true -- Put new windows right of current
 
