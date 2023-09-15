@@ -22,7 +22,8 @@ alias cat=bat
 alias df=duf
 alias ping=gping
 
-alias l="exa --icons -lah"
+alias ll="exa --icons -lah"
+alias l="exa --icons"
 alias ls="exa --icons"
 
 alias av="conda activate"
