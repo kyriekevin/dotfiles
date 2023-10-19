@@ -25,3 +25,6 @@ map({ "v" }, ">", ">gv")
 map({ "i" }, "jk", "<Esc>")
 map({ "i" }, "kj", "<Esc>")
 
+-- lazy
+map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
+
