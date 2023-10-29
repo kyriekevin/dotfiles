@@ -11,8 +11,6 @@ map({ "i", "x", "n", "s" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
 map({ "i", "x", "n", "s" }, "<C-q>", "<cmd>q<cr><esc>", { desc = "Quit" })
 
 -- fast move
-map({ "n", "v" }, "<S-j>", "5j")
-map({ "n", "v" }, "<S-k>", "5k")
 map({ "n", "v" }, "<S-w>", "5w")
 map({ "n", "v" }, "<S-b>", "5b")
 map({ "n", "v" }, "<S-h>", "0")
@@ -27,4 +25,3 @@ map({ "i" }, "kj", "<Esc>")
 
 -- lazy
 map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
-
