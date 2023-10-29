@@ -37,7 +37,7 @@ return {
       end, { desc = '[/] Fuzzily search in current buffer' })
     end
   },
-  
+
   -- flash
   {
     "folke/flash.nvim",
