@@ -53,8 +53,40 @@ opt.backup = false
 opt.updatetime = 50
 opt.mouse = ""
 opt.undofile = true
-opt.undodir = vim.fn.expand('$HOME/.local/share/nvim/undo')
+opt.undodir = vim.fn.expand("$HOME/.local/share/nvim/undo")
 opt.exrc = true
 opt.wrap = false
 opt.wildmode = "longest:full,full" -- Command-line completion mode
 
+vim.o.ttyfast = true
+vim.o.autochdir = true
+vim.o.listchars = "tab:|\\ ,trail:▫"
+
+vim.cmd([[
+silent !mkdir -p $HOME/.config/nvim/tmp/backup
+silent !mkdir -p $HOME/.config/nvim/tmp/undo
+"silent !mkdir -p $HOME/.config/nvim/tmp/sessions
+set backupdir=$HOME/.config/nvim/tmp/backup,.
+set directory=$HOME/.config/nvim/tmp/backup,.
+if has('persistent_undo')
+	set undofile
+	set undodir=$HOME/.config/nvim/tmp/undo,.
+endif
+]])
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, { pattern = "*.md", command = "setlocal spell" })
+vim.api.nvim_create_autocmd("BufEnter", { pattern = "*", command = "silent! lcd %:p:h" })
+
+vim.cmd([[au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]])
+
+vim.cmd([[autocmd TermOpen term://* startinsert]])
+vim.cmd([[
+augroup NVIMRC
+    autocmd!
+    autocmd BufWritePost .vim.lua exec ":so %"
+augroup END
+tnoremap <C-N> <C-\><C-N>
+tnoremap <C-O> <C-\><C-N><C-O>
+]])
+
+vim.cmd([[hi NonText ctermfg=gray guifg=grey10]])
