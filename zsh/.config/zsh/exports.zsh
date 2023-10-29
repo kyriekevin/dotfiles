@@ -10,6 +10,8 @@ export HOMEBREW_PIP_INDEX_URL="https://pypi.tuna.tsinghua.edu.cn/simple"
 
 export EDITOR=nvim
 
+export OPENAI_API_KEY="sk-dYeXoa0ZTLfIEAc959839b74DbDd44B09cD0269861869005"
+
 # vpn
 CPU_INFO=$(sysctl machdep.cpu.brand_string)
 
@@ -29,10 +31,10 @@ function sv() {
         CURRENT_VPN="home"
         echo "Switched to home VPN settings"
     else
-        export http_proxy="http://proxy.sensetime.com:3128/"
-        export https_proxy="http://proxy.sensetime.com:3128/"
-        export HTTP_PROXY="http://proxy.sensetime.com:3128/"
-        export HTTPS_PROXY="http://proxy.sensetime.com:3128/"
+        # export http_proxy="http://proxy.sensetime.com:3128/"
+        # export https_proxy="http://proxy.sensetime.com:3128/"
+        # export HTTP_PROXY="http://proxy.sensetime.com:3128/"
+        # export HTTPS_PROXY="http://proxy.sensetime.com:3128/"
         unset all_proxy
         CURRENT_VPN="company"
         echo "Switched to company VPN settings"
