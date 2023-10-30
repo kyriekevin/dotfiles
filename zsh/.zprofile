@@ -3,3 +3,5 @@ export HOMEBREW_API_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
 export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles #ckbrew
 eval $(/opt/homebrew/bin/brew shellenv) #ckbrew
 [[ -e ~/.zshrc ]] && source ~/.zshrc
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
