@@ -43,3 +43,13 @@ map({ "n" }, "tu", ":tabe<CR>")
 map({ "n" }, "tU", ":tab split<CR>")
 map({ "n" }, "th", ":-tabnext<CR>")
 map({ "n" }, "tl", ":+tabnext<CR>")
+
+-- markdown
+map({ "i" }, ",,", "<Esc>/<++><CR>:nohlsearch<CR>c4l")
+map({ "i" }, ",f", "<Esc>/<++><CR>:nohlsearch<CR>")
+map({ "i" }, ",n", "---<Enter><Enter>")
+map({ "i" }, ",c", "```<Enter><++><Enter>```<Enter><Enter><++><Esc>4kA")
+map({ "i" }, ",1", "#<Space><Enter><++><Esc>kA")
+map({ "i" }, ",2", "##<Space><Enter><++><Esc>kA")
+map({ "i" }, ",3", "###<Space><Enter><++><Esc>kA")
+map({ "i" }, ",4", "####<Space><Enter><++><Esc>kA")
