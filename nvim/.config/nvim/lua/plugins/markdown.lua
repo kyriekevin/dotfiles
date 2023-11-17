@@ -2,8 +2,7 @@ return {
   {
     "iamcco/markdown-preview.nvim",
     build = "cd app && npm install",
-    ft = "markdown",
-    lazy = true,
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     keys = { { "gm", "<cmd>MarkdownPreviewToggle<cr>", desc = "Markdown Preview" } },
     config = function()
       vim.g.mkdp_auto_close = true
@@ -14,6 +13,7 @@ return {
       vim.g.mkdp_echo_preview_url = true
       vim.g.mkdp_page_title = "${name}"
     end,
+    ft = "markdown",
   },
   {
     "vimwiki/vimwiki",
