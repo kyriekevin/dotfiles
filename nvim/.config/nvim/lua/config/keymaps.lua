@@ -9,6 +9,14 @@ local opts = { noremap = true, silent = true }
 keymap.set("n", "+", "<C-a>")
 keymap.set("n", "-", "<C-x>")
 
+-- better navigation
+keymap.set({ "n", "v" }, "J", "5j")
+keymap.set({ "n", "v" }, "K", "5k")
+keymap.set({ "n", "v" }, "H", "0")
+keymap.set({ "n", "v" }, "L", "$")
+keymap.set({ "n", "v" }, "W", "5w")
+keymap.set({ "n", "v" }, "B", "5b")
+
 -- Select all
 keymap.set("n", "<C-a>", "gg<S-v>G")
 
