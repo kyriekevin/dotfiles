@@ -1,5 +1,5 @@
 plugins=(
-  zsh-wakatime
+  wakatime
   macos
   git
   z
