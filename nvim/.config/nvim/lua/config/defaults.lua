@@ -1,3 +1,8 @@
+local opt = vim.opt
+
+opt.swapfile = false
+opt.backspace = { "indent", "eol", "start" }
+
 vim.o.termguicolors = true
 vim.env.NVIM_TUI_ENABLE_TRUE_COLOR = 1
 
