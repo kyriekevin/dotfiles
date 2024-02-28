@@ -36,15 +36,15 @@ function create_and_cd() {
   mkdir -p $dir && cd $dir
 }
 
-function rm() {
-  # https://iboysoft.com/questions/why-is-there-no-put-back-button-in-mac-trash.html
-  echo -e '\033[31mUse "rmm", or the full path i.e. "/bin/rm"\033[0m'
-  if ! command -v trash &> /dev/null; then
-    echo -e '\033[31mtrash command not found. Please install trash first.\033[0m'
-    return
-  fi
-  trash "$@"
-}
+# function rm() {
+#   # https://iboysoft.com/questions/why-is-there-no-put-back-button-in-mac-trash.html
+#   echo -e '\033[31mUse "rmm", or the full path i.e. "/bin/rm"\033[0m'
+#   if ! command -v trash &> /dev/null; then
+#     echo -e '\033[31mtrash command not found. Please install trash first.\033[0m'
+#     return
+#   fi
+#   trash "$@"
+# }
 
 function get_ip_local(){
   ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'

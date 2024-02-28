@@ -7,9 +7,8 @@ alias vn="nvim ~/.dotfiles/nvim/.config/nvim/init.lua"
 alias ra=ranger
 alias t=tmux
 alias s=neofetch
-alias j=joshuto
+alias jo=joshuto
 alias lg=lazygit
-alias du=dust
 alias tl=tldr
 
 # other useful alias
@@ -24,8 +23,6 @@ alias c="clear && printf '\e[3J'"
 alias cpwd="pwd | pbcopy && echo Current path has been copied to clipboard!"
 alias e=exit
 alias cat=bat
-alias df=duf
-alias ping=gping
 
 alias ll="exa --icons -lah"
 alias l="exa --icons"
