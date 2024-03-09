@@ -7,7 +7,6 @@ alias vn="nvim ~/.dotfiles/nvim/.config/nvim/init.lua"
 alias ra=ranger
 alias t=tmux
 alias s=neofetch
-alias jo=joshuto
 alias lg=lazygit
 alias tl=tldr
 

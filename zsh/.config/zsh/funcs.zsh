@@ -36,16 +36,6 @@ function create_and_cd() {
   mkdir -p $dir && cd $dir
 }
 
-# function rm() {
-#   # https://iboysoft.com/questions/why-is-there-no-put-back-button-in-mac-trash.html
-#   echo -e '\033[31mUse "rmm", or the full path i.e. "/bin/rm"\033[0m'
-#   if ! command -v trash &> /dev/null; then
-#     echo -e '\033[31mtrash command not found. Please install trash first.\033[0m'
-#     return
-#   fi
-#   trash "$@"
-# }
-
 function get_ip_local(){
   ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'
 }
@@ -72,4 +62,41 @@ function get_ip() {
       echo -e "${GREEN}$service${RESET}: $ip"
     fi
   done
+}
+
+# vpn
+CPU_INFO=$(sysctl machdep.cpu.brand_string)
+
+if [[ $CPU_INFO == "machdep.cpu.brand_string: Apple M2" ]]; then
+  CURRENT_VPN="home"
+else
+  CURRENT_VPN="company"
+fi
+
+function sv() {
+    if [[ $CURRENT_VPN == "company" ]]; then
+        export http_proxy="http://127.0.0.1:7890"
+        export https_proxy="http://127.0.0.1:7890"
+        export all_proxy="socks5://127.0.0.1:7890"
+        unset HTTP_PROXY
+        unset HTTPS_PROXY
+        CURRENT_VPN="home"
+        echo "Switched to home VPN settings"
+    else
+        # export http_proxy="http://proxy.sensetime.com:3128/"
+        # export https_proxy="http://proxy.sensetime.com:3128/"
+        # export HTTP_PROXY="http://proxy.sensetime.com:3128/"
+        # export HTTPS_PROXY="http://proxy.sensetime.com:3128/"
+        unset all_proxy
+        CURRENT_VPN="company"
+        echo "Switched to company VPN settings"
+    fi
+}
+
+function vpn() {
+    if [[ $CURRENT_VPN == "company" ]]; then
+        echo "You are currently using company VPN settings."
+    else
+        echo "You are currently using home VPN settings."
+    fi
 }
