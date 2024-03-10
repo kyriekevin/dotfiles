@@ -11,6 +11,7 @@ alias gl="git pull"
 alias gc="git commit"
 alias gb="git branch"
 alias gd="git diff"
+alias gp="git push"
 
 # run other app
 alias ra=ranger
