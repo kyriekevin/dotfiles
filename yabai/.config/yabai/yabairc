@@ -55,5 +55,6 @@ yabai -m signal --add event=window_destroyed action="sketchybar --trigger window
 /opt/homebrew/bin/yabai -m rule --add app="^QQ*" manage=off
 /opt/homebrew/bin/yabai -m rule --add app="^WeCom*" manage=off
 /opt/homebrew/bin/yabai -m rule --add app="^Preview*" manage=off
+/opt/homebrew/bin/yabai -m rule --add app="^Dynamic Wallpaper*" manage=off
 
 echo "yabai configuration loaded.."
