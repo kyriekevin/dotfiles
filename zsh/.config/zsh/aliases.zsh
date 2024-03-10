@@ -3,6 +3,15 @@ alias vz="nvim ~/.dotfiles/zsh/.zshrc"
 alias sz="source ~/.zshrc; echo '~/.zshrc sourced'"
 alias vn="nvim ~/.dotfiles/nvim/.config/nvim/init.lua"
 
+# git
+alias ga="git add"
+alias gaa="git add --all"
+alias gst="git status"
+alias gl="git pull"
+alias gc="git commit"
+alias gb="git branch"
+alias gd="git diff"
+
 # run other app
 alias ra=ranger
 alias t=tmux
