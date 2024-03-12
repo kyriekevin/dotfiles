@@ -3,22 +3,19 @@ alias vz="nvim ~/.dotfiles/zsh/.zshrc"
 alias sz="source ~/.zshrc; echo '~/.zshrc sourced'"
 alias vn="nvim ~/.dotfiles/nvim/.config/nvim/init.lua"
 
-# git
-alias ga="git add"
-alias gaa="git add --all"
-alias gst="git status"
-alias gl="git pull"
-alias gc="git commit"
-alias gb="git branch"
-alias gd="git diff"
-alias gp="git push"
+# tmux
+alias tl="tmux ls"
+alias ta="tmux attach -t"
+alias ts="tmux new -s"
+alias tkss="tmux kill-session -t"
 
 # run other app
 alias ra=ranger
+alias jo=joshuto
 alias t=tmux
 alias s=neofetch
 alias lg=lazygit
-alias tl=tldr
+alias go="git open"
 
 # other useful alias
 alias rmm="trash" # brew install trash
@@ -32,6 +29,7 @@ alias c="clear && printf '\e[3J'"
 alias cpwd="pwd | pbcopy && echo Current path has been copied to clipboard!"
 alias e=exit
 alias cat=bat
+alias cp="cp -i"
 
 alias ll="exa --icons -lah"
 alias l="exa --icons"

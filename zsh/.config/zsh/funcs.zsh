@@ -100,3 +100,5 @@ function vpn() {
         echo "You are currently using home VPN settings."
     fi
 }
+
+HIST_STAMPS="%d/%m/%y %T"

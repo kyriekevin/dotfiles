@@ -1,5 +1,6 @@
 plugins=(
   macos
+  git-open
   git
   z
   fzf-tab
