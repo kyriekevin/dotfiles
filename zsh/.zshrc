@@ -7,5 +7,6 @@ source $zsh_config/funcs.zsh
 source $zsh_config/tmux.zsh
 source $zsh_config/cursor.zsh
 source $zsh_config/fzf.zsh
+source $zsh_config/plugins.zsh
 
 eval "$(starship init zsh)"

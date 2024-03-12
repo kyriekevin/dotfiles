@@ -9,5 +9,3 @@ else
     fi
 fi
 unset __conda_setup
-
-[[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh

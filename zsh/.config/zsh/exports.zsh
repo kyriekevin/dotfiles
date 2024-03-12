@@ -11,3 +11,5 @@ export EDITOR=nvim
 
 export OPENAI_API_KEY="sk-dYeXoa0ZTLfIEAc959839b74DbDd44B09cD0269861869005"
 
+export ZSH="$HOME/.config/zsh/.oh-my-zsh"
+source $ZSH/oh-my-zsh.sh
