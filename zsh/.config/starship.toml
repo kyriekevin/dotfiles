@@ -10,8 +10,8 @@ $directory\
 $git_branch\
 $git_status\
 [](fg:green bg:teal)\
-$python\
 [](fg:teal bg:blue)\
+$conda\
 [](fg:blue bg:purple)\
 $time\
 [ ](fg:purple)\
@@ -64,7 +64,7 @@ disabled = false
 style = "bg:surface0 fg:text"
 
 [os.symbols]
-Macos = "󰀵"
+Macos = "󰀵 "
 
 [username]
 show_always = true
@@ -75,8 +75,8 @@ format = '[ $user ]($style)'
 [directory]
 style = "fg:mantle bg:peach"
 format = "[ $path ]($style)"
-truncation_length = 3
-truncation_symbol = "…/"
+truncation_length = 4
+truncation_symbol = ""
 
 [directory.substitutions]
 "Documents" = "󰈙 "
@@ -94,21 +94,17 @@ format = '[[ $symbol $branch ](fg:base bg:green)]($style)'
 style = "bg:teal"
 format = '[[($all_status$ahead_behind )](fg:base bg:green)]($style)'
 
-[nodejs]
-symbol = ""
+[conda]
+symbol = "🅒 "
 style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
-
-[python]
-symbol = ""
-style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
+format = '[[ $symbol( $environment) ](fg:base bg:blue)]($style)'
+ignore_base = false
 
 [time]
 disabled = false
 time_format = "%R"
 style = "bg:peach"
-format = '[[  $time ](fg:mantle bg:purple)]($style)'
+format = '[[ ♥ $time ](fg:base bg:purple)]($style)'
 
 [line_break]
 disabled = false
