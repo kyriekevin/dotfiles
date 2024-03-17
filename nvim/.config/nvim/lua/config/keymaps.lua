@@ -15,8 +15,8 @@ keymap.set({ "n", "v" }, "J", "5j")
 keymap.set({ "n", "v" }, "K", "5k")
 keymap.set({ "n", "v", "o", "x" }, "H", "^", opts)
 keymap.set({ "n", "v", "o", "x" }, "L", "g_", opts)
-keymap.set({ "n", "v" }, "W", "5w")
-keymap.set({ "n", "v" }, "B", "5b")
+keymap.set({ "n", "v", "o" }, "W", "5w")
+keymap.set({ "n", "v", "o" }, "B", "5b")
 
 -- Select all
 keymap.set("n", "<C-a>", "gg<S-v>G")
@@ -53,6 +53,7 @@ keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) 
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
 
 keymap.set("x", "p", [["_dP]])
+keymap.set({ "v", "n" }, "<leader>y", "\"+y")
 
 -- markdown
 keymap.set("i" , ",,", "<Esc>/<++><CR>:nohlsearch<CR>c4l")

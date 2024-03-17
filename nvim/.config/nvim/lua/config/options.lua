@@ -15,6 +15,7 @@ opt.shiftwidth = 2 -- 2 spaces for indent width
 opt.expandtab = true -- expand tab to spaces
 opt.autoindent = true -- copy indent from current line when starting new one
 opt.smartindent = true -- Insert indents automatically
+opt.shiftround = true
 
 -- line wrapping
 opt.wrap = false -- disable line wrapping
@@ -42,6 +43,7 @@ opt.splitbelow = true -- split horizontal window to the bottom
 
 -- turn off swapfile
 opt.swapfile = false
+opt.backup = false
 
 opt.showmode = false -- we don't need to see things like -- INSERT -- anymore
 opt.mouse = ""
@@ -54,9 +56,13 @@ opt.pumblend = 10 -- Popup blend
 opt.pumheight = 10 -- Maximum number of entries in a popup
 opt.spelllang = { "en" }
 opt.undofile = true
+opt.undodir = vim.fn.expand('$HOME/.local/share/nvim/undo')
 opt.undolevels = 10000
 opt.virtualedit = "block" -- Allow cursor to move where there is no text in visual block mode
 opt.wildmode = "longest:full,full" -- Command-line completion mode
+opt.wildmenu = true
+-- opt.updatetime = 50
+opt.exrc = true
 
 if not vim.g.vscode then
   opt.timeoutlen = 300 -- Lower than default (1000) to quickly trigger which-key

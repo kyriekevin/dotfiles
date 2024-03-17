@@ -27,17 +27,44 @@ return {
   },
   { 
     'akinsho/bufferline.nvim', 
-    version = "*", 
-    dependencies = 'nvim-tree/nvim-web-devicons',
-    opts = {
-      options = {
-        mode = "tabs",
-        separator_style = "slant",
-      }
-    }
+    config = true
   },
   {
     'stevearc/dressing.nvim',
     event = "VeryLazy",
+  },
+  {
+    "utilyre/barbecue.nvim",
+    name = "barbecue",
+    version = "*",
+    dependencies = {
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = function()
+      require("barbecue").setup {
+        theme = "catppuccin"
+      }
+    end,
+  },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    opts = {
+      indent = {
+        char = "|",
+        tab_char = "|",
+      },
+      scope = { enabled = false },
+    },
+    main = "ibl",
+    config = function()
+      require("ibl").setup(opts)
+    end
+  },
+  {
+    "goolord/alpha-nvim",
+    config = function()
+      require'alpha'.setup(require'alpha.themes.dashboard'.config)
+    end
   }
 }
