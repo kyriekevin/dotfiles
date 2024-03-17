@@ -45,5 +45,53 @@ return {
         })
       end, { desc = '[/] Fuzzily search in current buffer' })
     end
-  }
+  },
+  {
+    "folke/flash.nvim",
+    config = function()
+      require("flash").setup()
+      vim.keymap.set({"n","x","o"},"s",
+        function()
+          require("flash").jump({
+            search = {
+            mode = function(str)
+                return "\\<" .. str
+              end,
+            },
+          })
+        end,
+        { desc = "Flash" }
+      )
+      vim.keymap.set({"n","x","o"},"S",
+        function()
+          require("flash").treesitter()
+        end,
+        { desc = "Flash Treesitter" }
+      )
+      vim.keymap.set({"o"},"r",
+        function()
+          require("flash").remote()
+        end,
+        { desc = "Remote Flash" }
+      )
+      vim.keymap.set({"o","x"},"R",
+        function()
+          require("flash").treesitter_search()
+        end,
+        { desc = "Treesitter Search" }
+      )
+    end,
+  },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+      "MunifTanjim/nui.nvim",
+    },
+    config = function()
+      require("neo-tree").setup()
+      vim.keymap.set({"n", "v"},"<leader>e",[[<cmd>Neotree toggle<CR>]])
+    end
+  },
 }

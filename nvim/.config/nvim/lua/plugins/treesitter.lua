@@ -12,6 +12,7 @@ return {
       "json",
       "jsonc",
       "markdown",
+      "markdown_inline",
       "python",
       "vim",
       "yaml",
