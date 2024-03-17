@@ -17,7 +17,9 @@ return {
         navic = { enabled = true, custom_bg = "lualine" },
         neotree = true,
         noice = true,
-        telescope = true,
+        telescope = {
+          enabled = true,
+        },
         which_key = true,
         barbecue = {
           dim_dirname = true,

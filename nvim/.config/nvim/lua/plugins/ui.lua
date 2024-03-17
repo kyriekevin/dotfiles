@@ -43,7 +43,7 @@ return {
     },
     config = function()
       require("barbecue").setup {
-        theme = "catppuccin"
+        theme = "catppuccin-frappe"
       }
     end,
   },
