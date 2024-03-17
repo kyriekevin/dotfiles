@@ -35,7 +35,9 @@ return {
         illuminate = {
           enabled = true,
           lsp = false
-        }
+        },
+        treesitter = true,
+        treesitter_context = true
       }
     })
     vim.cmd.colorscheme "catppuccin"
