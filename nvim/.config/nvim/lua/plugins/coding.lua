@@ -43,8 +43,8 @@ return {
         },
         sources = cmp.config.sources {
           { name = 'nvim_lsp' },
-          { name = 'path' },
           { name = 'luasnip' },
+          { name = 'path' },
           { name = "buffer" },
         },
         mapping = cmp.mapping.preset.insert {

@@ -20,8 +20,8 @@ return {
       "rcarriga/nvim-notify",
     }
   },
-  { 
-    'akinsho/bufferline.nvim', 
+  {
+    'akinsho/bufferline.nvim',
     config = true
   },
   {
@@ -58,7 +58,7 @@ return {
   {
     "goolord/alpha-nvim",
     config = function()
-      require'alpha'.setup(require'alpha.themes.dashboard'.config)
+      require 'alpha'.setup(require 'alpha.themes.dashboard'.config)
     end
   }
 }
