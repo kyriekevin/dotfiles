@@ -1,10 +1,12 @@
 return {
   {
     'echasnovski/mini.ai',
+    event = "VeryLazy",
     config = true,
   },
   {
     "echasnovski/mini.comment",
+    event = "VeryLazy",
     config = true,
   },
   {
@@ -16,6 +18,9 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-cmdline",
       "saadparwaiz1/cmp_luasnip",
+      "onsails/lspkind.nvim",
+      "zbirenbaum/copilot-cmp",
+      dependencies = "copilot.lua",
       {
         "saadparwaiz1/cmp_luasnip",
         dependencies = {
@@ -35,13 +40,22 @@ return {
       require("luasnip.loaders.from_vscode").lazy_load()
       local luasnip = require("luasnip")
       local cmp = require 'cmp'
+      local lspkind = require('lspkind')
       cmp.setup {
+        formatting = {
+          format = lspkind.cmp_format({
+            mode = "symbol",
+            max_width = 50,
+            symbol_map = { Copilot = "" }
+          })
+        },
         snippet = {
           expand = function(args)
-            require('luasnip').lsp_expand(args.body)         -- For `luasnip` users.
+            require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
           end,
         },
         sources = cmp.config.sources {
+          { name = 'copilot' },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
@@ -71,7 +85,7 @@ return {
               fallback()
             end
           end, { "i", "s" }),
-          ['<CR>'] = cmp.mapping.confirm({ select = true }),       -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         },
         experimental = {
           ghost_text = true,

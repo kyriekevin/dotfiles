@@ -11,7 +11,6 @@ return {
         dashboard = true,
         flash = true,
         gitsigns = true,
-        indent_blankline = { enabled = true },
         mason = true,
         markdown = true,
         navic = { enabled = true, custom_bg = "lualine" },
@@ -37,8 +36,11 @@ return {
           lsp = false
         },
         treesitter = true,
-        treesitter_context = true
-      }
+        treesitter_context = true,
+        dap = true,
+        dap_ui = true,
+        notify = true,
+      },
     })
     vim.cmd.colorscheme "catppuccin"
   end,

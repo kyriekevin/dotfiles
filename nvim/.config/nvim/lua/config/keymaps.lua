@@ -22,7 +22,7 @@ keymap.set({ "n", "v", "o" }, "B", "5b")
 keymap.set("n", "<C-a>", "gg<S-v>G")
 
 -- clear search highlights
-keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
+keymap.set("n", "<leader><CR>", ":nohl<CR>", { desc = "Clear search highlights" })
 
 -- Key mappings --
 keymap.set({ "n", "i", "v" }, "<Left>", "<Nop>")

@@ -10,6 +10,7 @@ return {
   },
   {
     "folke/which-key.nvim",
+    event = "VeryLazy",
     config = true
   },
   {
@@ -18,15 +19,18 @@ return {
     dependencies = {
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",
-    }
+    },
+    config = true
   },
   {
     'akinsho/bufferline.nvim',
+    event = "VeryLazy",
     config = true
   },
   {
     'stevearc/dressing.nvim',
     event = "VeryLazy",
+    config = true
   },
   {
     "utilyre/barbecue.nvim",
@@ -43,6 +47,7 @@ return {
   },
   {
     "lukas-reineke/indent-blankline.nvim",
+    event = "VeryLazy",
     opts = {
       indent = {
         char = "|",
@@ -51,14 +56,12 @@ return {
       scope = { enabled = false },
     },
     main = "ibl",
-    config = function()
-      require("ibl").setup(opts)
-    end
   },
   {
     "goolord/alpha-nvim",
+    event = "VeryLazy",
     config = function()
       require 'alpha'.setup(require 'alpha.themes.dashboard'.config)
     end
-  }
+  },
 }
