@@ -14,7 +14,6 @@ return {
       "markdown",
       "markdown_inline",
       "python",
-      "vim",
       "yaml",
       "toml",
       "lua",

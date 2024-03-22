@@ -20,7 +20,16 @@ return {
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",
     },
-    config = true
+    config = function()
+      require("noice").setup({
+        routes = {
+          {
+            filter = { event = "notify", find = "warning: multiple different client offset_encodings" },
+            opts = { skip = true}
+          }
+        } 
+      })
+    end
   },
   {
     'akinsho/bufferline.nvim',
