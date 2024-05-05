@@ -1,0 +1,17 @@
+snippet pr "to print"
+	print($0)
+
+snippet inin "to input integer"
+	int(input())
+
+snippet minin "to input multiple integers"
+	map(int, input().split())
+
+snippet lminin "to input multiple integers in a list"
+	list(map(int, input().split()))
+
+snippet pii "to define pair in python"
+	pair = namedtuple('pair', ['x', 'y'])
+
+snippet init "to initialize a list with any value"
+	List[Optional[$1]] = [None] * $0
