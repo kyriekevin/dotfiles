@@ -3,7 +3,7 @@
 /opt/homebrew/bin/yabai -m signal --add event=dock_did_restart action="sudo /opt/homebrew/bin/yabai --load-sa"
 sudo /opt/homebrew/bin/yabai --load-sa
 
-/opt/homebrew/bin/yabai -m config external_bar all:50:0
+/opt/homebrew/bin/yabai -m config external_bar all:32:0
 
 # bsp, stack or float
 /opt/homebrew/bin/yabai -m config layout bsp
