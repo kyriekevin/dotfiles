@@ -1,0 +1,17 @@
+plugins=(
+  macos
+  git-open
+  git
+  z
+  fzf-tab
+  brew
+	extract
+	zsh-autosuggestions
+	zsh-syntax-highlighting
+	sudo
+	web-search
+	copyfile
+	copybuffer
+	history
+	vi-mode
+)
