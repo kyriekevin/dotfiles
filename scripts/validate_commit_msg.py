@@ -8,7 +8,7 @@ def validate_commit_msg(message):
         return False
 
     first_line = lines[0]
-    title_pattern = r"^(fix|feat|wip|breaking|docs|style|refactor|perf|test|chore)(\(.+\))?: .{1,100}$"
+    title_pattern = r"^(fix|feat|wip|breaking|docs|style|refactor|perf|test|chore|bump)(\(.+\))?: .{1,100}$"
     if not re.match(title_pattern, first_line):
         print("Error: Commit title format is incorrect.")
         print("It should match: <type>(<scope>): <subject>")

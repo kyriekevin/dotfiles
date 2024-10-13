@@ -2,7 +2,6 @@
   "commitizen": {
     "name": "cz_customize",
     "tag_format": "v$version",
-    "version_scheme": "pep440",
     "version_provider": "poetry",
     "update_changelog_on_bump": true,
     "major_version_zero": true,
@@ -10,20 +9,20 @@
       "message_template": "{{change_type}}{% if scope %}({{scope}}){% endif %}: {{message}}{% if body %}\n\n{{body}}{% endif %}{% if footer %}\n\n{{footer}}{% endif %}",
       "example": "docs(repo): add contributing guidelines",
       "schema": "<type>(<scope>): <subject>\n\n<body>\n\n<footer>",
-      "schema_pattern": "^(fix|feat|docs|style|refactor|perf|test|chore|breaking|wip)(?:\\(([^()\\r\\n]+)\\))?:\\s(.+)(?:\\n\\n(.+))?(?:\\n\\n(.+))?$",
-      "bump_pattern": "^(fix|feat|breaking|wip)",
+      "schema_pattern": "^(fix|feat|docs|style|refactor|perf|test|chore|break|wip)(?:\\(([^()\\r\\n]+)\\))?:\\s(.+)(?:\\n\\n(.+))?(?:\\n\\n(.+))?$",
+      "bump_pattern": "^(fix|feat|break|wip)",
       "bump_map": {
         "fix": "PATCH",
         "feat": "MINOR",
-        "breaking": "MAJOR",
+        "break": "MAJOR",
         "wip": "PATCH"
       },
-      "change_type_order": ["breaking", "feat", "fix", "wip"],
+      "change_type_order": ["break", "feat", "fix", "wip"],
       "info_path": "cz_customize_info.txt",
       "info": "This is customized info",
-      "commit_parser": "^(?P<change_type>fix|feat|docs|style|refactor|perf|test|chore|breaking|wip)(?:\\((?P<scope>[^()\\r\\n]+)\\))?:\\s(?P<message>.+)(?:\\n\\n(?P<body>.+))?(?:\\n\\n(?P<footer>.+))?$",
-      "changelog_pattern": "^(fix|feat|docs|style|refactor|perf|test|chore|breaking|wip)(?:\\(([^()\\r\\n]+)\\))?:\\s(.+)",
-      "change_type_map": {"fix": "Fix", "feat": "Feat", "breaking": "BREAKING CHANGE", "wip": "WIP"},
+      "commit_parser": "^(?P<change_type>fix|feat|docs|style|refactor|perf|test|chore|break|wip)(?:\\((?P<scope>[^()\\r\\n]+)\\))?:\\s(?P<message>.+)(?:\\n\\n(?P<body>.+))?(?:\\n\\n(?P<footer>.+))?$",
+      "changelog_pattern": "^(fix|feat|docs|style|refactor|perf|test|chore|break|wip)(?:\\(([^()\\r\\n]+)\\))?:\\s(.+)",
+      "change_type_map": {"fix": "Fix", "feat": "Feat", "break": "break CHANGE", "wip": "WIP"},
       "questions": [
               {
                   "type": "list",
@@ -42,8 +41,8 @@
                           "name": "wip: Work in progress. Correlates with PATCH in SemVer"
                       },
                       {
-                          "value": "breaking",
-                          "name": "breaking: A code change that introduces a breaking change. Correlates with MAJOR in SemVer"
+                          "value": "break",
+                          "name": "break: A code change that introduces a break change. Correlates with MAJOR in SemVer"
                       },
                       {
                           "value": "docs",
@@ -90,7 +89,7 @@
               {
                 "type": "input",
                 "name": "footer",
-                "message": "Footer. Information about Breaking Changes and reference issues that this commit closes: (press [enter] to skip)\n"
+                "message": "Footer. Information about break Changes and reference issues that this commit closes: (press [enter] to skip)\n"
               }
             ]
     }
