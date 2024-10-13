@@ -2,6 +2,8 @@
 
 - [Dotfiles](#dotfiles)
   - [Quick start](#quick-start)
+  - [Apps](#apps)
+  - [Change log](#change-log)
 
 This repository records the configuration and installation scripts of various apps on my macOS computer. And I use homebrew to install these apps and use stow to manage the corresponding configuration files.
 
@@ -27,3 +29,13 @@ This repository records the configuration and installation scripts of various ap
     sh scripts/<apps>.sh
     stow <apps>
     ```
+
+## Apps
+
+| Apps | Desc | Script | Docs| Website |
+| --- | --- | --- | --- | --- |
+| Homebrew | The missing package manager for MacOS | [homebrew.sh](./scripts/homebrew.sh) | [Docs](./docs/homebrew.md) | [Website](https://brew.sh/) |
+
+## Change log
+
+Please refer to the [CHANGELOG.md](CHANGELOG.md) file for more information.
