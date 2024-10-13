@@ -1,0 +1,98 @@
+{
+  "commitizen": {
+    "name": "cz_customize",
+    "tag_format": "v$version",
+    "version_scheme": "pep440",
+    "version_provider": "poetry",
+    "update_changelog_on_bump": true,
+    "major_version_zero": true,
+    "customize": {
+      "message_template": "{{change_type}}{% if scope %}({{scope}}){% endif %}: {{message}}{% if body %}\n\n{{body}}{% endif %}{% if footer %}\n\n{{footer}}{% endif %}",
+      "example": "docs(repo): add contributing guidelines",
+      "schema": "<type>(<scope>): <subject>\n\n<body>\n\n<footer>",
+      "schema_pattern": "^(fix|feat|docs|style|refactor|perf|test|chore|breaking|wip)(?:\\(([^()\\r\\n]+)\\))?:\\s(.+)(?:\\n\\n(.+))?(?:\\n\\n(.+))?$",
+      "bump_pattern": "^(fix|feat|breaking|wip)",
+      "bump_map": {
+        "fix": "PATCH",
+        "feat": "MINOR",
+        "breaking": "MAJOR",
+        "wip": "PATCH"
+      },
+      "change_type_order": ["breaking", "feat", "fix", "wip"],
+      "info_path": "cz_customize_info.txt",
+      "info": "This is customized info",
+      "commit_parser": "^(?P<change_type>fix|feat|docs|style|refactor|perf|test|chore|breaking|wip)(?:\\((?P<scope>[^()\\r\\n]+)\\))?:\\s(?P<message>.+)(?:\\n\\n(?P<body>.+))?(?:\\n\\n(?P<footer>.+))?$",
+      "changelog_pattern": "^(fix|feat|docs|style|refactor|perf|test|chore|breaking|wip)(?:\\(([^()\\r\\n]+)\\))?:\\s(.+)",
+      "change_type_map": {"fix": "Fix", "feat": "Feat", "breaking": "BREAKING CHANGE", "wip": "WIP"},
+      "questions": [
+              {
+                  "type": "list",
+                  "name": "change_type",
+                  "choices": [
+                      {
+                          "value": "fix",
+                          "name": "fix: A bug fix. Correlates with PATCH in SemVer"
+                      },
+                      {
+                          "value": "feat",
+                          "name": "feat: A new feature. Correlates with MINOR in SemVer"
+                      },
+                      {
+                          "value": "wip",
+                          "name": "wip: Work in progress. Correlates with PATCH in SemVer"
+                      },
+                      {
+                          "value": "breaking",
+                          "name": "breaking: A code change that introduces a breaking change. Correlates with MAJOR in SemVer"
+                      },
+                      {
+                          "value": "docs",
+                          "name": "docs: Documentation only changes"
+                      },
+                      {
+                          "value": "style",
+                          "name": "style: Changes that do not affect the meaning of the code"
+                      },
+                      {
+                          "value": "refactor",
+                          "name": "refactor: A code change that neither fixes a bug nor adds a feature"
+                      },
+                      {
+                          "value": "perf",
+                          "name": "perf: A code change that improves performance"
+                      },
+                      {
+                          "value": "test",
+                          "name": "test: Adding missing tests or correcting existing tests"
+                      },
+                      {
+                          "value": "chore",
+                          "name": "chore: Changes to the build process or auxiliary tools"
+                      }
+                  ],
+                  "message": "Select the type of change you are committing"
+              },
+              {
+                "type": "input",
+                "name": "scope",
+                "message": "What is the scope of this change? (class or file name): (press [enter] to skip)\n"
+              },
+              {
+                "type": "input",
+                "name": "message",
+                "message": "Write a short and imperative summary of the code changes: (lowercase and no period)\n"
+              },
+              {
+                "type": "input",
+                "name": "body",
+                "message": "Provide additional contextual information about the code changes: (press [enter] to skip)\n"
+              },
+              {
+                "type": "input",
+                "name": "footer",
+                "message": "Footer. Information about Breaking Changes and reference issues that this commit closes: (press [enter] to skip)\n"
+              }
+            ]
+    }
+  }
+}
