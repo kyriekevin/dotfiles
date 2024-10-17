@@ -34,7 +34,7 @@ This repository records the configuration and installation scripts of various ap
 
 | Apps | Desc | Script | Docs| Website |
 | --- | --- | --- | --- | --- |
-| Homebrew | The missing package manager for MacOS | [homebrew.sh](./scripts/homebrew.sh) | [Docs](./docs/homebrew.md) | [Website](https://brew.sh/) |
+| Homebrew | The missing package manager for macOS | [homebrew.sh](./scripts/homebrew.sh) | [Docs](./docs/homebrew.md) | [Website](https://brew.sh/) |
 
 ## Change log
 
