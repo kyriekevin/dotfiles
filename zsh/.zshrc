@@ -1,4 +1,10 @@
-eval "$(/opt/homebrew/bin/brew shellenv)"
+export ZSH="$HOME/.oh-my-zsh"
+export ZSH_CONFIG="$HOME/.config/zsh"
 
-# Created by `pipx` on 2024-10-17 11:34:21
-export PATH="$PATH:/Users/zyz/.local/bin"
+source $ZSH_CONFIG/plugins.zsh
+source $ZSH_CONFIG/export.zsh
+source $ZSH/oh-my-zsh.sh
+
+source $ZSH_CONFIG/alias.zsh
+
+eval "$(starship init zsh)"
