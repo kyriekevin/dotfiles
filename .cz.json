@@ -21,7 +21,7 @@
       "info_path": "cz_customize_info.txt",
       "info": "This is customized info",
       "commit_parser": "^(?P<change_type>fix|feat|docs|style|refactor|perf|test|chore|break|wip)(?:\\((?P<scope>[^()\\r\\n]+)\\))?:\\s(?P<message>.+)(?:\\n\\n(?P<body>.+))?(?:\\n\\n(?P<footer>.+))?$",
-      "changelog_pattern": "^(fix|feat|docs|style|refactor|perf|test|chore|break|wip)(?:\\(([^()\\r\\n]+)\\))?:\\s(.+)",
+      "changelog_pattern": "^(fix|feat|break|wip)(?:\\(([^()\\r\\n]+)\\))?:\\s(.+)",
       "change_type_map": {"fix": "Fix", "feat": "Feat", "break": "break CHANGE", "wip": "WIP"},
       "questions": [
               {

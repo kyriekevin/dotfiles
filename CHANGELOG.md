@@ -1,3 +1,31 @@
+## v0.2.2 (2024-10-19)
+
+### Fix
+
+- **zshrc**: fix source configuration order in zshrc
+
+### WIP
+
+- **zsh**: add installation script and basic zsh config
+
+### chore
+
+- **zsh**: sync changes in feature/zsh branch
+
+## v0.2.1 (2024-10-19)
+
+### Feat
+
+- **wezterm**: add wezterm installation script and config
+
+### WIP
+
+- **terminal**: add wezterm config and doc
+
+### docs
+
+- **Wezterm**: add wezterm terminal introduction document
+
 ## v0.2.0 (2024-10-17)
 
 ### Feat
