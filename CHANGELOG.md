@@ -1,3 +1,17 @@
+## v0.2.1 (2024-10-19)
+
+### Feat
+
+- **wezterm**: add wezterm installation script and config
+
+### WIP
+
+- **terminal**: add wezterm config and doc
+
+### docs
+
+- **Wezterm**: add wezterm terminal introduction document
+
 ## v0.2.0 (2024-10-17)
 
 ### Feat
