@@ -35,6 +35,8 @@ This repository records the configuration and installation scripts of various ap
 | Apps | Desc | Script | Docs| Website |
 | --- | --- | --- | --- | --- |
 | Homebrew | The missing package manager for macOS | [homebrew.sh](./scripts/homebrew.sh) | [Docs](./docs/homebrew.md) | [Website](https://brew.sh/) |
+| Python | Python is a programming language that lets you work quickly and integrate systems more effectively. | [python.sh](./scripts/python.sh) | [Docs](./docs//pydocs/python.md) | [Website](https://www.python.org/) |
+| Wezterm | A GPU-accelerated terminal emulator that runs on Linux, macOS and Windows. | [wezterm.sh](./scripts/wezterm.sh) | [Docs](./docs/wezterm.md) | [Website](https://wezfurlong.org/wezterm/index.html) |
 
 ## Change log
 
