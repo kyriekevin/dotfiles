@@ -14,3 +14,6 @@ source <(fzf --zsh)
 
 # zoxide
 eval "$(zoxide init zsh)"
+
+# bat
+export BAT_THEME="Catppuccin Frappe"
