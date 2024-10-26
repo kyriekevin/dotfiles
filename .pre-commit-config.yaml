@@ -25,6 +25,10 @@ repos:
     rev: v0.13.0
     hooks:
       - id: yamlfmt
+  - repo: https://github.com/abravalheri/validate-pyproject
+    rev: v0.20.2
+    hooks:
+      - id: validate-pyproject
   - repo: local
     hooks:
       - id: validate-commit-msg

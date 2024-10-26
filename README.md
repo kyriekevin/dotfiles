@@ -1,13 +1,16 @@
 # Dotfiles
 
+![GitHub last commit](https://img.shields.io/github/last-commit/kyriekevin/dotfiles)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/kyriekevin/dotfiles)
+
 - [Dotfiles](#dotfiles)
-  - [Quick start](#quick-start)
-  - [Apps](#apps)
-  - [Change log](#change-log)
+  - [🚀 Quick start](#-quick-start)
+  - [🛠 Apps](#-apps)
+  - [📈 Change log](#-change-log)
 
 This repository records the configuration and installation scripts of various apps on my macOS computer. And I use homebrew to install these apps and use stow to manage the corresponding configuration files.
 
-## Quick start
+## 🚀 Quick start
 
 1. Clone this repository to your home directory.
 
@@ -30,7 +33,10 @@ This repository records the configuration and installation scripts of various ap
     stow <apps>
     ```
 
-## Apps
+> [!NOTE]
+> `scripts/app.sh` is a shell script that installs the specified app and we don't need to run `stow` to install the configuration files because we use default configuration files.
+
+## 🛠 Apps
 
 | Apps | Desc | Script | Docs| Website |
 | --- | --- | --- | --- | --- |
@@ -39,6 +45,6 @@ This repository records the configuration and installation scripts of various ap
 | Wezterm | A GPU-accelerated terminal emulator that runs on Linux, macOS and Windows. | [wezterm.sh](./scripts/wezterm.sh) | [Docs](./docs/wezterm.md) | [Website](https://wezfurlong.org/wezterm/index.html) |
 | Zsh | Zsh is a shell designed for interactive use, although it is also a powerful scripting language. | [zsh.sh](./scripts/zsh.sh) | [Docs](./docs/zsh.md) | [Website](http://www.zsh.org/) |
 
-## Change log
+## 📈 Change log
 
 Please refer to the [CHANGELOG.md](CHANGELOG.md) file for more information.
