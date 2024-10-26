@@ -1,3 +1,9 @@
+## v0.3.1 (2024-10-26)
+
+### Feat
+
+- **fastfetch**: add fastfetch config to show computer's info in terminal (#4)
+
 ## v0.3.0 (2024-10-19)
 
 ### Feat
