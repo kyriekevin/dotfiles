@@ -17,3 +17,11 @@ eval "$(zoxide init zsh)"
 
 # bat
 export BAT_THEME="Catppuccin Frappe"
+
+# HF-ENDPOINT
+export HF_ENDPOINT=https://hf-mirror.com
+
+# vpn
+export https_proxy=http://127.0.0.1:7890
+export http_proxy=http://127.0.0.1:7890
+export all_proxy=socks5://127.0.0.1:7890

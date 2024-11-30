@@ -1,22 +1,7 @@
 #! /bin/bash
 
-step() {
-    final=$(echo "$@")
-    plus=$(expr ${#final} + 6)
-
-    printhashtags() {
-        for i in $(seq $plus); do
-            printf "#"
-        done
-        echo
-    }
-
-    echo
-    printhashtags
-    printf "## %s ##\n" "$@"
-    printhashtags
-    echo
-}
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "${SCRIPT_DIR}/lib/common.sh"
 
 step "Installing pyenv if not already installed"
 if ! command -v pyenv &>/dev/null; then
@@ -28,15 +13,6 @@ else
     echo "pyenv is already installed, you're set."
     sleep 1
 fi
-
-install() {
-    if ! command -v "$@" &>/dev/null; then
-        brew install "$@"
-    else
-        echo "'$@' is already installed, you're set."
-        sleep 1
-    fi
-}
 
 step "Installing pipx if not already installed"
 install pipx
