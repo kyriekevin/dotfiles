@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dotfiles"
-version = "0.3.1"
+version = "0.3.2"
 description = "My macOS configuration"
 authors = ["zyz <zyzkyrie@outlook.com>"]
 license = "MIT"

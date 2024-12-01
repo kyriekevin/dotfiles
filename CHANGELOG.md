@@ -1,3 +1,10 @@
+## v0.3.2 (2024-12-01)
+
+### Feat
+
+- **yazi**: add script to install yazi and add zsh func to use yazi better
+- **starship**: add starship config to beautify terminal
+
 ## v0.3.1 (2024-10-26)
 
 ### Feat
