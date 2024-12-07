@@ -1,3 +1,9 @@
+## v0.3.4 (2024-12-07)
+
+### Feat
+
+- **terminal&window**: add basic tmux and aerospace config
+
 ## v0.3.3 (2024-12-06)
 
 ### WIP
