@@ -1,3 +1,6 @@
+local opt = vim.opt
+local buf = vim.b
+
 -- auto format
 vim.g.autoformat = true
 
@@ -28,7 +31,15 @@ vim.g.trouble_lualine = true
 -- NOTE: You can change these options as you wish!
 -- For more options, you can see `:help option-list`
 
-local opt = vim.opt
+opt.backspace = { "indent", "eol", "start" }
+opt.autoindent = true
+opt.wildmenu = true
+opt.autoread = true
+opt.title = true
+opt.swapfile = false
+opt.backup = false
+opt.mouse = ""
+opt.exrc = true
 
 -- Enable auto write
 opt.autowrite = true
@@ -53,12 +64,12 @@ opt.cursorline = true
 opt.expandtab = true
 
 opt.fillchars = {
-  foldopen = "",
-  foldclose = "",
-  fold = " ",
-  foldsep = " ",
-  diff = "╱",
-  eob = " ",
+	foldopen = "",
+	foldclose = "",
+	fold = " ",
+	foldsep = " ",
+	diff = "╱",
+	eob = " ",
 }
 opt.foldlevel = 99
 opt.formatoptions = "jcroqlnt"
@@ -80,10 +91,7 @@ opt.linebreak = true
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 opt.list = true
-opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
-
--- Enable mouse mode, can be useful for resizing splits for example!
-opt.mouse = 'a'
+opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 -- Make line numbers default
 opt.number = true
@@ -120,7 +128,7 @@ opt.showmode = false
 opt.sidescrolloff = 8
 
 -- Keep signcolumn on by default
-opt.signcolumn = 'yes'
+opt.signcolumn = "yes"
 
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 opt.ignorecase = true
@@ -151,6 +159,7 @@ opt.breakindent = true
 
 -- Save undo history
 opt.undofile = true
+opt.undodir = vim.fn.expand("$HOME/.local/share/nvim/undo")
 
 opt.undolevels = 10000
 
@@ -168,5 +177,7 @@ opt.winminwidth = 5
 
 -- Disable line wrap
 opt.wrap = false
+
+buf.fileencoding = "utf-8"
 
 -- vim: ts=2 sts=2 sw=2 et
