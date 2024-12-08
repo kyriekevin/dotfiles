@@ -1,3 +1,9 @@
+## v0.4.1 (2024-12-09)
+
+### Feat
+
+- **avante**:  let neovim interact with ai like a cursor (#6)
+
 ## v0.4.0 (2024-12-08)
 
 ### WIP
