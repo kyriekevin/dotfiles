@@ -32,9 +32,9 @@ return {
 			-- add any opts here
 			provider = "azure",
 			azure = {
-				endpoint = "https://cabingpt4omin.openai.azure.com/",
-				deployment = "cabingpt4omini",
-				api_version = "2024-02-15-preview",
+				endpoint = vim.fn.getenv("AZURE_ENDPOINT") or "",
+				deployment = vim.fn.getenv("AZURE_DEPLOYMENT") or "",
+				api_version = vim.fn.getenv("AZURE_API_VERSION") or "",
 			},
 		},
 		-- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
