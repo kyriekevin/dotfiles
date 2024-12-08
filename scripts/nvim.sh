@@ -12,6 +12,9 @@ install fzf
 step "Installing ripgrep if not already installed"
 install ripgrep
 
+step "Installing node if not already installed"
+install node
+
 step "Installing macism if not already installed"
 brew tap laishulu/homebrew
 install macism
