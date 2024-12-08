@@ -1,3 +1,5 @@
 # python
 .python-version
 poetry.lock
+
+zsh/.config/zsh/private.zsh
