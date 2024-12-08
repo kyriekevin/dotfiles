@@ -5,10 +5,12 @@ return {
 		-- used for completion, annotations and signatures of Neovim apis
 		"folke/lazydev.nvim",
 		ft = "lua",
+		cmd = "LazyDev",
 		opts = {
 			library = {
 				-- Load luvit types when the `vim.uv` word is found
 				{ path = "luvit-meta/library", words = { "vim%.uv" } },
+				{ path = "snacks.nvim", words = { "Snacks" } },
 			},
 		},
 	},
@@ -16,6 +18,8 @@ return {
 	{
 		-- Main LSP Configuration
 		"neovim/nvim-lspconfig",
+		cmd = { "Mason", "Neoconf" },
+		event = { "BufReadPost", "BufNewFile" },
 		dependencies = {
 			-- Automatically install LSPs and related tools to stdpath for Neovim
 			{ "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
@@ -118,9 +122,6 @@ return {
 					-- )
 
 					map("<leader>da", require("telescope.builtin").diagnostics, "[D]i[A]gnostics")
-					map("<space>f", function()
-						vim.lsp.buf.format({ async = true })
-					end, "[F]ormat code")
 
 					-- The following two autocommands are used to highlight references of the
 					-- word under your cursor when your cursor rests there for a little while.
@@ -245,4 +246,5 @@ return {
 		end,
 	},
 }
+
 -- vim: ts=2 sts=2 sw=2 et

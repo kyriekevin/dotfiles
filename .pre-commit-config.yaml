@@ -29,6 +29,10 @@ repos:
     rev: v0.20.2
     hooks:
       - id: validate-pyproject
+  - repo: https://github.com/JohnnyMorganz/StyLua
+    rev: v2.0.2
+    hooks:
+      - id: stylua
   - repo: local
     hooks:
       - id: validate-commit-msg
