@@ -1,3 +1,9 @@
+## v0.4.0 (2024-12-08)
+
+### WIP
+
+- **neovim**: update neovim config (#5)
+
 ## v0.3.4 (2024-12-07)
 
 ### Feat
