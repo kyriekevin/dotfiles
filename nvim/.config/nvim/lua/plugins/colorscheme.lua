@@ -7,19 +7,19 @@ return {
 			transparent_background = true,
 			integrations = {
 				flash = true,
+				gitsigns = true,
+				treesitter = true,
+				snacks = true,
+				telescope = { enabled = true },
+				illuminate = {
+					enabled = true,
+					lsp = false,
+				},
 			},
 		},
 		config = function(_, opts)
 			require("catppuccin").setup(opts)
 			vim.cmd.colorscheme("catppuccin")
-		end,
-	},
-	{
-		"akinsho/bufferline.nvim",
-		opts = function(_, opts)
-			if (vim.g.colors_name or ""):find("catppuccin") then
-				opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
-			end
 		end,
 	},
 }
