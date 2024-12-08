@@ -27,6 +27,13 @@ return {
 					},
 				},
 			},
+			{
+				"zbirenbaum/copilot-cmp",
+				enabled = vim.g.ai_cmp, -- only enable if wanted
+				config = function()
+					require("copilot_cmp").setup()
+				end,
+			},
 
 			-- Adds other completion capabilities.
 			--  nvim-cmp does not ship with all sources by default. They are split
@@ -96,6 +103,7 @@ return {
 					--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 				}),
 				sources = {
+					{ name = "copilot", priority = 100 },
 					{ name = "nvim_lsp" },
 					{ name = "path" },
 					{ name = "luasnip" },
