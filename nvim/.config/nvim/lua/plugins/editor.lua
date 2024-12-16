@@ -190,6 +190,9 @@ return {
 				--   },
 				-- },
 				-- pickers = {}
+				highlight = {
+					enable = true,
+				},
 				extensions = {
 					fzf = {
 						fuzzy = true,
