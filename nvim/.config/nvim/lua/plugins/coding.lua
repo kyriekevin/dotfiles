@@ -190,6 +190,13 @@ return {
 			n_lines = 500,
 		},
 	},
+	{
+		"aserowy/tmux.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("tmux").setup({})
+		end,
+	},
 	-- ... and there is more!
 	--  Check out: https://github.com/echasnovski/mini.nvim
 }
