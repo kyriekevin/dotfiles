@@ -4,6 +4,7 @@ return {
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
 			"AndreM222/copilot-lualine",
+			"linux-cultist/venv-selector.nvim",
 		},
 		config = function()
 			require("lualine").setup({
@@ -25,7 +26,7 @@ return {
 						},
 					},
 					lualine_c = { "filename" },
-					lualine_x = { "copilot", "encoding", "fileformat", "filetype" }, -- I added copilot here
+					lualine_x = { "copilot", "encoding", "filetype" }, -- I added copilot here
 					lualine_y = { "progress" },
 					lualine_z = { "location" },
 				},

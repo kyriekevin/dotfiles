@@ -71,4 +71,16 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
+vim.api.nvim_create_autocmd("VimEnter", {
+	desc = "Auto select virtualenv Nvim open",
+	pattern = "*",
+	callback = function()
+		local venv = vim.fn.finddir("venv", vim.fn.getcwd())
+		if venv ~= "" then
+			require("venv-selector").retrieve_from_cache()
+		end
+	end,
+	once = true,
+})
+
 -- vim: ts=2 sts=2 sw=2 et
