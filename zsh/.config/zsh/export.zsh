@@ -20,3 +20,5 @@ export BAT_THEME="Catppuccin Frappe"
 
 # HF-ENDPOINT
 export HF_ENDPOINT=https://hf-mirror.com
+
+export EDITOR="nvim"

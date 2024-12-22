@@ -190,7 +190,7 @@ return {
 				--
 				-- But for many setups, the LSP (`ts_ls`) will work just fine
 				-- ts_ls = {},
-				-- pyright = {},
+				pyright = {},
 				clangd = {},
 				lua_ls = {
 					settings = {

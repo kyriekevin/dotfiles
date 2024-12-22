@@ -50,6 +50,15 @@ return {
 			luasnip.config.setup({})
 
 			cmp.setup({
+				window = {
+					completion = {
+						border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+					},
+					documentation = {
+						border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+						winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
+					},
+				},
 				snippet = {
 					expand = function(args)
 						luasnip.lsp_expand(args.body)
@@ -74,11 +83,11 @@ return {
 					-- Accept ([y]es) the completion.
 					--  This will auto-import if your LSP supports it.
 					--  This will expand snippets if the LSP sent a snippet.
-					-- ['<C-y>'] = cmp.mapping.confirm { select = true },
+					["<C-y>"] = cmp.mapping.confirm({ select = true }),
 
 					-- If you prefer more traditional completion keymaps,
 					-- you can uncomment the following lines
-					["<CR>"] = cmp.mapping.confirm({ select = true }),
+					-- ["<CR>"] = cmp.mapping.confirm({ select = true }),
 
 					-- Think of <c-l> as moving to the right of your snippet expansion.
 					--  So if you have a snippet that's like:
@@ -180,6 +189,13 @@ return {
 		opts = {
 			n_lines = 500,
 		},
+	},
+	{
+		"aserowy/tmux.nvim",
+		event = "VeryLazy",
+		config = function()
+			require("tmux").setup({})
+		end,
 	},
 	-- ... and there is more!
 	--  Check out: https://github.com/echasnovski/mini.nvim

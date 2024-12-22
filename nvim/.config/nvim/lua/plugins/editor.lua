@@ -63,9 +63,11 @@ return {
 					{ "<leader>c", group = "code" },
 					{ "<leader>f", group = "file/find" },
 					{ "<leader>g", group = "git" },
+					{ "<leader>j", group = "jupyter", icon = { icon = "", color = "yellow" } },
 					{ "<leader>q", group = "quit/session" },
 					{ "<leader>s", group = "search" },
 					{ "<leader>u", group = "ui", icon = { icon = "󰙵 ", color = "cyan" } },
+					{ "<leader>v", group = "venv", icon = { icon = "󰙵 ", color = "orange" } },
 					{ "<leader>x", group = "diagnostics/quickfix", icon = { icon = "󱖫 ", color = "green" } },
 					{ "[", group = "prev" },
 					{ "]", group = "next" },
@@ -190,6 +192,9 @@ return {
 				--   },
 				-- },
 				-- pickers = {}
+				highlight = {
+					enable = true,
+				},
 				extensions = {
 					fzf = {
 						fuzzy = true,
