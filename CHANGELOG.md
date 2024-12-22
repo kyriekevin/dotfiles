@@ -1,3 +1,9 @@
+## v0.4.2 (2024-12-22)
+
+### Feat
+
+- **neovim & yazi & tmux**: update neovim and yazi config (#7)
+
 ## v0.4.1 (2024-12-09)
 
 ### Feat
