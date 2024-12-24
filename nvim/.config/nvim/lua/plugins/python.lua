@@ -53,9 +53,9 @@ return {
 			use_default_keybindings = false,
 		},
 		keys = {
-			{ "<leader>ja", "<cmd>JupyniumStartAndAttachToServer<cr>" },
-			{ "<leader>js", "<cmd>JupyniumStartSync<cr>" },
-			{ "<leader>jx", "<cmd>JupyniumExecuteSelectedCells<cr>" },
+			{ "<leader>ja", "<cmd>JupyniumStartAndAttachToServer<cr>", desc = "Jupynium Start and attach to server" },
+			{ "<leader>js", "<cmd>JupyniumStartSync<cr>", desc = "Jupynium Start sync" },
+			{ "<leader>jx", "<cmd>JupyniumExecuteSelectedCells<cr>", desc = "Jupynium Execute selected cells" },
 		},
 	},
 }

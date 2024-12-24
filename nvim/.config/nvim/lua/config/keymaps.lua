@@ -3,11 +3,6 @@
 
 local map = vim.keymap.set
 
-map({ "n", "i", "v", "x" }, "<Left>", "<Nop>")
-map({ "n", "i", "v", "x" }, "<Right>", "<Nop>")
-map({ "n", "i", "v", "x" }, "<Up>", "<Nop>")
-map({ "n", "i", "v", "x" }, "<Down>", "<Nop>")
-
 map("i", "jk", "<Esc>")
 map("i", "kj", "<Esc>")
 

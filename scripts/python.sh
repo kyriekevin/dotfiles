@@ -17,6 +17,7 @@ fi
 step "Installing pipx if not already installed"
 install pipx
 pipx ensurepath
+pipx install poetry
 pipx install pre-commit
 pipx install black
 pipx install isort

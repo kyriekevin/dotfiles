@@ -42,6 +42,8 @@ return {
 			"hrsh7th/cmp-cmdline",
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
+
+			"kiyoon/jupynium.nvim",
 		},
 		config = function()
 			-- See `:help cmp`
@@ -113,6 +115,7 @@ return {
 				}),
 				sources = {
 					{ name = "copilot", priority = 100 },
+					{ name = "jupynium" },
 					{ name = "nvim_lsp" },
 					{ name = "path" },
 					{ name = "luasnip" },
