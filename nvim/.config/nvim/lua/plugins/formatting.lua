@@ -27,6 +27,7 @@ return {
 				lua = { "stylua" },
 				sh = { "shfmt" },
 				python = { "isort", "black" },
+				markdown = { "prettier", "markdownlint-cli2", "markdown-toc" },
 				-- Conform can also run multiple formatters sequentially
 				--
 				-- You can use 'stop_after_first' to run the first available formatter from the list

@@ -18,6 +18,7 @@ return {
 				"vim",
 				"vimdoc",
 				"json",
+				"json5",
 				"python",
 				"tmux",
 			},
