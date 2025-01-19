@@ -117,7 +117,7 @@ return {
 					--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 				}),
 				sources = {
-					{ name = "copilot", priority = 100 },
+					{ name = "copilot" },
 					{ name = "jupynium" },
 					{ name = "nvim_lsp" },
 					{ name = "path" },

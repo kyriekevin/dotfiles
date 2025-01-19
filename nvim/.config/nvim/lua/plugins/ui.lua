@@ -150,6 +150,13 @@ return {
 				end,
 				desc = "Delete Buffer",
 			},
+			{
+				"<leader>ft",
+				function()
+					Snacks.terminal()
+				end,
+				desc = "Terminal (cwd)",
+			},
 		},
 		init = function()
 			vim.api.nvim_create_autocmd("User", {
