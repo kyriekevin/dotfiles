@@ -4,7 +4,6 @@ return {
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
 			"AndreM222/copilot-lualine",
-			"linux-cultist/venv-selector.nvim",
 		},
 		config = function()
 			require("lualine").setup({
@@ -61,6 +60,7 @@ return {
 	},
 	{
 		"akinsho/bufferline.nvim",
+		event = "VimEnter",
 		keys = {
 			{ "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
 			{ "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
