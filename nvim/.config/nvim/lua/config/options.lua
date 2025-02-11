@@ -38,7 +38,6 @@ opt.autoread = true
 opt.title = true
 opt.swapfile = false
 opt.backup = false
-opt.mouse = ""
 opt.exrc = true
 
 -- Enable auto write
