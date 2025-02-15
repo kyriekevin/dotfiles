@@ -1,5 +1,23 @@
 return {
 	{
+		-- comment
+		"echasnovski/mini.comment",
+		event = "VeryLazy",
+		opts = {},
+	},
+	{
+		"echasnovski/mini.bracketed",
+		event = "VeryLazy",
+		opts = {},
+	},
+	{
+		"echasnovski/mini.indentscope",
+		event = "VeryLazy",
+		opts = {
+			draw = { delay = 50 },
+		},
+	},
+	{
 		"echasnovski/mini.pairs",
 		event = "VeryLazy",
 		opts = {
