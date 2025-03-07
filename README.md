@@ -43,7 +43,3 @@ This repository records the configuration and installation scripts of various ap
 | Homebrew | The missing package manager for macOS | [homebrew.sh](./scripts/homebrew.sh) | [Docs](./docs/homebrew.md) | [Website](https://brew.sh/) |
 | Python | Python is a programming language that lets you work quickly and integrate systems more effectively. | [python.sh](./scripts/python.sh) | [Docs](./docs//pydocs/python.md) | [Website](https://www.python.org/) |
 | Zsh | Zsh is a shell designed for interactive use, although it is also a powerful scripting language. | [zsh.sh](./scripts/zsh.sh) | [Docs](./docs/zsh.md) | [Website](http://www.zsh.org/) |
-
-## 📈 Change log
-
-Please refer to the [CHANGELOG.md](CHANGELOG.md) file for more information.
