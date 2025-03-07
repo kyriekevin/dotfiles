@@ -3,13 +3,25 @@
     "prefix": "cpp",
     "body": [
       "#include <iostream>",
+      "#include <cstring>",
+      "#include <algorithm>",
       "using namespace std;",
       "",
       "int main() {",
-      "  $1",
-      "  return 0;",
+      "    $1",
+      "    return 0;",
       "}"
     ],
     "description": "C++ main function"
+  },
+  "find": {
+    "prefix": "find",
+    "body":[
+      "int find(int x) {",
+      "    if (p[x] != x) p[x] = find(p[x]);",
+      "    return p[x];",
+      "}"
+    ],
+    "description": "Union Find"
   }
 }

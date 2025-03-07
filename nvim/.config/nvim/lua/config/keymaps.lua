@@ -89,4 +89,7 @@ map("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 
+-- Terminal
+map("t", "<C-/>", "<cmd>close<cr>", { desc = "Hide Terminal" })
+
 -- vim: ts=2 sts=2 sw=2 et

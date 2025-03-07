@@ -1,10 +1,4 @@
 return {
-	-- comments
-	{
-		"folke/ts-comments.nvim",
-		event = "VeryLazy",
-		opts = {},
-	},
 	{ -- Autocompletion
 		"hrsh7th/nvim-cmp",
 		event = "InsertEnter",
@@ -30,13 +24,13 @@ return {
 					},
 				},
 			},
-			{
-				"zbirenbaum/copilot-cmp",
-				enabled = vim.g.ai_cmp, -- only enable if wanted
-				config = function()
-					require("copilot_cmp").setup()
-				end,
-			},
+			-- {
+			-- 	"zbirenbaum/copilot-cmp",
+			-- 	enabled = vim.g.ai_cmp, -- only enable if wanted
+			-- 	config = function()
+			-- 		require("copilot_cmp").setup()
+			-- 	end,
+			-- },
 
 			-- Adds other completion capabilities.
 			--  nvim-cmp does not ship with all sources by default. They are split
@@ -117,7 +111,7 @@ return {
 					--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 				}),
 				sources = {
-					{ name = "copilot", priority = 100 },
+					-- { name = "copilot" },
 					{ name = "jupynium" },
 					{ name = "nvim_lsp" },
 					{ name = "path" },
@@ -150,61 +144,6 @@ return {
 			})
 		end,
 	},
-	{
-		"echasnovski/mini.pairs",
-		event = "VeryLazy",
-		opts = {
-			modes = { insert = true, command = true, terminal = false },
-			-- skip autopair when next character is one of these
-			skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
-			-- skip autopair when the cursor is inside these treesitter nodes
-			skip_ts = { "string" },
-			-- skip autopair when next character is closing pair
-			-- and there are more closing pairs than opening pairs
-			skip_unbalanced = true,
-			-- better deal with markdown code blocks
-			markdown = true,
-		},
-	},
-	{
-		-- Add/delete/replace surroundings (brackets, quotes, etc.)
-		"echasnovski/mini.surround",
-		event = "VeryLazy",
-		opts = {
-			mappings = {
-				add = "gsa", -- Add surrounding in Normal and Visual modes
-				delete = "gsd", -- Delete surrounding
-				find = "gsf", -- Find surrounding (to the right)
-				find_left = "gsF", -- Find surrounding (to the left)
-				highlight = "gsh", -- Highlight surrounding
-				replace = "gsr", -- Replace surrounding
-				update_n_lines = "gsn", -- Update `n_lines`
-			},
-		},
-	},
-	{
-		-- Better Around/Inside textobjects
-		--
-		-- Examples:
-		--  - va)  - [V]isually select [A]round [)]paren
-		--  - yinq - [Y]ank [I]nside [N]ext [Q]uote
-		--  - ci'  - [C]hange [I]nside [']quote
-
-		"echasnovski/mini.ai",
-		event = "VeryLazy",
-		opts = {
-			n_lines = 500,
-		},
-	},
-	{
-		"aserowy/tmux.nvim",
-		event = "VeryLazy",
-		config = function()
-			require("tmux").setup({})
-		end,
-	},
-	-- ... and there is more!
-	--  Check out: https://github.com/echasnovski/mini.nvim
 }
 
 -- vim: ts=2 sts=2 sw=2 et

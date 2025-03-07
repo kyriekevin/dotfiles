@@ -38,7 +38,6 @@ opt.autoread = true
 opt.title = true
 opt.swapfile = false
 opt.backup = false
-opt.mouse = ""
 opt.exrc = true
 
 -- Enable auto write
@@ -91,7 +90,7 @@ opt.linebreak = true
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 opt.list = true
-opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+opt.listchars = { tab = "| ", trail = "·", nbsp = "␣" }
 
 -- Make line numbers default
 opt.number = true

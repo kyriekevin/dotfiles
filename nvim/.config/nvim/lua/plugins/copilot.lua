@@ -1,28 +1,28 @@
 return {
-	{
-		"zbirenbaum/copilot.lua",
-		cmd = "Copilot",
-		build = ":Copilot auth",
-		event = "InsertEnter",
-		config = function()
-			require("copilot").setup({
-				suggestion = {
-					enabled = not vim.g.ai_cmp,
-					auto_trigger = true,
-					keymap = {
-						accept = false, -- handled by nvim-cmp / blink.cmp
-						next = "<M-]>",
-						prev = "<M-[>",
-					},
-				},
-				panel = { enabled = false },
-				filetypes = {
-					markdown = true,
-					help = true,
-				},
-			})
-		end,
-	},
+	-- {
+	-- 	"zbirenbaum/copilot.lua",
+	-- 	cmd = "Copilot",
+	-- 	build = ":Copilot auth",
+	-- 	event = "InsertEnter",
+	-- 	config = function()
+	-- 		require("copilot").setup({
+	-- 			suggestion = {
+	-- 				enabled = not vim.g.ai_cmp,
+	-- 				auto_trigger = true,
+	-- 				keymap = {
+	-- 					accept = false, -- handled by nvim-cmp / blink.cmp
+	-- 					next = "<M-]>",
+	-- 					prev = "<M-[>",
+	-- 				},
+	-- 			},
+	-- 			panel = { enabled = false },
+	-- 			filetypes = {
+	-- 				markdown = true,
+	-- 				help = true,
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
 	{
 		"yetone/avante.nvim",
 		event = "VeryLazy",
@@ -137,3 +137,5 @@ return {
 		end,
 	},
 }
+
+-- vim: ts=2 sts=2 sw=2 et
