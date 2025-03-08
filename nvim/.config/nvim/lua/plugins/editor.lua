@@ -1,10 +1,56 @@
 return {
+	-- @plugin conform
+	-- @category editor.formatting
+	-- @description Lightweight yet powerful formatter plugin for Neovim
+	{
+		"stevearc/conform.nvim",
+		cmd = { "ConformInfo" },
+		keys = {
+			{
+				"<leader>cf",
+				function()
+					require("conform").format({ timeout_ms = 3000 })
+				end,
+				mode = { "n", "v" },
+				desc = "Format Injected Langs",
+			},
+		},
+		opts = {
+			notify_on_error = false,
+			format_on_save = function(bufnr)
+				-- Disable "format_on_save lsp_fallback" for languages that don't
+				-- have a well standardized coding style. You can add additional
+				-- languages here or re-enable it for the disabled ones.
+				if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+					return
+				end
+				return { timeout_ms = 500, lsp_format = "fallback" }
+			end,
+			formatters_by_ft = {
+				lua = { "stylua" },
+				sh = { "shfmt" },
+				python = { "isort", "black" },
+				markdown = { "prettier", "markdownlint-cli2", "markdown-toc" },
+				-- Conform can also run multiple formatters sequentially
+				--
+				-- You can use 'stop_after_first' to run the first available formatter from the list
+				-- javascript = { "prettierd", "prettier", stop_after_first = true },
+			},
+		},
+	},
+
+	-- @plugin nvim-lastplace
+	-- @category editor.navigation
+	-- @description Intelligently reopen files at your last edit position
 	{
 		"ethanholz/nvim-lastplace",
 		config = true,
 	},
+
+	-- @plugin todo-comments
+	-- @category editor.comments
+	-- @description Highlight and search for todo comments like TODO, HACK, BUG in your code
 	{
-		-- Highlight todo, notes, etc in comments
 		"folke/todo-comments.nvim",
 		cmd = { "TodoTrouble", "TodoTelescope" },
 		event = "VimEnter",
@@ -35,10 +81,11 @@ return {
 			{ "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
 		},
 	},
-	{
-		-- Neo-tree is a Neovim plugin to browse the file system
-		-- https://github.com/nvim-neo-tree/neo-tree.nvim
 
+	-- @plugin neo-tree
+	-- @category files.explorer
+	-- @description A file explorer tree with support for git status and buffers
+	{
 		"nvim-neo-tree/neo-tree.nvim",
 		version = "*",
 		dependencies = {
@@ -49,12 +96,13 @@ return {
 		cmd = "Neotree",
 		keys = {
 			{
-				"<leader>fE",
+				"<leader>e",
 				function()
 					require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
 				end,
+				desc = "Explorer NeoTree (cwd)",
+				remap = true,
 			},
-			{ "<leader>e", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
 			{
 				"<leader>ge",
 				function()
@@ -72,17 +120,17 @@ return {
 		},
 		opts = {},
 	},
-	-- NOTE: Plugins can specify dependencies.
-	--
-	-- The dependencies are proper plugin specifications as well - anything
-	-- you do for a plugin at the top level, you can do for a dependency.
-	--
-	-- Use the `dependencies` key to specify the dependencies of a particular plugin
 
-	{ -- Fuzzy Finder (files, lsp, etc)
+	{
 		"nvim-telescope/telescope.nvim",
 		event = "VimEnter",
 		branch = "0.1.x",
+		-- NOTE: Plugins can specify dependencies.
+		--
+		-- The dependencies are proper plugin specifications as well - anything
+		-- you do for a plugin at the top level, you can do for a dependency.
+		--
+		-- Use the `dependencies` key to specify the dependencies of a particular plugin
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			{ -- If encountering errors, see telescope-fzf-native README for installation instructions
@@ -173,63 +221,221 @@ return {
 		end,
 	},
 
-	-- Here is a more advanced example where we pass configuration
-	-- options to `gitsigns.nvim`. This is equivalent to the following Lua:
-	--    require('gitsigns').setup({ ... })
-	--
-	-- See `:help gitsigns` to understand what the configuration keys do
-	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
-		"lewis6991/gitsigns.nvim",
+	-- @plugin which-key
+	-- @category editor.navigation
+	-- @description Displays available keybindings in popup with organized key groups
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		opts_extend = { "spec" },
+    -- stylua: ignore
 		opts = {
-			signs = {
-				add = { text = "+" },
-				change = { text = "~" },
-				delete = { text = "_" },
-				topdelete = { text = "‾" },
-				changedelete = { text = "~" },
+			spec = {
+				{
+					mode = { "n", "v" },
+					{ "<leader><tab>", group = "tabs" },
+					{ "<leader>c",     group = "code" },
+					{ "<leader>f",     group = "find" },
+					{ "<leader>g",     group = "git" },
+					{ "<leader>j",     group = "jupyter",              icon = { icon = "󰌠", color = "yellow" } },
+					{ "<leader>q",     group = "quit/session" },
+					{ "<leader>r",     group = "competitest" },
+					{ "<leader>s",     group = "search" },
+					{ "<leader>u",     group = "ui",                   icon = { icon = "󰙵 ", color = "cyan" } },
+					{ "<leader>v",     group = "venv",                 icon = { icon = "󰙵 ", color = "orange" } },
+					{ "<leader>x",     group = "diagnostics/quickfix", icon = { icon = "󱖫 ", color = "green" } },
+					{ "<leader>y",     group = "yazi",                 icon = { icon = "󰇥", color = "yellow" } },
+					{ "[",             group = "prev" },
+					{ "]",             group = "next" },
+					{ "g",             group = "goto" },
+					{ "gs",            group = "surround" },
+					{ "<leader>b",     group = "buffer",
+						expand = function()
+							return require("which-key.extras").expand.buf()
+						end,
+					},
+					{ "<leader>w",     group = "windows",
+						proxy = "<c-w>",
+						expand = function()
+							return require("which-key.extras").expand.win()
+						end,
+					},
+				},
 			},
-			current_line_blame = true,
-			current_line_blame_opts = {
-				delay = 500,
-			},
-			on_attach = function(buffer)
-				local gs = package.loaded.gitsigns
-
-				local function map(mode, l, r, desc)
-					vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
-				end
-
-        -- stylua: ignore start
-        map("n", "]h", function()
-          if vim.wo.diff then
-            vim.cmd.normal({ "]c", bang = true })
-          else
-            gs.nav_hunk("next")
-          end
-        end, "Next Hunk")
-        map("n", "[h", function()
-          if vim.wo.diff then
-            vim.cmd.normal({ "[c", bang = true })
-          else
-            gs.nav_hunk("prev")
-          end
-        end, "Prev Hunk")
-
-        map("n", "]H", function() gs.nav_hunk("last") end, "Last Hunk")
-        map("n", "[H", function() gs.nav_hunk("first") end, "First Hunk")
-        map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
-        map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
-        map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
-        map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
-        map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
-        map("n", "<leader>ghp", gs.preview_hunk_inline, "Preview Hunk Inline")
-        map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
-        map("n", "<leader>ghB", function() gs.blame() end, "Blame Buffer")
-        map("n", "<leader>ghd", gs.diffthis, "Diff This")
-        map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
-        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
-			end,
 		},
+	},
+
+	-- @plugin flash
+	-- @category editor.motion
+	-- @description Fast navigation with labels for searching and jumping
+	{
+		"folke/flash.nvim",
+		event = "VeryLazy",
+		vscode = true,
+		---@type Flash.Config
+		opts = {},
+    -- stylua: ignore
+    keys = {
+      { "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+      { "S",     mode = { "n", "o", "x" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+      { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+      { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
+    },
+	},
+
+	-- @plugin mini.comment
+	-- @category editor.comments
+	-- @description Fast and familiar commenting functionality
+	{
+		"echasnovski/mini.comment",
+		event = "VeryLazy",
+		opts = {},
+	},
+
+	-- @plugin mini.bracketed
+	-- @category editor.navigation
+	-- @description Navigate through text with square brackets ([]) motions
+	{
+		"echasnovski/mini.bracketed",
+		event = "VeryLazy",
+		opts = {},
+	},
+
+	-- @plugin mini.pairs
+	-- @category editor.pairs
+	-- @description Automatically insert paired characters like brackets and quotes
+	{
+		"echasnovski/mini.pairs",
+		event = "VeryLazy",
+		opts = {
+			modes = { insert = true, command = true, terminal = false },
+			-- skip autopair when next character is one of these
+			skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+			-- skip autopair when the cursor is inside these treesitter nodes
+			skip_ts = { "string" },
+			-- skip autopair when next character is closing pair
+			-- and there are more closing pairs than opening pairs
+			skip_unbalanced = true,
+			-- better deal with markdown code blocks
+			markdown = true,
+		},
+	},
+
+	-- @plugin mini.surround
+	-- @category editor.text-objects
+	-- @description Add, delete, and change surrounding pairs like brackets and quotes
+	{
+		"echasnovski/mini.surround",
+		event = "VeryLazy",
+		opts = {
+			mappings = {
+				add = "gsa", -- Add surrounding in Normal and Visual modes
+				delete = "gsd", -- Delete surrounding
+				find = "gsf", -- Find surrounding (to the right)
+				find_left = "gsF", -- Find surrounding (to the left)
+				highlight = "gsh", -- Highlight surrounding
+				replace = "gsr", -- Replace surrounding
+				update_n_lines = "gsn", -- Update `n_lines`
+			},
+		},
+	},
+
+	-- @plugin mini.ai
+	-- @category editor.text-objects
+	-- @description Enhanced around/inside textobjects with next/last variants
+	{
+		-- Better Around/Inside textobjects
+		--
+		-- Examples:
+		--  - va)  - [V]isually select [A]round [)]paren
+		--  - yinq - [Y]ank [I]nside [N]ext [Q]uote
+		--  - ci'  - [C]hange [I]nside [']quote
+		"echasnovski/mini.ai",
+		event = "VeryLazy",
+		opts = {
+			n_lines = 500,
+		},
+	},
+
+	-- @plugin treesitter
+	-- @category editor.highlighting
+	-- @description Advanced syntax highlighting, parsing, and code navigation
+	{
+		"nvim-treesitter/nvim-treesitter",
+		build = ":TSUpdate",
+		main = "nvim-treesitter.configs", -- Sets main module to use for opts
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter-textobjects",
+		},
+		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+		opts = {
+			ensure_installed = {
+				"bash",
+				"cpp",
+				"lua",
+				"luadoc",
+				"markdown",
+				"markdown_inline",
+				"vim",
+				"vimdoc",
+				"json",
+				"json5",
+				"python",
+				"tmux",
+			},
+			-- Autoinstall languages that are not installed
+			auto_install = true,
+			highlight = { enable = true },
+			indent = { enable = true },
+			textobjects = {
+				select = {
+					enable = true,
+					-- Automatically jump forward to textobj, similar to targets.vim
+					lookahead = true,
+
+					keymaps = {
+						-- You can use the capture groups defined in textobjects.scm
+						["af"] = "@function.outer",
+						["if"] = "@function.inner",
+						["ac"] = "@class.outer",
+						-- You can optionally set descriptions to the mappings (used in the desc parameter of
+						-- nvim_buf_set_keymap) which plugins like which-key display
+						["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+						-- You can also use captures from other query groups like `locals.scm`
+						["as"] = { query = "@local.scope", query_group = "locals", desc = "Select language scope" },
+					},
+					-- You can choose the select mode (default is charwise 'v')
+					--
+					-- Can also be a function which gets passed a table with the keys
+					-- * query_string: eg '@function.inner'
+					-- * method: eg 'v' or 'o'
+					-- and should return the mode ('v', 'V', or '<c-v>') or a table
+					-- mapping query_strings to modes.
+					selection_modes = {
+						["@parameter.outer"] = "v", -- charwise
+						["@function.outer"] = "V", -- linewise
+						["@class.outer"] = "<c-v>", -- blockwise
+					},
+					-- If you set this to `true` (default is `false`) then any textobject is
+					-- extended to include preceding or succeeding whitespace. Succeeding
+					-- whitespace has priority in order to act similarly to eg the built-in
+					-- `ap`.
+					--
+					-- Can also be a function which gets passed a table with the keys
+					-- * query_string: eg '@function.inner'
+					-- * selection_mode: eg 'v'
+					-- and should return true or false
+					include_surrounding_whitespace = false,
+				},
+			},
+		},
+		-- There are additional nvim-treesitter modules that you can use to interact
+		-- with nvim-treesitter. You should go explore a few and see what interests you:
+		--
+		--    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
+		--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
+		--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 	},
 }
 

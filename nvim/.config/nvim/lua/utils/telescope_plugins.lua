@@ -112,8 +112,8 @@ function M.plugin_finder()
 				entry_maker = function(entry)
 					return {
 						value = entry,
-						display = entry.name .. " [" .. entry.category .. "] - " .. entry.description,
-						ordinal = entry.name .. " " .. entry.category .. " " .. entry.description,
+						display = entry.name .. " [" .. entry.category .. "]",
+						ordinal = entry.name .. " " .. entry.category,
 						filename = entry.file_path,
 					}
 				end,
@@ -388,3 +388,5 @@ function M.setup()
 end
 
 return M
+
+-- vim: ts=2 sts=2 sw=2 et
