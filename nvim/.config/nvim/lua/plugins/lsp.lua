@@ -1,8 +1,9 @@
 -- LSP Plugins
 return {
+	-- @plugin lazydev
+	-- @category lsp.extensions
+	-- @description Configures Lua LSP for Neovim config, runtime, and plugins development
 	{
-		-- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
-		-- used for completion, annotations and signatures of Neovim apis
 		"folke/lazydev.nvim",
 		ft = "lua",
 		cmd = "LazyDev",
@@ -14,9 +15,16 @@ return {
 			},
 		},
 	},
+
+	-- @plugin luvit-meta
+	-- @category lsp.extensions
+	-- @description Type definitions for Lua APIs including vim.uv (libuv) bindings
 	{ "Bilal2453/luvit-meta", lazy = true },
+
+	-- @plugin lspconfig
+	-- @category lsp.servers
+	-- @description Configurations for the Neovim LSP client with multiple language servers
 	{
-		-- Main LSP Configuration
 		"neovim/nvim-lspconfig",
 		cmd = { "Mason", "Neoconf" },
 		event = { "BufReadPost", "BufNewFile" },
