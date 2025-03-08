@@ -1,10 +1,12 @@
 return {
+	-- @plugin yazi
+	-- @category files.explorer
+	-- @description Integration with Yazi file manager for browsing and managing files
 	---@type LazySpec
 	{
 		"mikavilpas/yazi.nvim",
 		event = "VeryLazy",
 		keys = {
-			-- 👇 in this section, choose your own keymappings!
 			{
 				"<leader>ya",
 				"<cmd>Yazi<cr>",

@@ -1,4 +1,7 @@
 return {
+	-- @plugin venv-selector
+	-- @category lang.python
+	-- @description Python virtual environment manager with automatic activation and integration
 	{
 		"linux-cultist/venv-selector.nvim",
 		branch = "regexp",
@@ -45,6 +48,10 @@ return {
 			{ "<leader>vs", "<cmd>VenvSelect<cr>" },
 		},
 	},
+
+	-- @plugin jupynium
+	-- @category lang.python
+	-- @description Jupyter notebook integration with two-way sync and code execution
 	{
 		"kiyoon/jupynium.nvim",
 		build = "pip3 install --user .",
