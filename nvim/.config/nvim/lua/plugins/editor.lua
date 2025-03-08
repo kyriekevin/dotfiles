@@ -152,6 +152,7 @@ return {
 			})
 			require("telescope").load_extension("fzf")
 			require("telescope").load_extension("ui-select")
+			require("utils.telescope_plugins").setup()
 
 			-- See `:help telescope.builtin`
 			local builtin = require("telescope.builtin")
