@@ -121,6 +121,9 @@ return {
 		opts = {},
 	},
 
+	-- @plugin telescope
+	-- @category editor.search
+	-- @description Highly extensible fuzzy finder over lists with powerful search capabilities
 	{
 		"nvim-telescope/telescope.nvim",
 		event = "VimEnter",
@@ -209,6 +212,9 @@ return {
 			vim.keymap.set("n", "<leader><space>", builtin.buffers, { desc = "Telescope buffers" })
 			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
 			vim.keymap.set("n", "<leader>?", builtin.oldfiles, { desc = "[?] Find recently opened files" })
+			vim.keymap.set("n", "<leader>uC", function()
+				builtin.colorscheme({ enable_preview = true })
+			end, { desc = "Colorschemes" })
 
 			-- Slightly advanced example of overriding default behavior and theme
 			vim.keymap.set("n", "<leader>/", function()
@@ -436,6 +442,16 @@ return {
 		--    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
 		--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
 		--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+	},
+
+	-- @plugin hardtime
+	-- @category editor.training
+	-- @description Helps break bad habits by restricting inefficient movement commands
+	{
+		"m4xshen/hardtime.nvim",
+		event = "VeryLazy",
+		dependencies = { "MunifTanjim/nui.nvim" },
+		opts = {},
 	},
 }
 

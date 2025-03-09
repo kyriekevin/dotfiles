@@ -189,7 +189,7 @@ function M.plugin_finder()
 					if selection and selection.value then
 						vim.cmd("edit " .. selection.value.file_path)
 						-- Search for plugin name
-						vim.fn.search("@plugin%s+" .. selection.value.name)
+						vim.fn.search("@plugin\\s\\+" .. selection.value.name)
 					end
 				end)
 				return true
@@ -349,7 +349,7 @@ function M.browse_by_category()
 
 										if inner_selection and inner_selection.value then
 											vim.cmd("edit " .. inner_selection.value.file_path)
-											vim.fn.search("@plugin%s+" .. inner_selection.value.name)
+											vim.fn.search("@plugin\\s\\+" .. inner_selection.value.name)
 										end
 									end)
 									return true
