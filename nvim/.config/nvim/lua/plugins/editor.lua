@@ -212,6 +212,9 @@ return {
 			vim.keymap.set("n", "<leader><space>", builtin.buffers, { desc = "Telescope buffers" })
 			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
 			vim.keymap.set("n", "<leader>?", builtin.oldfiles, { desc = "[?] Find recently opened files" })
+			vim.keymap.set("n", "<leader>uC", function()
+				builtin.colorscheme({ enable_preview = true })
+			end, { desc = "Colorschemes" })
 
 			-- Slightly advanced example of overriding default behavior and theme
 			vim.keymap.set("n", "<leader>/", function()
