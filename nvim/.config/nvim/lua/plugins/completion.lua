@@ -28,6 +28,13 @@ return {
 				},
 			},
 
+			{
+				"git@code.byted.org:chenjiaqi.cposture/codeverse.vim.git",
+				config = function()
+					require("marscode").setup()
+				end,
+			},
+
 			-- Adds other completion capabilities.
 			--  nvim-cmp does not ship with all sources by default. They are split
 			--  into multiple repos for maintenance purposes.
@@ -107,6 +114,7 @@ return {
 					--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 				}),
 				sources = {
+					{ name = "marscode" },
 					{ name = "jupynium" },
 					{ name = "nvim_lsp" },
 					{ name = "path" },

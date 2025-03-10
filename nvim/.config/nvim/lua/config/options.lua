@@ -179,4 +179,8 @@ opt.wrap = false
 
 buf.fileencoding = "utf-8"
 
+vim.g.marscode_disable_autocompletion = true
+vim.g.marscode_no_map_tab = true
+vim.g.marscode_disable_bindings = true
+
 -- vim: ts=2 sts=2 sw=2 et
