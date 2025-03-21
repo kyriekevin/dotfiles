@@ -1,0 +1,19 @@
+extends c
+
+snippet cpp
+        #include <iostream>
+        #include <cstring>
+        #include <algorithm>
+        using namespace std;
+        ${1}
+        int main() {
+            ${0}
+
+            return 0;
+        }
+
+snippet find
+        int find(int x) {
+            if (p[x] != x) p[x] = find(p[x]);
+            return p[x];
+        }

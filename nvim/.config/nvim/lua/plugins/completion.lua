@@ -19,13 +19,59 @@ return {
 							"rafamadriz/friendly-snippets",
 							config = function()
 								require("luasnip.loaders.from_vscode").lazy_load()
-								require("luasnip.loaders.from_vscode").lazy_load({
-									paths = vim.fn.expand("~/.config/nvim/snippets"),
-								})
+								require("luasnip.loaders.from_snipmate").lazy_load()
 							end,
 						},
 					},
 				},
+			},
+
+			{
+				cond = function()
+					local cache_file = vim.fn.stdpath("cache") .. "/company_env_check.txt"
+					local file = io.open(cache_file, "r")
+					if file then
+						local cached = file:read("*all")
+						file:close()
+						if cached == "company" then
+							return true
+						elseif cached == "personal" then
+							return false
+						end
+					end
+
+					local function save_cache(is_company)
+						local f = io.open(cache_file, "w")
+						if f then
+							f:write(is_company and "company" or "personal")
+							f:close()
+						end
+					end
+
+					local check_cmd =
+						"timeout 2 git ls-remote git@code.byted.org:chenjiaqi.cposture/codeverse.vim.git &>/dev/null && echo success || echo fail"
+					local handle = io.popen(check_cmd)
+					if not handle then
+						save_cache(false)
+						return false
+					end
+
+					local result = handle:read("*a")
+					handle:close()
+
+					local is_company = result:match("success") ~= nil
+					save_cache(is_company)
+					return is_company
+				end,
+				"git@code.byted.org:chenjiaqi.cposture/codeverse.vim.git",
+				config = function()
+					local success, marscode = pcall(require, "marscode")
+					if success then
+						marscode.setup()
+					else
+						vim.notify("Failed to load marscode plugin", vim.log.levels.WARN)
+					end
+				end,
 			},
 
 			-- Adds other completion capabilities.
@@ -107,6 +153,7 @@ return {
 					--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 				}),
 				sources = {
+					{ name = "marscode" },
 					{ name = "jupynium" },
 					{ name = "nvim_lsp" },
 					{ name = "path" },
