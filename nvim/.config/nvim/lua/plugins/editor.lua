@@ -460,6 +460,24 @@ return {
 	{
 		"tpope/vim-sleuth",
 	},
+
+	-- @plugin precognition
+	-- @category editor.motion
+	-- @description Visual hints for Vim motions showing where commands will take you
+	{
+		"tris203/precognition.nvim",
+		event = "VeryLazy",
+		opts = {},
+		keys = {
+			{
+				"<leader>um",
+				function()
+					require("precognition").toggle()
+				end,
+				desc = "Toggle precognition status",
+			},
+		},
+	},
 }
 
 -- vim: ts=2 sts=2 sw=2 et
