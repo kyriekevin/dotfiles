@@ -453,6 +453,13 @@ return {
 		dependencies = { "MunifTanjim/nui.nvim" },
 		opts = {},
 	},
+
+	-- @plugin sleuth
+	-- @category editor.indentation
+	-- @description Automatically detects and sets indentation settings based on file content
+	{
+		"tpope/vim-sleuth",
+	},
 }
 
 -- vim: ts=2 sts=2 sw=2 et
