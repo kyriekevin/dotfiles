@@ -230,6 +230,15 @@ return {
 		"tris203/precognition.nvim",
 		event = "VeryLazy",
 		opts = {},
+		keys = {
+			{
+				"<leader>um",
+				function()
+					require("precognition").toggle()
+				end,
+				desc = "Toggle precognition status",
+			},
+		},
 	},
 }
 
