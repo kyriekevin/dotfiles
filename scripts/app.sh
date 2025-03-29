@@ -8,3 +8,6 @@ install wget
 
 step "Installing mos if not already installed"
 install mos
+
+step "Installing font if not already installed"
+install font-maple-mono-nf-cn
