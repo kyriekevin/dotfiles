@@ -4,6 +4,10 @@ return {
 	-- @description Automatic input method switching for different modes in Neovim
 	{
 		"keaising/im-select.nvim",
+		cond = function()
+			local os_name = vim.loop.os_uname().sysname
+			return os_name == "Darwin"
+		end,
 		config = function()
 			require("im_select").setup({
 				default_im_select = "com.apple.keylayout.ABC",
@@ -221,15 +225,6 @@ return {
 				show_help = "<f1>",
 			},
 		},
-	},
-
-	-- @plugin precognition
-	-- @category editor.motion
-	-- @description Visual hints for Vim motions showing where commands will take you
-	{
-		"tris203/precognition.nvim",
-		event = "VeryLazy",
-		opts = {},
 	},
 }
 

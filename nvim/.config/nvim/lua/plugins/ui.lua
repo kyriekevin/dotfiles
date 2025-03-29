@@ -67,7 +67,6 @@ return {
 		"nvim-lualine/lualine.nvim",
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
-			"AndreM222/copilot-lualine",
 		},
 		config = function()
 			require("lualine").setup({
@@ -79,15 +78,7 @@ return {
 				},
 				sections = {
 					lualine_a = { "mode" },
-					lualine_b = {
-						"branch",
-						"diff",
-						{
-							"diagnostics",
-							sources = { "nvim_diagnostic" },
-							symbols = { error = " ", warn = " ", info = " ", hint = " " },
-						},
-					},
+					lualine_b = { "branch", "diff", "diagnostics" },
 					lualine_c = { "filename" },
 					lualine_x = { "encoding", "filetype" },
 					lualine_y = { "progress" },
@@ -141,7 +132,6 @@ return {
 				},
 			},
 			presets = {
-				bottom_search = true,
 				command_palette = true,
 				long_message_to_split = true,
 			},
@@ -200,6 +190,18 @@ return {
 				require("mini.icons").mock_nvim_web_devicons()
 				return package.loaded["nvim-web-devicons"]
 			end
+		end,
+	},
+
+	-- @plugin tpipeline
+	-- @category ui.statusline
+	-- @description Integrates Neovim statusline into Tmux status bar for a unified interface
+	{
+		"vimpostor/vim-tpipeline",
+		config = function()
+			vim.g.tpipeline_autoembed = 1
+			vim.g.tpipeline_restore = 1
+			vim.g.tpipeline_clearstl = 1
 		end,
 	},
 }
