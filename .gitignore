@@ -1,5 +1,4 @@
-# python
 .python-version
-poetry.lock
-
+uv.lock
+nvim/.config/nvim/lazy-lock.json
 zsh/.config/zsh/private.zsh

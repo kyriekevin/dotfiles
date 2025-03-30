@@ -478,6 +478,20 @@ return {
 			},
 		},
 	},
+
+	-- @plugin undotree
+	-- @category editor.undo
+	-- @description Show the difference between the currnet node and the node under the cursor
+	{
+		"jiaoshijie/undotree",
+		dependencies = "nvim-lua/plenary.nvim",
+		config = true,
+		keys = {
+			{ "<leader>cu", "<cmd>lua require('undotree').toggle()<cr>", desc = "toggle undotree" },
+			{ "<leader>co", "<cmd>lua require('undotree').open()<cr>", desc = "open undotree" },
+			{ "<leader>cc", "<cmd>lua require('undotree').close()<cr>", desc = "close undotree" },
+		},
+	},
 }
 
 -- vim: ts=2 sts=2 sw=2 et
