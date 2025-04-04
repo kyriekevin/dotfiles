@@ -10,13 +10,7 @@ return {
 			flavour = "mocha",
 			transparent_background = true,
 			integrations = {
-				cmp = {
-					enabled = true,
-					border = {
-						completion = true,
-						documentation = true,
-					},
-				},
+				blink_cmp = true,
 				flash = true,
 				gitsigns = true,
 				snacks = true,

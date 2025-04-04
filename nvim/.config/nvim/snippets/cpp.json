@@ -1,0 +1,35 @@
+{
+  "C++ Main Function Template": {
+    "prefix": "cfm",
+    "body": [
+      "#pragma GCC optimize(3)",
+      "#include <iostream>",
+      "#include <cstring>",
+      "#include <algorithm>",
+      "",
+      "#define endl \"\\n\"",
+      "",
+      "using namespace std;",
+      "${1}",
+      "int main() {",
+      "    ios_base::sync_with_stdio(false);",
+      "    cin.tie(nullptr);",
+      "",
+      "    ${0}",
+      "",
+      "    return 0;",
+      "}"
+    ],
+    "description": "A template for a C++ main function with optimizations and fast I/O."
+  },
+  "Find Function for Union-Find": {
+    "prefix": "find",
+    "body": [
+      "int find(int x) {",
+      "    if (p[x] != x) p[x] = find(p[x]);",
+      "    return p[x];",
+      "}"
+    ],
+    "description": "A recursive find function with path compression for the Union-Find data structure."
+  }
+}
