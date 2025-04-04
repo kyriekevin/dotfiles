@@ -17,19 +17,14 @@ return {
 		},
 		opts = {
 			notify_on_error = false,
-			format_on_save = function(bufnr)
-				-- Disable "format_on_save lsp_fallback" for languages that don't
-				-- have a well standardized coding style. You can add additional
-				-- languages here or re-enable it for the disabled ones.
-				if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-					return
-				end
-				return { timeout_ms = 500, lsp_format = "fallback" }
-			end,
+			format_on_save = {
+				timeout_ms = 3000,
+				lsp_format = "fallback",
+			},
 			formatters_by_ft = {
 				lua = { "stylua" },
 				sh = { "shfmt" },
-				python = { "isort", "black" },
+				python = { "ruff_format" },
 				markdown = { "prettier", "markdownlint-cli2", "markdown-toc" },
 				-- Conform can also run multiple formatters sequentially
 				--
