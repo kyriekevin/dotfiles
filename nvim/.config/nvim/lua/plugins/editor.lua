@@ -211,7 +211,7 @@ return {
 			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
 			vim.keymap.set("n", "<leader><space>", builtin.buffers, { desc = "Telescope buffers" })
 			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
-			vim.keymap.set("n", "<leader>?", builtin.oldfiles, { desc = "[?] Find recently opened files" })
+			vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Find recently opened files" })
 			vim.keymap.set("n", "<leader>uC", function()
 				builtin.colorscheme({ enable_preview = true })
 			end, { desc = "Colorschemes" })
@@ -267,6 +267,15 @@ return {
 						end,
 					},
 				},
+			},
+		},
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer Local Keymaps (which-key)",
 			},
 		},
 	},
@@ -467,12 +476,16 @@ return {
 	{
 		"tris203/precognition.nvim",
 		event = "VeryLazy",
-		opts = {},
+		opts = { startVisible = false },
 		keys = {
 			{
 				"<leader>um",
 				function()
-					require("precognition").toggle()
+					if require("precognition").toggle() then
+						vim.notify("precognition on")
+					else
+						vim.notify("precognition off")
+					end
 				end,
 				desc = "Toggle precognition status",
 			},
