@@ -40,8 +40,6 @@ return {
 			{ "folke/neoconf.nvim", opts = {} },
 			{ "nvimdev/lspsaga.nvim", opts = {} },
 
-			-- Allows extra capabilities provided by nvim-cmp
-			-- "hrsh7th/cmp-nvim-lsp",
 			"saghen/blink.cmp",
 		},
 		config = function()

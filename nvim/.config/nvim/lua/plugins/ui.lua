@@ -47,6 +47,19 @@ return {
 			{ "<leader>bp", "<cmd>BufferLinePick<cr>", desc = "Buffer Pick" },
 		},
 		opts = function(_, opts)
+			opts.options = opts.options or {}
+			opts.options.numbers = "ordinal"
+			opts.options.diagnostics = "nvim_lsp"
+			opts.options.diagnostics_indicator = function(count, level, _, _)
+				local symbols = {
+					error = " ",
+					warning = " ",
+					info = " ",
+					hint = " ",
+				}
+				return " " .. (symbols[level] or "") .. count
+			end
+
 			if (vim.g.colors_name or ""):find("catppuccin") then
 				opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
 			end
