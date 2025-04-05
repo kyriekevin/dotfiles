@@ -6,6 +6,7 @@ return {
 		"saghen/blink.cmp",
 		-- optional: provides snippets for the snippet source
 		dependencies = { "rafamadriz/friendly-snippets" },
+		event = "VeryLazy",
 
 		-- use a release tag to download pre-built binaries
 		version = "1.*",
@@ -63,6 +64,15 @@ return {
 			fuzzy = { implementation = "prefer_rust_with_warning" },
 			cmdline = {
 				completion = { menu = { auto_show = true } },
+				sources = function()
+					local cmd_type = vim.fn.getcmdtype()
+					if cmd_type == "/" then
+						return { "buffer" }
+					end
+					if cmd_type == ":" then
+						return { "cmdline" }
+					end
+				end,
 			},
 		},
 		opts_extend = { "sources.default" },
