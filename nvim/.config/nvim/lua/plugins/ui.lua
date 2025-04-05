@@ -40,18 +40,18 @@ return {
 	-- @description A snazzy buffer line for Neovim with minimal tab integration
 	{
 		"akinsho/bufferline.nvim",
-		event = "VimEnter",
 		keys = {
-			{ "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
-			{ "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
-			{ "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
-			{ "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
+			{ "<leader>bh", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
+			{ "<leader>bl", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
+			{ "<leader>bd", "<cmd>bdelete<cr>", desc = "Delete Buffer" },
+			{ "<leader>bp", "<cmd>BufferLinePick<cr>", desc = "Buffer Pick" },
 		},
 		opts = function(_, opts)
 			if (vim.g.colors_name or ""):find("catppuccin") then
 				opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
 			end
 		end,
+		lazy = false,
 	},
 
 	-- @plugin lualine

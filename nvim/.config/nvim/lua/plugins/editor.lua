@@ -235,6 +235,7 @@ return {
 				{
 					mode = { "n", "v" },
 					{ "<leader><tab>", group = "tabs" },
+          { "<leader>b",     group = "buffer" },
 					{ "<leader>c",     group = "code" },
 					{ "<leader>f",     group = "find" },
 					{ "<leader>g",     group = "git" },
