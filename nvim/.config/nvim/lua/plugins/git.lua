@@ -4,6 +4,7 @@ return {
 	-- @description Git integration for buffers with line status, blame, and navigation
 	{
 		"lewis6991/gitsigns.nvim",
+		event = "VeryLazy",
 		opts = {
 			signs = {
 				add = { text = "+" },

@@ -4,6 +4,7 @@ return {
 	-- @description Lightweight yet powerful formatter plugin for Neovim
 	{
 		"stevearc/conform.nvim",
+		event = "VeryLazy",
 		cmd = { "ConformInfo" },
 		keys = {
 			{
@@ -17,19 +18,14 @@ return {
 		},
 		opts = {
 			notify_on_error = false,
-			format_on_save = function(bufnr)
-				-- Disable "format_on_save lsp_fallback" for languages that don't
-				-- have a well standardized coding style. You can add additional
-				-- languages here or re-enable it for the disabled ones.
-				if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-					return
-				end
-				return { timeout_ms = 500, lsp_format = "fallback" }
-			end,
+			format_on_save = {
+				timeout_ms = 3000,
+				lsp_format = "fallback",
+			},
 			formatters_by_ft = {
 				lua = { "stylua" },
 				sh = { "shfmt" },
-				python = { "isort", "black" },
+				python = { "ruff_format" },
 				markdown = { "prettier", "markdownlint-cli2", "markdown-toc" },
 				-- Conform can also run multiple formatters sequentially
 				--
@@ -44,6 +40,7 @@ return {
 	-- @description Intelligently reopen files at your last edit position
 	{
 		"ethanholz/nvim-lastplace",
+		event = "VeryLazy",
 		config = true,
 	},
 
@@ -87,6 +84,7 @@ return {
 	-- @description A file explorer tree with support for git status and buffers
 	{
 		"nvim-neo-tree/neo-tree.nvim",
+		event = "VeryLazy",
 		version = "*",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
@@ -211,7 +209,7 @@ return {
 			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
 			vim.keymap.set("n", "<leader><space>", builtin.buffers, { desc = "Telescope buffers" })
 			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
-			vim.keymap.set("n", "<leader>?", builtin.oldfiles, { desc = "[?] Find recently opened files" })
+			vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Find recently opened files" })
 			vim.keymap.set("n", "<leader>uC", function()
 				builtin.colorscheme({ enable_preview = true })
 			end, { desc = "Colorschemes" })
@@ -240,6 +238,7 @@ return {
 				{
 					mode = { "n", "v" },
 					{ "<leader><tab>", group = "tabs" },
+          { "<leader>b",     group = "buffer" },
 					{ "<leader>c",     group = "code" },
 					{ "<leader>f",     group = "find" },
 					{ "<leader>g",     group = "git" },
@@ -267,6 +266,15 @@ return {
 						end,
 					},
 				},
+			},
+		},
+		keys = {
+			{
+				"<leader>?",
+				function()
+					require("which-key").show({ global = false })
+				end,
+				desc = "Buffer Local Keymaps (which-key)",
 			},
 		},
 	},
@@ -369,6 +377,7 @@ return {
 	-- @description Advanced syntax highlighting, parsing, and code navigation
 	{
 		"nvim-treesitter/nvim-treesitter",
+		event = "VeryLazy",
 		build = ":TSUpdate",
 		main = "nvim-treesitter.configs", -- Sets main module to use for opts
 		dependencies = {
@@ -385,6 +394,7 @@ return {
 				"markdown_inline",
 				"vim",
 				"vimdoc",
+				"toml",
 				"json",
 				"json5",
 				"python",
@@ -459,6 +469,7 @@ return {
 	-- @description Automatically detects and sets indentation settings based on file content
 	{
 		"tpope/vim-sleuth",
+		event = "VeryLazy",
 	},
 
 	-- @plugin precognition
@@ -467,12 +478,16 @@ return {
 	{
 		"tris203/precognition.nvim",
 		event = "VeryLazy",
-		opts = {},
+		opts = { startVisible = false },
 		keys = {
 			{
 				"<leader>um",
 				function()
-					require("precognition").toggle()
+					if require("precognition").toggle() then
+						vim.notify("precognition on")
+					else
+						vim.notify("precognition off")
+					end
 				end,
 				desc = "Toggle precognition status",
 			},
@@ -484,6 +499,7 @@ return {
 	-- @description Show the difference between the currnet node and the node under the cursor
 	{
 		"jiaoshijie/undotree",
+		event = "VeryLazy",
 		dependencies = "nvim-lua/plenary.nvim",
 		config = true,
 		keys = {
