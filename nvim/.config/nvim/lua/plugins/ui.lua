@@ -10,13 +10,7 @@ return {
 			flavour = "mocha",
 			transparent_background = true,
 			integrations = {
-				cmp = {
-					enabled = true,
-					border = {
-						completion = true,
-						documentation = true,
-					},
-				},
+				blink_cmp = true,
 				flash = true,
 				gitsigns = true,
 				snacks = true,
@@ -46,18 +40,33 @@ return {
 	-- @description A snazzy buffer line for Neovim with minimal tab integration
 	{
 		"akinsho/bufferline.nvim",
-		event = "VimEnter",
 		keys = {
-			{ "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
-			{ "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
-			{ "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
-			{ "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
+			{ "<leader>bh", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
+			{ "<leader>bl", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
+			{ "<leader>bd", "<cmd>:bd<cr>", desc = "Close Current Buffer" },
+			{ "<leader>bp", "<cmd>BufferLinePick<cr>", desc = "Pick Buffer" },
+			{ "<leader>bc", "<cmd>BufferLinePickClose<cr>", desc = "Pick Close" },
+			{ "<leader>bo", "<cmd>BufferLineCloseOthers<cr>", desc = "Close Others" },
 		},
 		opts = function(_, opts)
+			opts.options = opts.options or {}
+			opts.options.numbers = "ordinal"
+			opts.options.diagnostics = "nvim_lsp"
+			opts.options.diagnostics_indicator = function(count, level, _, _)
+				local symbols = {
+					error = " ",
+					warning = " ",
+					info = " ",
+					hint = " ",
+				}
+				return " " .. (symbols[level] or "") .. count
+			end
+
 			if (vim.g.colors_name or ""):find("catppuccin") then
 				opts.highlights = require("catppuccin.groups.integrations.bufferline").get()
 			end
 		end,
+		lazy = false,
 	},
 
 	-- @plugin lualine
@@ -65,6 +74,7 @@ return {
 	-- @description A blazing fast and easy to configure Neovim statusline
 	{
 		"nvim-lualine/lualine.nvim",
+		event = "VeryLazy",
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
 		},
@@ -74,7 +84,7 @@ return {
 					icons_enabled = true,
 					section_separators = { left = "", right = "" },
 					component_separators = "",
-					theme = "catppuccin",
+					theme = "auto",
 				},
 				sections = {
 					lualine_a = { "mode" },
@@ -93,6 +103,7 @@ return {
 	-- @description A VS Code-like winbar that shows your current code context
 	{
 		"utilyre/barbecue.nvim",
+		event = "VeryLazy",
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
 			"SmiteshP/nvim-navic",
@@ -198,6 +209,7 @@ return {
 	-- @description Integrates Neovim statusline into Tmux status bar for a unified interface
 	{
 		"vimpostor/vim-tpipeline",
+		event = "VeryLazy",
 		config = function()
 			vim.g.tpipeline_autoembed = 1
 			vim.g.tpipeline_restore = 1
