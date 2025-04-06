@@ -298,11 +298,11 @@ return {
     },
 	},
 
-	-- @plugin mini.comment
+	-- @plugin comment
 	-- @category editor.comments
-	-- @description Fast and familiar commenting functionality
+	-- @description Smart and powerful commenting functionality with language awareness
 	{
-		"echasnovski/mini.comment",
+		"numToStr/Comment.nvim",
 		event = "VeryLazy",
 		opts = {},
 	},
