@@ -4,6 +4,7 @@ return {
 	-- @description Lightweight yet powerful formatter plugin for Neovim
 	{
 		"stevearc/conform.nvim",
+		event = "VeryLazy",
 		cmd = { "ConformInfo" },
 		keys = {
 			{
@@ -39,6 +40,7 @@ return {
 	-- @description Intelligently reopen files at your last edit position
 	{
 		"ethanholz/nvim-lastplace",
+		event = "VeryLazy",
 		config = true,
 	},
 
@@ -82,6 +84,7 @@ return {
 	-- @description A file explorer tree with support for git status and buffers
 	{
 		"nvim-neo-tree/neo-tree.nvim",
+		event = "VeryLazy",
 		version = "*",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
@@ -374,6 +377,7 @@ return {
 	-- @description Advanced syntax highlighting, parsing, and code navigation
 	{
 		"nvim-treesitter/nvim-treesitter",
+		event = "VeryLazy",
 		build = ":TSUpdate",
 		main = "nvim-treesitter.configs", -- Sets main module to use for opts
 		dependencies = {
@@ -390,6 +394,7 @@ return {
 				"markdown_inline",
 				"vim",
 				"vimdoc",
+				"toml",
 				"json",
 				"json5",
 				"python",
@@ -464,6 +469,7 @@ return {
 	-- @description Automatically detects and sets indentation settings based on file content
 	{
 		"tpope/vim-sleuth",
+		event = "VeryLazy",
 	},
 
 	-- @plugin precognition
@@ -493,6 +499,7 @@ return {
 	-- @description Show the difference between the currnet node and the node under the cursor
 	{
 		"jiaoshijie/undotree",
+		event = "VeryLazy",
 		dependencies = "nvim-lua/plenary.nvim",
 		config = true,
 		keys = {

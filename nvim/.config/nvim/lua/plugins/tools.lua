@@ -4,6 +4,7 @@ return {
 	-- @description Automatic input method switching for different modes in Neovim
 	{
 		"keaising/im-select.nvim",
+		event = "VeryLazy",
 		cond = function()
 			local os_name = vim.loop.os_uname().sysname
 			return os_name == "Darwin"
@@ -36,6 +37,7 @@ return {
 	-- @description Simple session management with automatic saving and loading
 	{
 		"folke/persistence.nvim",
+		event = "VeryLazy",
 		keys = {
 			{ "<leader>qs", [[<cmd>lua require("persistence").load()<cr>]] },
 			{ "<leader>ql", [[<cmd>lua require("persistence").load({ last = true})<cr>]] },
@@ -155,6 +157,7 @@ return {
 	-- @description Competitive programming plugin for testcase management and execution
 	{
 		"xeluxee/competitest.nvim",
+		event = "VeryLazy",
 		dependencies = "MunifTanjim/nui.nvim",
 		keys = {
 			{ "<leader>ri", "<cmd>CompetiTest receive testcases<cr>", desc = "Receive Testcases" },
@@ -171,9 +174,7 @@ return {
 				desc = "Delete Testcases",
 			},
 		},
-		config = function()
-			require("competitest").setup()
-		end,
+		opts = {},
 	},
 
 	-- @plugin yazi

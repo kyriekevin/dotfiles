@@ -4,6 +4,7 @@ return {
 	-- @description Python virtual environment manager with automatic activation and integration
 	{
 		"linux-cultist/venv-selector.nvim",
+		event = "VeryLazy",
 		branch = "regexp",
 		dependencies = {
 			"neovim/nvim-lspconfig",
@@ -11,7 +12,6 @@ return {
 			"mfussenegger/nvim-dap-python",
 			"nvim-telescope/telescope.nvim",
 		},
-		lazy = false,
 		config = function()
 			local function on_venv_activate()
 				local command_run = false
@@ -55,6 +55,7 @@ return {
 	{
 		"kiyoon/jupynium.nvim",
 		build = "pip3 install --user .",
+		ft = "python",
 		dependencies = { "rcarriga/nvim-notify", "stevearc/dressing.nvim" },
 		opts = {
 			use_default_keybindings = false,
