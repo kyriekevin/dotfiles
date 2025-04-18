@@ -298,11 +298,11 @@ return {
     },
 	},
 
-	-- @plugin mini.comment
+	-- @plugin comment
 	-- @category editor.comments
-	-- @description Fast and familiar commenting functionality
+	-- @description Smart and powerful commenting functionality with language awareness
 	{
-		"echasnovski/mini.comment",
+		"numToStr/Comment.nvim",
 		event = "VeryLazy",
 		opts = {},
 	},
@@ -479,19 +479,6 @@ return {
 		"tris203/precognition.nvim",
 		event = "VeryLazy",
 		opts = { startVisible = false },
-		keys = {
-			{
-				"<leader>um",
-				function()
-					if require("precognition").toggle() then
-						vim.notify("precognition on")
-					else
-						vim.notify("precognition off")
-					end
-				end,
-				desc = "Toggle precognition status",
-			},
-		},
 	},
 
 	-- @plugin undotree
