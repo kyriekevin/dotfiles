@@ -14,3 +14,5 @@ export BAT_THEME="Catppuccin Frappe"
 export HF_ENDPOINT=https://hf-mirror.com
 
 export EDITOR="nvim"
+
+export PATH=$HOME"/.local/bin:$PATH"
