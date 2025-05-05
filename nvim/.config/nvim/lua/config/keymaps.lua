@@ -7,8 +7,16 @@ map("i", "jk", "<Esc>")
 map("i", "kj", "<Esc>")
 
 -- better up/down
-map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
-map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
+map({ "n", "x" }, "j", "v:count == 0 ? 'gjzz' : 'jzz'", { desc = "Down", expr = true, silent = true })
+map({ "n", "x" }, "k", "v:count == 0 ? 'gkzz' : 'kzz'", { desc = "Up", expr = true, silent = true })
+
+map("n", "<c-o>", "<c-o>zz", { noremap = true, silent = true })
+map("n", "<c-i>", "<c-i>zz", { noremap = true, silent = true })
+map("n", "{", "{zz", { noremap = true, silent = true })
+map("n", "}", "}zz", { noremap = true, silent = true })
+map("n", "<c-d>", "<c-d>zz", { noremap = true, silent = true })
+map("n", "<c-u>", "<c-u>zz", { noremap = true, silent = true })
+map("n", "G", "Gzz", { noremap = true, silent = true })
 
 -- Move to window using the <ctrl> hjkl keys
 map("n", "<C-h>", "<C-w>h", { desc = "Go to Left Window", remap = true })
