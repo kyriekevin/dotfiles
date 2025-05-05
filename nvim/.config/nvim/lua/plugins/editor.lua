@@ -243,6 +243,7 @@ return {
 					{ "<leader>f",     group = "find" },
 					{ "<leader>g",     group = "git" },
 					{ "<leader>j",     group = "jupyter",              icon = { icon = "󰌠", color = "yellow" } },
+          { "<leader>m",     group = "markdown",             icon = { icon = "", color = "cyan" } },
 					{ "<leader>q",     group = "quit/session" },
 					{ "<leader>r",     group = "competitest" },
 					{ "<leader>s",     group = "search" },
