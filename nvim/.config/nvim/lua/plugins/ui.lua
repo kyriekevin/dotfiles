@@ -176,7 +176,6 @@ return {
 	{
 		"hiphish/rainbow-delimiters.nvim",
 		event = "VeryLazy",
-		opts = {},
 	},
 
 	-- @plugin indent blankline
