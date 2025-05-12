@@ -1,0 +1,136 @@
+{
+  "title": "Hyper key enhancement",
+  "rules": [
+    {
+      "description": "Hyper + HJKL for Global Navigation",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": { "key_code": "h", "modifiers": { "optional": ["any"] } },
+          "to": [{ "key_code": "left_arrow" }],
+          "conditions": [
+            { "type": "variable_if", "name": "hyper_is_active", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "j", "modifiers": { "optional": ["any"] } },
+          "to": [{ "key_code": "down_arrow" }],
+          "conditions": [
+            { "type": "variable_if", "name": "hyper_is_active", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "k", "modifiers": { "optional": ["any"] } },
+          "to": [{ "key_code": "up_arrow" }],
+          "conditions": [
+            { "type": "variable_if", "name": "hyper_is_active", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "l", "modifiers": { "optional": ["any"] } },
+          "to": [{ "key_code": "right_arrow" }],
+          "conditions": [
+            { "type": "variable_if", "name": "hyper_is_active", "value": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Hyper + W activates Window Management Mode",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "w",
+            "modifiers": { "optional": ["any"] }
+          },
+          "to": [
+            {
+              "set_variable": {
+                "name": "window_mode_active",
+                "value": 1
+              }
+            }
+          ],
+          "to_after_key_up": [],
+          "conditions": [
+            { "type": "variable_if", "name": "hyper_is_active", "value": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Window Mode: HJKL to Move Windows via Raycast",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": { "key_code": "h", "modifiers": { "optional": ["any"] } },
+          "to": [
+            {
+              "shell_command": "open 'raycast://extensions/raycast/window-management/left-half'"
+            },
+            { "set_variable": { "name": "window_mode_active", "value": 0 } }
+          ],
+          "conditions": [
+            { "type": "variable_if", "name": "window_mode_active", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "j", "modifiers": { "optional": ["any"] } },
+          "to": [
+            {
+              "shell_command": "open 'raycast://extensions/raycast/window-management/bottom-half'"
+            },
+            { "set_variable": { "name": "window_mode_active", "value": 0 } }
+          ],
+          "conditions": [
+            { "type": "variable_if", "name": "window_mode_active", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "k", "modifiers": { "optional": ["any"] } },
+          "to": [
+            {
+              "shell_command": "open 'raycast://extensions/raycast/window-management/top-half'"
+            },
+            { "set_variable": { "name": "window_mode_active", "value": 0 } }
+          ],
+          "conditions": [
+            { "type": "variable_if", "name": "window_mode_active", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "l", "modifiers": { "optional": ["any"] } },
+          "to": [
+            {
+              "shell_command": "open 'raycast://extensions/raycast/window-management/right-half'"
+            },
+            { "set_variable": { "name": "window_mode_active", "value": 0 } }
+          ],
+          "conditions": [
+            { "type": "variable_if", "name": "window_mode_active", "value": 1 }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": { "key_code": "m", "modifiers": { "optional": ["any"] } },
+          "to": [
+            {
+              "shell_command": "open 'raycast://extensions/raycast/window-management/maximize'"
+            },
+            { "set_variable": { "name": "window_mode_active", "value": 0 } }
+          ],
+          "conditions": [
+            { "type": "variable_if", "name": "window_mode_active", "value": 1 }
+          ]
+        }
+      ]
+    }
+  ]
+}
