@@ -27,6 +27,7 @@ return {
 				sh = { "shfmt" },
 				python = { "ruff_format" },
 				markdown = { "prettier", "markdownlint-cli2", "markdown-toc" },
+				json = { "prettier" },
 				-- Conform can also run multiple formatters sequentially
 				--
 				-- You can use 'stop_after_first' to run the first available formatter from the list
