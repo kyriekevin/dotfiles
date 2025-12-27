@@ -5,3 +5,6 @@ uv.lock
 
 # zsh
 zsh/.config/zsh/private.zsh
+
+# MacOS
+.DS_Store
