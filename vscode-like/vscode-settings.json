@@ -1,0 +1,125 @@
+{
+    // ===== Visuals =====
+    // ColorScheme & Icons
+    "workbench.colorTheme": "Catppuccin Mocha",
+    "workbench.iconTheme": "catppuccin-mocha",
+    // Font
+    "editor.fontFamily": "Maple Mono NF CN",
+    "terminal.integrated.fontFamily": "Maple Mono NF CN",
+    "editor.fontLigatures": true,
+    // Animations & Smoothness
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.smoothScrolling": true,
+    "editor.cursorBlinking": "solid",
+    "workbench.list.smoothScrolling": true,
+    // UI Elements
+    "editor.minimap.autohide": "mouseover",
+    "workbench.layoutControl.enabled": false,
+    "editor.guides.bracketPairs": true,
+    "editor.guides.bracketPairsHorizontal": false,
+    "editor.renderLineHighlight": "line",
+    // ===== Behavior =====
+    "extensions.ignoreRecommendations": true,
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    // ===== Editor =====
+    "files.autoSave": "afterDelay",
+    "files.autoGuessEncoding": true,
+    "editor.lineNumbers": "relative",
+    "editor.occurrencesHighlight": "singleFile",
+    "workbench.startupEditor": "none",
+    "workbench.editor.enablePreview": false,
+    "files.eol": "\n",
+    // ===== Terminal =====
+    "terminal.integrated.smoothScrolling": true,
+    // Vim
+    "vim.useCtrlKeys": true,
+    "vim.useSystemClipboard": true,
+    "vim.hlsearch": true,
+    "vim.visualModeKeyBindings": [
+        {
+            "before": [
+                "H"
+            ],
+            "after": [
+                "^"
+            ]
+        },
+        {
+            "before": [
+                "L"
+            ],
+            "after": [
+                "g",
+                "_"
+            ]
+        },
+    ],
+    "vim.normalModeKeyBindings": [
+        {
+            "before": [
+                "H"
+            ],
+            "after": [
+                "^"
+            ]
+        },
+        {
+            "before": [
+                "L"
+            ],
+            "after": [
+                "g",
+                "_"
+            ]
+        },
+    ],
+    "vim.operatorPendingModeKeyBindings": [
+        {
+            "before": [
+                "H"
+            ],
+            "after": [
+                "^"
+            ]
+        },
+        {
+            "before": [
+                "L"
+            ],
+            "after": [
+                "g",
+                "_"
+            ]
+        }
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                "s"
+            ],
+            "commands": [
+                "flash-vscode.start"
+            ]
+        },
+        {
+            "before": [
+                "S"
+            ],
+            "commands": [
+                "flash-vscode.startSelection"
+            ]
+        },
+        {
+            "before": [
+                "<BS>"
+            ],
+            "commands": [
+                "flash-vscode.backspace"
+            ]
+        },
+    ],
+    "extensions.experimental.affinity": {
+        "vscodevim.vim": 1
+    },
+}
