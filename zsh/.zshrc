@@ -14,3 +14,6 @@ source $ZSH/oh-my-zsh.sh
 source $ZSH_CONFIG/alias.zsh
 
 eval "$(starship init zsh)"
+
+# Added by Antigravity
+export PATH="/Users/zyz/.antigravity/antigravity/bin:$PATH"
