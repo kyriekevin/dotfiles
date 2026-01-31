@@ -1,4 +1,10 @@
+# python
 .python-version
 uv.lock
-nvim/.config/nvim/lazy-lock.json
+.ruff_cache
+
+# zsh
 zsh/.config/zsh/private.zsh
+
+# MacOS
+.DS_Store
