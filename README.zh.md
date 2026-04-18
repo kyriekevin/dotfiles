@@ -53,6 +53,8 @@ repo 依赖的核心工具。
 | [uv](https://github.com/astral-sh/uv) | Python 工具运行器 | Brewfile → `brew install uv` |
 | [pre-commit](https://pre-commit.com) | Git hooks（空白符/密钥/conventional-commits） | `uv tool install pre-commit` —— 流程见 [CONTRIBUTING.zh.md](CONTRIBUTING.zh.md) |
 
+完整包清单（shell / git / editor 工具 + GUI cask）见 [`Brewfile`](Brewfile)。每次 Brewfile 变更，`chezmoi apply` 都会自动重跑 `brew bundle`。
+
 ## 🗂 目录结构
 
 ```text

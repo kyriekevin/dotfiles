@@ -53,6 +53,8 @@ The core tools this repo leans on.
 | [uv](https://github.com/astral-sh/uv) | Python tool runner | Brewfile → `brew install uv` |
 | [pre-commit](https://pre-commit.com) | Git hooks (whitespace / secrets / conventional-commits) | `uv tool install pre-commit` — setup in [CONTRIBUTING.md](CONTRIBUTING.md) |
 
+The full package list (shell / git / editor utilities + GUI casks) lives in [`Brewfile`](Brewfile). `chezmoi apply` re-runs `brew bundle` automatically whenever Brewfile changes.
+
 ## 🗂 Layout
 
 ```text
