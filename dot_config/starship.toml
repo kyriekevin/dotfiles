@@ -60,6 +60,10 @@ crust = "#11111b"
 [os]
 disabled = false
 style = "bg:surface0 fg:text"
+# Explicit padding — previous config relied on $username (show_always=true)
+# to pad this segment. With $username off, the icon would sit flush against
+# the transition triangle and look undersized.
+format = "[ $symbol ]($style)"
 
 [os.symbols]
 Macos = "󰀵"
