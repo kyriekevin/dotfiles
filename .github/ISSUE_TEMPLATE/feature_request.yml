@@ -1,40 +1,40 @@
-name: Feature request
-description: A new tool, config, or automation to add
+name: Feature request / 功能请求
+description: A new tool, config, or automation to add / 新增工具、配置或自动化
 title: "feat(<scope>): <subject>"
 labels: [enhancement]
 body:
   - type: textarea
     id: need
     attributes:
-      label: What do you want to add, and why?
-      description: Tool name, use case, why the existing setup doesn't cover it.
+      label: What do you want to add, and why? — 想加什么？为什么？
+      description: Tool name, use case, why the existing setup doesn't cover it. / 工具名、使用场景、现有配置为何不够。
     validations:
       required: true
 
   - type: textarea
     id: approach
     attributes:
-      label: Proposed approach
+      label: Proposed approach — 建议方案
       description: |
-        - Which phase does this belong to (if part of the incremental plan)?
-        - Any chezmoi-specific design notes (new `dot_*` file? template vars? encrypted secret?)
-        - Impact on existing packages
+        - Which phase does this belong to (if part of the incremental plan)? / 归属哪个 phase（如果属于渐进计划的一部分）？
+        - Any chezmoi-specific design notes (new `dot_*` file? template vars? encrypted secret?) / chezmoi 层面的设计要点（新 `dot_*` 文件？模板变量？加密 secret？）
+        - Impact on existing packages / 对已有包的影响
 
   - type: dropdown
     id: priority
     attributes:
-      label: Priority
+      label: Priority — 优先级
       options:
-        - low — nice-to-have
-        - medium — would improve daily workflow
-        - high — blocking something
+        - low — nice-to-have / 锦上添花
+        - medium — would improve daily workflow / 改善日常流程
+        - high — blocking something / 正在卡人
     validations:
       required: true
 
   - type: checkboxes
     id: scope
     attributes:
-      label: Scope
+      label: Scope — 范围
       options:
-        - label: I plan to open a PR myself
-        - label: This is a request for someone else to implement
+        - label: I plan to open a PR myself / 我会自己开 PR
+        - label: This is a request for someone else to implement / 希望其他人来实现
