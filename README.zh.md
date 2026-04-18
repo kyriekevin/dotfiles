@@ -72,8 +72,8 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/kyriekevin/dotfiles/main/b
 ├── .chezmoi.toml.tmpl            → init 交互提示 + age recipient
 ├── .chezmoiignore                → chezmoi 不管理的路径
 ├── .pre-commit-config.yaml       → 空白符 / gitleaks / conv-commits
-├── CONTRIBUTING.md               → 分支 / commit 规范
-└── README.md                     → 就是你正在看的
+├── CONTRIBUTING.zh.md            → 分支 / commit 规范
+└── README.zh.md                  → 就是你正在看的
 ```
 
 > [!NOTE]
