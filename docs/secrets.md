@@ -72,7 +72,7 @@ chezmoi apply                 # or: chezmoi apply ~/.config/zsh/secrets.zsh
      | age -r <new-pub> -o <file>.tmp \
      && mv <file>.tmp <file>
    ```
-3. Update `[age].recipient` in `.chezmoi.toml.tmpl` **and** `~/.config/chezmoi/chezmoi.toml`
+3. Update `[age].recipient` in `.chezmoi.toml.tmpl`, then re-run `chezmoi --source=$HOME/.dotfiles init` to regenerate `~/.config/chezmoi/chezmoi.toml` from the template. **Don't hand-edit the rendered config** — `promptStringOnce` answers (`git_email`, `is_work`) are already stored in its `[data]` section, so init won't re-prompt
 4. Swap: `mv key-new.txt key.txt` — **distribute the new private key to every Mac that needs it**
 5. Commit the re-encrypted files + recipient change in one atomic PR
 

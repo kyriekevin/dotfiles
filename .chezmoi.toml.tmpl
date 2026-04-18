@@ -9,6 +9,11 @@ encryption = "age"
   is_work   = {{ $isWork }}
   hostname  = {{ .chezmoi.hostname | quote }}
 
+{{/* Age recipient is hardcoded for the primary user (same key shared across
+     both of my Macs). If you fork this repo for your own use, replace the
+     recipient with your own public key — derive it via
+       age-keygen -y ~/.config/chezmoi/key.txt
+     — and re-encrypt every encrypted_*.age file. See docs/secrets.md#rotate-the-age-key. */}}
 [age]
   identity  = "~/.config/chezmoi/key.txt"
   recipient = "age1t86dgaf2ywufzyet5g4fv8epjj2ycn8hdt59tz32qmwnel3jt44sdzg5g6"
