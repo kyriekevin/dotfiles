@@ -35,6 +35,23 @@ On first run, `chezmoi init` prompts for:
 | `git_email` | primary email for `~/.gitconfig` on this machine    |
 | `is_work`   | `true` on the work Mac, `false` on the personal one |
 
+## 🧰 Toolchain
+
+`bootstrap.sh` handles the user-facing stack — listed here for transparency:
+
+| Tool | Role | How it gets on the machine |
+| --- | --- | --- |
+| [Homebrew](https://brew.sh) | macOS package manager | `bootstrap.sh` installs it non-interactively if missing |
+| [chezmoi](https://www.chezmoi.io) | dotfiles manager | `brew install chezmoi` (inside bootstrap) |
+| [age](https://github.com/FiloSottile/age) | secret encryption | `brew install age` (inside bootstrap) |
+
+Contributor-only tools (needed to **edit** the repo, not to use it):
+
+| Tool | Role | Install |
+| --- | --- | --- |
+| [uv](https://github.com/astral-sh/uv) | Python tool runner | `brew install uv` · or `curl -LsSf https://astral.sh/uv/install.sh \| sh` |
+| [pre-commit](https://pre-commit.com) | Git hooks (whitespace / secrets / conventional-commits) | `uv tool install pre-commit` — full setup in [CONTRIBUTING.md](CONTRIBUTING.md) |
+
 ## 🗂 Layout
 
 ```text
