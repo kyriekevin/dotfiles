@@ -35,6 +35,12 @@ brew "uv"
 # ---- Mac App Store CLI -----------------------------------------------------
 brew "mas"
 
+# ---- Fonts -----------------------------------------------------------------
+# NF variant is required by starship (powerline triangles + MDI glyphs like
+# the mac icon); CN variant covers CJK comments/messages. Terminal's
+# font-family needs to point at "Maple Mono NF CN".
+cask "font-maple-mono-nf-cn"
+
 # ---- GUI apps --------------------------------------------------------------
 cask "ghostty"
 cask "karabiner-elements"

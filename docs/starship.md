@@ -74,7 +74,7 @@ bash tests/starship.sh
 Open a new terminal tab:
 
 1. Prompt shows **two lines** — first line powerline segments, second line just `❯`.
-2. Nerd-font glyphs render as icons, not `□` boxes. If you see boxes, your terminal's font isn't a Nerd Font.
+2. Nerd-font glyphs render as icons (mac 󰀵, chat 󰭹, ✦), not `□` boxes. The Brewfile-pinned font is **Maple Mono NF CN**; if glyphs are boxes your terminal's `font-family` isn't pointing at it.
 3. `sleep 4` — line 2 should show yellow `took 4s`.
 4. `false` — line 2 should show red `✘ 1`.
 5. `sleep 100 &` — `$jobs` should show cyan `✦ 1`. `wait` or `kill %1` to clean up.
@@ -83,7 +83,7 @@ Open a new terminal tab:
 
 ## Troubleshooting
 
-**Nerd-font glyphs show as `□` boxes** — terminal font is missing. Ghostty ships with JetBrainsMono Nerd Font bundled (Phase 4b sets this); other terminals need `brew install --cask font-jetbrains-mono-nerd-font`.
+**Nerd-font glyphs show as `□` boxes** — terminal font isn't a Nerd Font. The Brewfile ships `font-maple-mono-nf-cn`; point your terminal's `font-family` at `Maple Mono NF CN`. Phase 4b wires this into Ghostty automatically; on stock Terminal.app or iTerm2 set it in preferences.
 
 **`$custom.claude` never fires inside Claude Code** — check `echo $CLAUDECODE` in the session. If empty, the parent Claude Code version is older than the `CLAUDECODE=1` injection (≥ 1.x). Workaround: add a second detection branch via `when = 'test -n "$CLAUDECODE" -o -n "$CLAUDE_CODE_ENTRYPOINT"'`.
 

@@ -74,7 +74,7 @@ bash tests/starship.sh
 开新 terminal tab：
 
 1. Prompt 是**两行** —— 第一行 powerline 段，第二行只有 `❯`。
-2. Nerd-font 字形渲成图标，不是 `□` 方框。如果看到方框，你终端字体不是 Nerd Font。
+2. Nerd-font 字形渲成图标（mac 󰀵、chat 󰭹、✦ 等），不是 `□` 方框。Brewfile 锁的字体是 **Maple Mono NF CN**；若看到方框，说明终端 `font-family` 没指向它。
 3. `sleep 4` —— 第二行应显示黄色 `took 4s`。
 4. `false` —— 第二行应显示红色 `✘ 1`。
 5. `sleep 100 &` —— `$jobs` 应显示青色 `✦ 1`；用 `wait` 或 `kill %1` 清理。
@@ -83,7 +83,7 @@ bash tests/starship.sh
 
 ## Troubleshooting
 
-**Nerd-font 字形显示为 `□` 方框** —— 终端字体缺失。Ghostty 自带 JetBrainsMono Nerd Font（Phase 4b 配置）；其他终端需 `brew install --cask font-jetbrains-mono-nerd-font`。
+**Nerd-font 字形显示为 `□` 方框** —— 终端字体不是 Nerd Font。Brewfile 锁了 `font-maple-mono-nf-cn`，把终端的 `font-family` 指到 `Maple Mono NF CN`。Phase 4b 会自动写进 Ghostty；Terminal.app / iTerm2 需要在偏好设置里手动选。
 
 **在 Claude Code 里 `$custom.claude` 不显示** —— `echo $CLAUDECODE` 检查一下。如果空，父进程 Claude Code 版本太老没注入（≥ 1.x 才有）。兜底方案：`when = 'test -n "$CLAUDECODE" -o -n "$CLAUDE_CODE_ENTRYPOINT"'`。
 
