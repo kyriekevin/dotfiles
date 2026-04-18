@@ -12,7 +12,7 @@
 #
 set -euo pipefail
 
-REPO_URL="git@github.com:kyriekevin/dotfiles.git"
+REPO_URL="https://github.com/kyriekevin/dotfiles.git"
 SOURCE_DIR="${HOME}/.dotfiles"
 
 # --- Homebrew ------------------------------------------------------------
