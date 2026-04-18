@@ -1,0 +1,53 @@
+name: Bug report
+description: Something in a config is misbehaving
+title: "fix(<scope>): <subject>"
+labels: [bug]
+body:
+  - type: input
+    id: affected
+    attributes:
+      label: Affected package / config
+      description: e.g. zsh, nvim, karabiner, ghostty, bootstrap
+      placeholder: zsh
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: Commands or steps to trigger the issue. Include `chezmoi --version`, macOS version, and any relevant `chezmoi diff` output.
+      render: shell
+    validations:
+      required: true
+
+  - type: dropdown
+    id: machine
+    attributes:
+      label: Which machine?
+      options:
+        - work Mac
+        - personal Mac
+        - fresh Mac / VM bootstrap
+        - other (explain in Reproduction)
+    validations:
+      required: true
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Current workaround (if any)
