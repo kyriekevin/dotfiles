@@ -35,18 +35,6 @@ body:
     validations:
       required: true
 
-  - type: dropdown
-    id: machine
-    attributes:
-      label: Which machine?
-      options:
-        - work Mac
-        - personal Mac
-        - fresh Mac / VM bootstrap
-        - other (explain in Reproduction)
-    validations:
-      required: true
-
   - type: textarea
     id: workaround
     attributes:

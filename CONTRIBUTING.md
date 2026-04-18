@@ -29,8 +29,7 @@ Commit messages are validated by the `commit-msg` pre-commit hook — non-confor
 ## Pull requests
 
 1. Open a PR against `main` from your `feat/<name>` branch — the [PR template](.github/pull_request_template.md) gives you the checklist
-2. Wait for the [pre-commit CI](.github/workflows/pre-commit.yml) to pass
-3. Merge via the **GitHub web UI** — Squash for small PRs, Rebase for well-structured multi-commit PRs
+2. Merge via the **GitHub web UI** — Squash for small PRs, Rebase for well-structured multi-commit PRs
 
 ## Issues
 
@@ -96,8 +95,6 @@ pre-commit autoupdate
 | `check-merge-conflict` | catches stray conflict markers |
 | [`gitleaks`](https://github.com/gitleaks/gitleaks) | scans for committed secrets (age keys, tokens) |
 | [`conventional-pre-commit`](https://github.com/compilerla/conventional-pre-commit) | enforces Conventional Commits (commit-msg stage) |
-
-CI runs the same suite on every push and PR via `.github/workflows/pre-commit.yml`, so web-UI edits are covered too.
 
 ## Secrets
 

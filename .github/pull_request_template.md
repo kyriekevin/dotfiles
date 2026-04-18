@@ -13,21 +13,23 @@ e.g. `feat(zsh): add zinit turbo plugin loader`
 
 - [ ] `feat` — new package / functionality
 - [ ] `fix` — bug fix
-- [ ] `chore` — infrastructure, hooks, CI, dependency bumps
+- [ ] `chore` — infrastructure, hooks, dependency bumps
 - [ ] `docs` — documentation only
 - [ ] `refactor` — no behavior change
 
 ## Checklist
 
-- [ ] Commit messages follow Conventional Commits (validated by the `commit-msg` hook)
+<!-- Tick what applies; skip what doesn't. -->
+
+- [ ] Commit messages follow Conventional Commits
 - [ ] `pre-commit run --all-files` passes locally
-- [ ] `chezmoi diff` reviewed; no unexpected deletions or permission changes
-- [ ] If a new package: entry added to the `Layout` section of `README.md`
-- [ ] If a new CLI tool: added to `Brewfile` and verified with `brew bundle check`
-- [ ] Tested on:
-  - [ ] work Mac
-  - [ ] personal Mac
-  - [ ] fresh bootstrap (VM or new user)
+- [ ] `chezmoi diff` reviewed; no surprising deletions or permission changes
+
+If relevant to this PR:
+
+- [ ] New package → entry added to the `Layout` section of `README.md`
+- [ ] New CLI tool → added to `Brewfile`
+- [ ] Smoke-tested end-to-end on at least one Mac
 
 ## Notes for reviewer
 
