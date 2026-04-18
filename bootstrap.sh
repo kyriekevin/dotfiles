@@ -32,9 +32,20 @@ if ! command -v brew >/dev/null 2>&1; then
     fi
 fi
 
-# --- chezmoi + age -------------------------------------------------------
+# --- Homebrew-managed CLIs -----------------------------------------------
 command -v chezmoi >/dev/null 2>&1 || brew install chezmoi
 command -v age     >/dev/null 2>&1 || brew install age
+command -v gh      >/dev/null 2>&1 || brew install gh
+
+# --- Claude Code ---------------------------------------------------------
+# Installed via official script (not Homebrew). Writes to ~/.local/bin/claude.
+# Check the install path too — on a fresh Mac ~/.local/bin isn't on PATH
+# until the shell config is applied + re-sourced, so `command -v` alone
+# would re-run the installer on every bootstrap.
+if ! command -v claude >/dev/null 2>&1 && [[ ! -x "${HOME}/.local/bin/claude" ]]; then
+    echo "==> Installing Claude Code"
+    curl -fsSL https://claude.ai/install.sh | bash
+fi
 
 # --- age identity sanity check ------------------------------------------
 key="${HOME}/.config/chezmoi/key.txt"
