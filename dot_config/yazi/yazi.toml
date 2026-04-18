@@ -29,12 +29,12 @@ wrap          = "no"
 tab_size      = 2
 max_width     = 1000
 max_height    = 1000
-cache_dir     = ""                # Defaults to ~/.cache/yazi — don't override.
 image_delay   = 30                # ms — debounce so rapid `j`/`k` doesn't thrash decoder.
 image_filter  = "triangle"        # Good balance of sharpness vs speed.
 image_quality = 75                # 50–90 is reasonable; 100 is lossless-but-slow.
-ueberzug_scale  = 1
-ueberzug_offset = [0, 0, 0, 0]
+# No ueberzug keys — ueberzug is Linux X11/Wayland only; we preview via
+# Ghostty's Kitty graphics protocol. `cache_dir` omitted so yazi falls
+# back to its default ~/.cache/yazi.
 
 [opener]
 # Unix opener for text → our terminal editor. `block = true` reclaims the
@@ -47,15 +47,15 @@ open = [
     { run = 'open "$@"', desc = "Open", for = "macos" },
 ]
 reveal = [
-    { run = 'open -R "$1"', desc = "Reveal in Finder", for = "macos" },
+    # `"$@"` (not `"$1"`) so multi-select passes every path to `open -R`,
+    # which accepts multiple filenames per `man open`.
+    { run = 'open -R "$@"', desc = "Reveal in Finder", for = "macos" },
 ]
-play = [
-    { run = 'open "$@"', desc = "Play", for = "macos" },
-]
-extract = [
-    # 7z handles zip / 7z / rar / tar.gz via the sevenzip brew.
-    { run = '7z x "$@"', desc = "Extract here", for = "unix" },
-]
+# No `play` / `extract` opener blocks: our `[open] prepend_rules` catch-all
+# routes every non-text file to `open` (Launch Services), which means
+# yazi's default play/extract rules never fire. Defining them here was
+# dead code. Add entries back *with a matching prepend_rule* if you
+# want to peel archives off the catch-all path.
 
 [open]
 # `prepend_rules` stacks above yazi defaults so we can override without
