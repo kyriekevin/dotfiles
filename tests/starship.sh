@@ -49,9 +49,11 @@ check 'custom.claude visible with CLAUDECODE=1'  '[[ "$PROMPT_CLAUDE" == *claude
 echo
 echo "── Nerd-font / Powerline glyph invariants ───────────"
 # These codepoints live in the Private Use Area. They are invisible to
-# most text editors and were silently stripped three times during earlier
+# most text editors and were silently stripped four times during earlier
 # refactors, yielding a visually broken prompt while every other check
-# passed. Count them from the live render so the failure can't hide again.
+# passed. Count from the live render for what's always visible, and grep
+# the config file for conditional symbols (git/c/python) that only fire
+# in matching projects.
 PUA_COUNTS=$(starship prompt 2>/dev/null | python3 -c '
 import sys, re
 raw = sys.stdin.buffer.read().decode("utf-8", errors="replace")
@@ -66,6 +68,13 @@ export PL MAC ARROW
 check 'Powerline glyphs in prompt (≥5)'          '(( PL >= 5 ))'
 check 'macOS nerd-font icon (U+F0035) present'   '(( MAC >= 1 ))'
 check 'character arrow glyph (U+F432) present'   '(( ARROW >= 1 ))'
+STARSHIP_CFG="$HOME/.config/starship.toml"
+has_cp() { python3 -c 'import sys; sys.exit(0 if chr(int(sys.argv[1],16)) in open(sys.argv[2]).read() else 1)' "$1" "$2"; }
+export -f has_cp
+export STARSHIP_CFG
+check '[git_branch] symbol U+F418 in config'     'has_cp F418 "$STARSHIP_CFG"'
+check '[c] symbol U+E61E in config'              'has_cp E61E "$STARSHIP_CFG"'
+check '[python] symbol U+E606 in config'         'has_cp E606 "$STARSHIP_CFG"'
 
 echo
 echo "─────────────────────────────────────────────────────"

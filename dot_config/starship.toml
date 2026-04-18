@@ -92,19 +92,18 @@ truncation_symbol = "…/"
 "Developer" = "󰲋 "
 
 [git_branch]
-symbol = ""
+symbol = ""
 format = '[ $symbol $branch ](fg:base bg:green)'
 
 [git_status]
 format = '[($all_status$ahead_behind )](fg:base bg:green)'
 
 [c]
-symbol = " "
+symbol = " "
 format = '[ $symbol( $version) ](fg:base bg:green)'
 
 [python]
-symbol = ""
-pyenv_version_name = true
+symbol = ""
 format = '[ $symbol( ${version})(\($virtualenv\)) ](fg:base bg:green)'
 
 [time]
