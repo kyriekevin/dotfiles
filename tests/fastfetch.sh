@@ -76,6 +76,11 @@ echo "── Schema drift regression guards ────────────
 # ever rendering, so catch them at the source.
 check "no general.multithreading (removed)"      "! grep -q multithreading $CFG"
 check "no display.bar.charElapsed (renamed)"     "! grep -q charElapsed $CFG"
+# Every SGR sequence must end with `m`. Missing terminator = fastfetch
+# either drops the color silently (today) or corrupts the line when the
+# threshold fires (future). Match `u001b[<digits;>+"` — the trailing quote
+# with no `m` in between is what we're catching.
+check 'no unterminated SGR sequences'            "! grep -qE 'u001b\\[[0-9;]+\"' $CFG"
 
 echo
 echo "── Nerd-font PUA codepoints preserved ───────────────"
