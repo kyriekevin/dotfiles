@@ -9,3 +9,4 @@ Brewfile
 .pre-commit-config.yaml
 .github
 docs
+tests
