@@ -1,7 +1,7 @@
 name: Bug report / Bug 报告
 description: Something in a config is misbehaving / 某份配置行为异常
 title: "fix(<scope>): <subject>"
-labels: [bug]
+labels: [fix]
 body:
   - type: input
     id: affected

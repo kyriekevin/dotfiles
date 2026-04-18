@@ -28,6 +28,25 @@ Body and footer are optional. Breaking changes go in the footer as `BREAKING CHA
 
 Commit messages are validated by the `commit-msg` pre-commit hook — non-conforming messages are rejected locally.
 
+## Labels
+
+PRs and issues share one taxonomy that mirrors the Conventional Commit types:
+
+| Label | Use for |
+|---|---|
+| `feat` | new feature or capability |
+| `fix` | bug fix |
+| `chore` | tooling, deps, infrastructure |
+| `docs` | documentation only |
+| `refactor` | code change with no behavior change |
+| `test` | test additions or fixes |
+| `perf` | performance improvement |
+| `ci` | CI configuration |
+
+Every PR must carry **at least one** type label. Multi-type PRs can stack labels (e.g. `feat,docs`). `build` / `style` commits map to `chore`.
+
+Issue templates pre-fill the right label — `bug_report.yml` → `fix`, `feature_request.yml` → `feat` — so nothing needs a manual hand-off.
+
 ## Pull requests
 
 1. Open a PR against `main` from your `feat/<name>` branch — the [PR template](.github/pull_request_template.md) gives you the checklist
