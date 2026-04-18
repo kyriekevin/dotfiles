@@ -1,7 +1,7 @@
 name: Feature request / 功能请求
 description: A new tool, config, or automation to add / 新增工具、配置或自动化
 title: "feat(<scope>): <subject>"
-labels: [enhancement]
+labels: [feat]
 body:
   - type: textarea
     id: need
