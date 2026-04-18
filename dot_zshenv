@@ -1,0 +1,10 @@
+# Read by every zsh invocation — login, interactive, subshell, script.
+# Keep it tiny: everything interactive belongs in ~/.config/zsh/*.zsh.
+
+# PATH baseline — `env.zsh` layers brew + app paths on top for interactive use
+export PATH="$HOME/.local/bin:$PATH"
+
+# Editor + locale — needed in non-interactive contexts too (git, cron, ...)
+export EDITOR="nvim"
+export VISUAL="$EDITOR"
+export LANG="en_US.UTF-8"

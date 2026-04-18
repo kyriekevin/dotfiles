@@ -1,0 +1,16 @@
+# Interactive zsh entry point. Module bodies live in ~/.config/zsh/*.zsh.
+#
+# Load order matters:
+#   env      → PATH + env vars + brew shellenv
+#   plugins  → zinit Turbo (compinit happens here)
+#   tools    → fzf / zoxide init (needs plugins done: fzf-tab depends on it)
+#   aliases  → override anything plugins set
+#   keybinds → custom bindkey overrides (reserved slot, empty in Phase 3)
+#   secrets  → decrypted env vars (Phase 1 product)
+
+ZDOTDIR="${ZDOTDIR:-$HOME/.config/zsh}"
+
+for f in env plugins tools aliases keybinds secrets; do
+    [[ -r "$ZDOTDIR/$f.zsh" ]] && source "$ZDOTDIR/$f.zsh"
+done
+unset f
