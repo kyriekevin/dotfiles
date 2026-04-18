@@ -6,3 +6,4 @@ Brewfile
 .gitignore
 .pre-commit-config.yaml
 .github
+docs
