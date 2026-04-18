@@ -57,12 +57,19 @@ Contributor-only tools (needed to **edit** the repo, not to use it):
 ```text
 ~/.dotfiles/
 ├── dot_*                         → ~/.*            (real dotfiles)
-├── private_* / encrypted_*       → chmod 0600, age-decrypted on apply
+├── encrypted_private_*.age       → chmod 0600, age-decrypted on apply
 ├── *.tmpl                        → Go-rendered with chezmoi data
 ├── run_once_before_* /           → apply-time hooks
 │   run_onchange_after_*
 ├── Brewfile                      → brew bundle (triggered by a hook)
-└── bootstrap.sh                  → new-Mac entrypoint
+├── bootstrap.sh                  → new-Mac entrypoint
+├── docs/                         → operator runbooks (secrets, …)
+├── .github/                      → issue + PR templates
+├── .chezmoi.toml.tmpl            → init prompts + age recipient
+├── .chezmoiignore                → paths chezmoi must NOT manage
+├── .pre-commit-config.yaml       → whitespace / gitleaks / conv-commits
+├── CONTRIBUTING.md               → branch/commit conventions
+└── README.md                     → you are here
 ```
 
 > [!NOTE]
@@ -77,6 +84,8 @@ Edit an encrypted secret without manual steps:
 ```bash
 chezmoi edit ~/.config/zsh/secrets.zsh
 ```
+
+Full runbook — bootstrap, add, rotate, gotchas — in [docs/secrets.md](docs/secrets.md).
 
 ## 🧪 Contributing
 

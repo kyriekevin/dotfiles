@@ -98,16 +98,4 @@ pre-commit autoupdate
 
 ## Secrets
 
-Never commit plaintext secrets. The age identity at `~/.config/chezmoi/key.txt` and any unencrypted `secrets.zsh` are blocked by `.gitignore`, and `gitleaks` catches accidental commits.
-
-Add a new encrypted secret:
-
-```bash
-chezmoi add --encrypt ~/.config/zsh/secrets.zsh
-```
-
-Edit it later (transparent decrypt/re-encrypt via `$EDITOR`):
-
-```bash
-chezmoi edit ~/.config/zsh/secrets.zsh
-```
+Never commit plaintext secrets — `.gitignore` + `gitleaks` enforce this. For the add/edit/rotate workflow and common gotchas, see [docs/secrets.md](docs/secrets.md).
