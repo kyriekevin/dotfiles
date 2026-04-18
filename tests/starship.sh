@@ -70,7 +70,18 @@ check 'macOS nerd-font icon (U+F0035) present'   '(( MAC >= 1 ))'
 check 'character arrow glyph (U+F432) present'   '(( ARROW >= 1 ))'
 STARSHIP_CFG="$HOME/.config/starship.toml"
 has_cp() { python3 -c 'import sys; sys.exit(0 if chr(int(sys.argv[1],16)) in open(sys.argv[2]).read() else 1)' "$1" "$2"; }
-export -f has_cp
+# Check whether a TOML section ([name]) contains a substring. Reads from the
+# section header up to the next top-level header (or EOF). Prefer this over
+# `grep -AN` — section length changes silently break magic N.
+section_has() {
+    python3 -c '
+import re, sys
+text = open(sys.argv[2]).read()
+m = re.search(r"^\[" + re.escape(sys.argv[1]) + r"\]\n(.*?)(?=^\[|\Z)", text, re.DOTALL | re.MULTILINE)
+sys.exit(0 if m and sys.argv[3] in m.group(1) else 1)
+' "$1" "$2" "$3"
+}
+export -f has_cp section_has
 export STARSHIP_CFG
 check '[git_branch] symbol U+F418 in config'     'has_cp F418 "$STARSHIP_CFG"'
 check '[c] symbol U+E61E in config'              'has_cp E61E "$STARSHIP_CFG"'
@@ -85,10 +96,10 @@ echo "── Contrast / vi-mode invariants ────────────�
 # inside the mauve ribbon and had bg:mauve in their style, which killed
 # the semantic-color contrast. vi-normal was written as fg:green, making
 # it visually indistinguishable from the success arrow.
-check '[status] has no bg:mauve'                 '! grep -A2 "^\[status\]" "$STARSHIP_CFG" | grep -q "bg:mauve"'
-check '[cmd_duration] has no bg:mauve'           '! grep -A3 "^\[cmd_duration\]" "$STARSHIP_CFG" | grep -q "bg:mauve"'
-check '[jobs] has no bg:mauve'                   '! grep -A4 "^\[jobs\]" "$STARSHIP_CFG" | grep -q "bg:mauve"'
-check '[custom.claude] has no bg:mauve'          '! grep -A6 "^\[custom.claude\]" "$STARSHIP_CFG" | grep -q "bg:mauve"'
+check '[status] has no bg:mauve'                 '! section_has status "$STARSHIP_CFG" "bg:mauve"'
+check '[cmd_duration] has no bg:mauve'           '! section_has cmd_duration "$STARSHIP_CFG" "bg:mauve"'
+check '[jobs] has no bg:mauve'                   '! section_has jobs "$STARSHIP_CFG" "bg:mauve"'
+check '[custom.claude] has no bg:mauve'          '! section_has custom.claude "$STARSHIP_CFG" "bg:mauve"'
 check 'vimcmd_symbol uses fg:mauve'              'grep -q "^vimcmd_symbol.*fg:mauve" "$STARSHIP_CFG"'
 
 echo
