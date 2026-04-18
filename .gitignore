@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Age private keys — defense in depth (canonical location is ~/.config/chezmoi/key.txt)
+**/key.txt
+*.age.key
+
+# Unencrypted secrets — use encrypted_*.age in source tree instead
+**/secrets.zsh
+!**/secrets.zsh.example
+
+# chezmoi local state (per-machine, not versioned)
+.chezmoi.toml
+
+# Python tooling
+.ruff_cache/
+__pycache__/
+*.pyc
+.python-version
+uv.lock
+
+# Editor
+.vscode/
