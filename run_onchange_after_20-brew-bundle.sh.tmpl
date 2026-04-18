@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Brewfile hash: {{ include "Brewfile" | sha256sum }}
+#
+# chezmoi re-runs run_onchange_* scripts when the script's own content changes.
+# Embedding the Brewfile hash in this comment is how the script picks up
+# Brewfile edits — without it, chezmoi would see the script as unchanged.
+set -euo pipefail
+
+# brew shellenv may not be loaded if `chezmoi apply` runs from a non-interactive
+# shell (e.g. over SSH or a subshell that skipped the rc files).
+if [[ -x /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x /usr/local/bin/brew ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+brew bundle --file={{ .chezmoi.sourceDir }}/Brewfile
