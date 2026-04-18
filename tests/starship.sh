@@ -70,7 +70,29 @@ check 'macOS nerd-font icon (U+F0035) present'   '(( MAC >= 1 ))'
 check 'character arrow glyph (U+F432) present'   '(( ARROW >= 1 ))'
 STARSHIP_CFG="$HOME/.config/starship.toml"
 has_cp() { python3 -c 'import sys; sys.exit(0 if chr(int(sys.argv[1],16)) in open(sys.argv[2]).read() else 1)' "$1" "$2"; }
-export -f has_cp
+# Check whether a TOML section ([name]) *code* contains a substring. Reads
+# from the section header up to the next top-level header (or EOF), then
+# strips `# ...` comments so a substring match on a discussion of a value
+# doesn't false-positive. The comment-strip is load-bearing: during fix/
+# starship bring-up the helper tripped on a comment that mentioned
+# `bg:mauve` rather than used it. Tolerates trailing whitespace / inline
+# comment on the header line and indented next-section headers (TOML allows
+# both, even if we don't use them).
+section_has() {
+    python3 -c '
+import re, sys
+text = open(sys.argv[2]).read()
+m = re.search(
+    r"^\[" + re.escape(sys.argv[1]) + r"\][^\n]*\n(.*?)(?=^\s*\[|\Z)",
+    text, re.DOTALL | re.MULTILINE,
+)
+if not m:
+    sys.exit(1)
+body = re.sub(r"#[^\n]*", "", m.group(1))
+sys.exit(0 if sys.argv[3] in body else 1)
+' "$1" "$2" "$3"
+}
+export -f has_cp section_has
 export STARSHIP_CFG
 check '[git_branch] symbol U+F418 in config'     'has_cp F418 "$STARSHIP_CFG"'
 check '[c] symbol U+E61E in config'              'has_cp E61E "$STARSHIP_CFG"'
@@ -78,6 +100,18 @@ check '[python] symbol U+E606 in config'         'has_cp E606 "$STARSHIP_CFG"'
 check '[time] clock icon U+F43A in config'       'has_cp F43A "$STARSHIP_CFG"'
 check 'Downloads dir icon U+F019 in config'      'has_cp F019 "$STARSHIP_CFG"'
 check 'Pictures dir icon U+F03E in config'       'has_cp F03E "$STARSHIP_CFG"'
+
+echo
+echo "── Contrast / vi-mode invariants ────────────────────"
+# Regression guards for the fix/starship PR: feedback modules used to live
+# inside the mauve ribbon and had bg:mauve in their style, which killed
+# the semantic-color contrast. vi-normal was written as fg:green, making
+# it visually indistinguishable from the success arrow.
+check '[status] has no bg:mauve'                 '! section_has status "$STARSHIP_CFG" "bg:mauve"'
+check '[cmd_duration] has no bg:mauve'           '! section_has cmd_duration "$STARSHIP_CFG" "bg:mauve"'
+check '[jobs] has no bg:mauve'                   '! section_has jobs "$STARSHIP_CFG" "bg:mauve"'
+check '[custom.claude] has no bg:mauve'          '! section_has custom.claude "$STARSHIP_CFG" "bg:mauve"'
+check 'vimcmd_symbol uses fg:mauve'              'sed "s/#.*//" "$STARSHIP_CFG" | grep -q "^vimcmd_symbol.*fg:mauve"'
 
 echo
 echo "─────────────────────────────────────────────────────"

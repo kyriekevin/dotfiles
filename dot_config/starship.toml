@@ -3,9 +3,13 @@
 # Catppuccin Mocha palette — matches $BAT_THEME for repo-wide color consistency.
 palette = 'catppuccin_mocha'
 
-# Prompt layout:
-#   line 1 — context segments (powerline): os · user · dir · git · lang · time
-#   line 2 — feedback (no bg, invisible when idle): status · cmd_duration · jobs · claude · character
+# Prompt layout (single line of content + character on line 2):
+#   line 1 — powerline ribbon (os · user · dir · git · lang · time) ▶ trailing
+#            feedback on terminal bg (status · cmd_duration · jobs · claude).
+#   line 2 — $character only.
+# Feedback modules sit AFTER the ribbon's closing triangle so their semantic
+# colors (red / yellow / sapphire / mauve) show on plain terminal bg instead
+# of being eaten by bg:mauve.
 format = """
 [](surface0)\
 $os\
@@ -20,11 +24,11 @@ $c\
 $python\
 [](fg:teal bg:mauve)\
 $time\
+[](fg:mauve)\
 $status\
 $cmd_duration\
 $jobs\
 $custom\
-[ ](fg:mauve)\
 $line_break\
 $character"""
 
@@ -118,23 +122,25 @@ disabled = false
 # ─── Feedback modules (shown only when triggered) ────────────────────
 
 [status]
+# Rendered on the terminal background so `fg:red` actually reads as red —
+# a coloured ribbon underneath eats the warm salmon tone.
 disabled = false
 symbol = "✘ "
-format = '[$symbol$common_meaning$signal_name$maybe_int ]($style)'
-style = "bold fg:red bg:mauve"
+format = '[ $symbol$common_meaning$signal_name$maybe_int]($style)'
+style = "bold fg:red"
 map_symbol = true
 
 [cmd_duration]
 # Only show when the previous command ran ≥ 3s — signal, not noise.
 min_time = 3_000
-format = '[took $duration ]($style)'
-style = "fg:mantle bg:mauve"
+format = '[ took $duration]($style)'
+style = "fg:yellow"
 
 [jobs]
 symbol = "✦ "
 number_threshold = 1
-format = '[$symbol$number ]($style)'
-style = "fg:sapphire bg:mauve"
+format = '[ $symbol$number]($style)'
+style = "fg:sapphire"
 
 [custom.claude]
 # Active when $CLAUDECODE=1 is injected by a Claude Code session, so the
@@ -142,13 +148,13 @@ style = "fg:sapphire bg:mauve"
 description = "Claude Code session indicator"
 when = 'test -n "$CLAUDECODE"'
 command = "echo"
-format = '[󰭹 claude ]($style)'
-style = "bold fg:lavender bg:mauve"
+format = '[ 󰭹 claude]($style)'
+style = "bold fg:mauve"
 
 [character]
 success_symbol = '[](bold fg:green)'
 error_symbol = '[](bold fg:red)'
-vimcmd_symbol = '[](bold fg:green)'
+vimcmd_symbol = '[](bold fg:mauve)'
 vimcmd_replace_one_symbol = '[](bold fg:mauve)'
 vimcmd_replace_symbol = '[](bold fg:mauve)'
 vimcmd_visual_symbol = '[](bold fg:lavender)'

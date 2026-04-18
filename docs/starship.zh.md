@@ -2,7 +2,7 @@
 
 > [English](starship.md) · 中文
 
-Rust 写的跨 shell prompt。我们用它做：双行 powerline 上下文、Catppuccin Mocha 色板（与 `$BAT_THEME` 一致）、vi-mode 视觉反馈（配合 OMZP::vi-mode），以及三个"只在需要时出现"的反馈 module。
+Rust 写的跨 shell prompt。我们用它做：单行 powerline 上下文 + 尾随反馈（落在终端背景上）、Catppuccin Mocha 色板（与 `$BAT_THEME` 一致）、vi-mode 视觉反馈（配合 OMZP::vi-mode），以及四个"只在需要时出现"的反馈 module。
 
 ## How it works
 
@@ -14,12 +14,12 @@ Rust 写的跨 shell prompt。我们用它做：双行 powerline 上下文、Cat
 
 ## Prompt 布局
 
-两行：
+第 1 行是 powerline ribbon；反馈 module 接在 ribbon 后面的终端背景上，避免 semantic color 被 `bg:mauve` 吃掉。第 2 行只有 `$character`。
 
-    ╭─  bytedance  ~/.dotfiles   feat/starship  ✓    19:42  ╮
-    ╰─   ✘ 1 took 14s ✦ 2 󰭹 claude
+    ╭─  ~/.dotfiles   main  ✓    19:42 ▶ ✘ ERROR took 14s ✦ 2 󰭹 claude
+    ╰─ ❯
 
-**第 1 行 —— 上下文（powerline 段，始终可见）：**
+**第 1 行 · ribbon —— 上下文（始终可见，段段带背景色）：**
 
 | 段 | 内容 | 理由 |
 |---|---|---|
@@ -28,17 +28,18 @@ Rust 写的跨 shell prompt。我们用它做：双行 powerline 上下文、Cat
 | `$directory` | 3 级截断路径 | substitutions 把常用目录渲成 nerd-font 图标 |
 | `$git_branch + $git_status` | 分支 + dirty 标记 | 一段一色 —— 瞟一眼就知道分支状态 |
 | `$c + $python` | C / Python 版本 | 算法研究栈。`$package` 删掉了（node / rust 噪音） |
-| `$time` | `%R` 时钟 | 没有 tmux status bar，prompt 就是时钟位置 |
+| `$time` | `%R` 时钟 | 没有 tmux status bar，prompt 就是时钟位置。ribbon 的收口段 |
 
-**第 2 行 —— 反馈（无背景，只在触发时出现）：**
+**第 1 行 · 尾随 —— 反馈（跟在 ribbon 后面，无背景，触发才显示）：**
 
-| Module | 触发条件 | 理由 |
-|---|---|---|
-| `$status` | 上条命令 exit ≠ 0 | fail-loud，不要静默失败 |
-| `$cmd_duration` | 上条命令 ≥ 3s | 训练 / OJ run —— 不用 `time` 就知道"这条真的跑了这么久？" |
-| `$jobs` | 至少一个后台任务 | `&` 启的训练任务一直可见 |
-| `$custom.claude` | `CLAUDECODE=1` | 在 Claude Code session 内部开的 shell 视觉上可区分 |
-| `$character` | 永远最后 | 失败红、成功绿、vi-normal 紫 |
+| Module | 触发条件 | 颜色 | 理由 |
+|---|---|---|---|
+| `$status` | 上条命令 exit ≠ 0 | `bold fg:red` | fail-loud，不要静默失败 |
+| `$cmd_duration` | 上条命令 ≥ 3s | `fg:yellow` | 训练 / OJ run —— 不用 `time` 就知道"这条真的跑了这么久？" |
+| `$jobs` | 至少一个后台任务 | `fg:sapphire` | `&` 启的训练任务一直可见 |
+| `$custom.claude` | `CLAUDECODE=1` | `bold fg:mauve` | 在 Claude Code session 内部开的 shell 视觉上可区分 |
+
+**第 2 行 —— 只有 `$character`：** 成功绿 `❯`、失败红 `❯`、vi-normal 紫 `❮`。
 
 ## 改段
 
@@ -67,19 +68,19 @@ style       = "bold fg:lavender"
 bash tests/starship.sh
 ```
 
-20 条检查：starship 在 PATH、config 文件存在、`starship print-config` 解析、tools.zsh 接线成功、`starship prompt` 正常 + 异常都能渲染、每个反馈 module 在正确输入下 fire（`--status=1`、`--cmd-duration=5000`、`--jobs=1`、`CLAUDECODE=1`）、live prompt 输出携带 Powerline + macOS + arrow 码点，以及 config 文件里 git / c / python / 时钟 / Downloads / Pictures 的 nerd-font 字形依然在位 —— 这些 PUA 码点在大多数编辑器里隐形，早期重写时被静默吞掉过五次。
+25 条检查：starship 在 PATH、config 文件存在、`starship print-config` 解析、tools.zsh 接线成功、`starship prompt` 正常 + 异常都能渲染、每个反馈 module 在正确输入下 fire（`--status=1`、`--cmd-duration=5000`、`--jobs=1`、`CLAUDECODE=1`）、live prompt 输出携带 Powerline + macOS + arrow 码点；config 文件里 git / c / python / 时钟 / Downloads / Pictures 的 nerd-font 字形依然在位（这些 PUA 码点在大多数编辑器里隐形，早期重写时被静默吞掉过五次）；反馈 module 都不带 `bg:mauve`（回归保护 —— 曾经挤在 ribbon 里，salmon 色糊在紫底上）；`vimcmd_symbol` 用 `fg:mauve`（回归保护 —— 曾经写成 `fg:green`，与 success 撞色）。
 
 ### 手动（需要真实 TTY）
 
 开新 terminal tab：
 
-1. Prompt 是**两行** —— 第一行 powerline 段，第二行只有 `❯`。
+1. Prompt 是**两行** —— 第一行 ribbon + (触发时的)尾随反馈，第二行只有 `❯`。
 2. Nerd-font 字形渲成图标（mac 󰀵、chat 󰭹、✦ 等），不是 `□` 方框。Brewfile 锁的字体是 **Maple Mono NF CN**；若看到方框，说明终端 `font-family` 没指向它。
-3. `sleep 4` —— 第二行应显示黄色 `took 4s`。
-4. `false` —— 第二行应显示红色 `✘ 1`。
-5. `sleep 100 &` —— `$jobs` 应显示青色 `✦ 1`；用 `wait` 或 `kill %1` 清理。
-6. 在 Claude Code 里 `$CLAUDECODE=1` —— 第二行应显示紫色 `󰭹 claude`。
-7. 键入后按 Esc —— `❯` 应变紫色（vi-normal 模式）。
+3. `sleep 4` —— time 段后面出现黄色 `took 4s`（跟在 ribbon 之后，无背景）。
+4. `false` —— 尾随反馈显示 **加粗红色** `✘ ERROR`。
+5. `sleep 100 &` —— 尾随反馈显示 **sapphire 蓝** `✦ 1`；用 `wait` 或 `kill %1` 清理。
+6. 在 Claude Code 里 `$CLAUDECODE=1` —— 尾随反馈显示 **加粗紫色** `󰭹 claude`。
+7. 键入后按 Esc —— 第 2 行箭头从绿色 `❯` 翻成 **紫色 `❮`**（vi-normal 模式）。
 
 ## Troubleshooting
 
