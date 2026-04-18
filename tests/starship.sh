@@ -70,15 +70,26 @@ check 'macOS nerd-font icon (U+F0035) present'   '(( MAC >= 1 ))'
 check 'character arrow glyph (U+F432) present'   '(( ARROW >= 1 ))'
 STARSHIP_CFG="$HOME/.config/starship.toml"
 has_cp() { python3 -c 'import sys; sys.exit(0 if chr(int(sys.argv[1],16)) in open(sys.argv[2]).read() else 1)' "$1" "$2"; }
-# Check whether a TOML section ([name]) contains a substring. Reads from the
-# section header up to the next top-level header (or EOF). Prefer this over
-# `grep -AN` — section length changes silently break magic N.
+# Check whether a TOML section ([name]) *code* contains a substring. Reads
+# from the section header up to the next top-level header (or EOF), then
+# strips `# ...` comments so a substring match on a discussion of a value
+# doesn't false-positive. The comment-strip is load-bearing: during fix/
+# starship bring-up the helper tripped on a comment that mentioned
+# `bg:mauve` rather than used it. Tolerates trailing whitespace / inline
+# comment on the header line and indented next-section headers (TOML allows
+# both, even if we don't use them).
 section_has() {
     python3 -c '
 import re, sys
 text = open(sys.argv[2]).read()
-m = re.search(r"^\[" + re.escape(sys.argv[1]) + r"\]\n(.*?)(?=^\[|\Z)", text, re.DOTALL | re.MULTILINE)
-sys.exit(0 if m and sys.argv[3] in m.group(1) else 1)
+m = re.search(
+    r"^\[" + re.escape(sys.argv[1]) + r"\][^\n]*\n(.*?)(?=^\s*\[|\Z)",
+    text, re.DOTALL | re.MULTILINE,
+)
+if not m:
+    sys.exit(1)
+body = re.sub(r"#[^\n]*", "", m.group(1))
+sys.exit(0 if sys.argv[3] in body else 1)
 ' "$1" "$2" "$3"
 }
 export -f has_cp section_has
