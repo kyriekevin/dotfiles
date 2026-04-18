@@ -3,4 +3,6 @@ LICENSE
 CONTRIBUTING.md
 bootstrap.sh
 Brewfile
+.gitignore
 .pre-commit-config.yaml
+.github
