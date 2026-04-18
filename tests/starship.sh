@@ -75,6 +75,9 @@ export STARSHIP_CFG
 check '[git_branch] symbol U+F418 in config'     'has_cp F418 "$STARSHIP_CFG"'
 check '[c] symbol U+E61E in config'              'has_cp E61E "$STARSHIP_CFG"'
 check '[python] symbol U+E606 in config'         'has_cp E606 "$STARSHIP_CFG"'
+check '[time] clock icon U+F43A in config'       'has_cp F43A "$STARSHIP_CFG"'
+check 'Downloads dir icon U+F019 in config'      'has_cp F019 "$STARSHIP_CFG"'
+check 'Pictures dir icon U+F03E in config'       'has_cp F03E "$STARSHIP_CFG"'
 
 echo
 echo "─────────────────────────────────────────────────────"

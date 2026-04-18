@@ -87,9 +87,9 @@ truncation_symbol = "…/"
 
 [directory.substitutions]
 "Documents" = "󰈙 "
-"Downloads" = " "
+"Downloads" = " "
 "Music" = "󰝚 "
-"Pictures" = " "
+"Pictures" = " "
 "Developer" = "󰲋 "
 
 [git_branch]
@@ -110,7 +110,7 @@ format = '[ $symbol( ${version})(\($virtualenv\)) ](fg:base bg:teal)'
 [time]
 disabled = false
 time_format = "%R"
-format = '[  $time ](fg:mantle bg:mauve)'
+format = '[  $time ](fg:mantle bg:mauve)'
 
 [line_break]
 disabled = false
