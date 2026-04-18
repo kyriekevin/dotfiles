@@ -2,7 +2,7 @@
 
 > English · [中文](starship.zh.md)
 
-Cross-shell prompt written in Rust. We use it for: two-line powerline context, Catppuccin Mocha palette matching `$BAT_THEME`, vi-mode visual cue (paired with OMZP::vi-mode), and three feedback modules that only show when they matter.
+Cross-shell prompt written in Rust. We use it for: single-line powerline context + trailing feedback on terminal bg, Catppuccin Mocha palette matching `$BAT_THEME`, vi-mode visual cue (paired with OMZP::vi-mode), and four feedback modules that only show when they matter.
 
 ## How it works
 
@@ -14,12 +14,12 @@ Cross-shell prompt written in Rust. We use it for: two-line powerline context, C
 
 ## Prompt layout
 
-Two lines:
+Line 1 holds the powerline ribbon; feedback trails it on terminal bg so semantic colors aren't eaten by `bg:mauve`. Line 2 is just `$character`.
 
-    ╭─  bytedance  ~/.dotfiles   feat/starship  ✓    19:42  ╮
-    ╰─   ✘ 1 took 14s ✦ 2 󰭹 claude
+    ╭─  ~/.dotfiles   main  ✓    19:42 ▶ ✘ ERROR took 14s ✦ 2 󰭹 claude
+    ╰─ ❯
 
-**Line 1 — context (powerline segments, always visible):**
+**Line 1, ribbon — context (always visible, coloured backgrounds):**
 
 | Segment | What | Rationale |
 |---|---|---|
@@ -28,17 +28,18 @@ Two lines:
 | `$directory` | 3-level truncated path | substitutions render common dirs as nerd-font icons. |
 | `$git_branch + $git_status` | branch + dirty markers | single segment, one color — branch always fits on one glance. |
 | `$c + $python` | C / Python version | algo research stack. `$package` removed (node/rust noise). |
-| `$time` | `%R` wall clock | no tmux status bar, so prompt is where the clock lives. |
+| `$time` | `%R` wall clock | no tmux status bar, so prompt is where the clock lives. Closes the ribbon. |
 
-**Line 2 — feedback (no background, visible only when triggered):**
+**Line 1, trailing — feedback (inline after the ribbon, no background, shown only when triggered):**
 
-| Module | Fires when | Why |
-|---|---|---|
-| `$status` | last command exited non-zero | fail-loud instead of fail-quiet. |
-| `$cmd_duration` | last command ran ≥ 3s | training / OJ runs — "did this actually take that long?" without `time`. |
-| `$jobs` | ≥ 1 background job | `&`-launched training jobs stay visible. |
-| `$custom.claude` | `CLAUDECODE=1` is set | prompt in a shell spawned inside a Claude Code session is visually distinct. |
-| `$character` | always last | red on failure, green on success, mauve on vi-normal. |
+| Module | Fires when | Color | Why |
+|---|---|---|---|
+| `$status` | last command exited non-zero | `bold fg:red` | fail-loud instead of fail-quiet. |
+| `$cmd_duration` | last command ran ≥ 3s | `fg:yellow` | training / OJ runs — "did this actually take that long?" without `time`. |
+| `$jobs` | ≥ 1 background job | `fg:sapphire` | `&`-launched training jobs stay visible. |
+| `$custom.claude` | `CLAUDECODE=1` is set | `bold fg:mauve` | prompt in a shell spawned inside a Claude Code session is visually distinct. |
+
+**Line 2 — `$character` only:** green `❯` on success, red `❯` on failure, mauve `❮` in vi-normal.
 
 ## Change a segment
 
@@ -67,19 +68,19 @@ Append `$custom` to the `format` block once — it expands to every `[custom.*]`
 bash tests/starship.sh
 ```
 
-20 checks: starship on PATH, config file present, `starship print-config` parses, tools.zsh wires it, `starship prompt` renders clean + error states, each feedback module fires under the right input (`--status=1`, `--cmd-duration=5000`, `--jobs=1`, `CLAUDECODE=1`), live prompt output carries Powerline + macOS + arrow codepoints, and the config file still has git / c / python / clock / Downloads / Pictures nerd-font glyphs — since PUA codepoints are invisible in most editors and got stripped five times during earlier rewrites.
+25 checks: starship on PATH, config file present, `starship print-config` parses, tools.zsh wires it, `starship prompt` renders clean + error states, each feedback module fires under the right input (`--status=1`, `--cmd-duration=5000`, `--jobs=1`, `CLAUDECODE=1`), live prompt output carries Powerline + macOS + arrow codepoints, config still has git / c / python / clock / Downloads / Pictures nerd-font glyphs (PUA codepoints are invisible in most editors and got stripped five times during earlier rewrites), feedback modules don't carry `bg:mauve` (regression guard — they used to sit inside the ribbon with salmon-on-purple contrast), and `vimcmd_symbol` uses `fg:mauve` (regression guard — was `fg:green` and visually identical to success).
 
 ### Manual (real TTY required)
 
 Open a new terminal tab:
 
-1. Prompt shows **two lines** — first line powerline segments, second line just `❯`.
+1. Prompt shows **two lines** — first line ribbon + (possibly) trailing feedback, second line just `❯`.
 2. Nerd-font glyphs render as icons (mac 󰀵, chat 󰭹, ✦), not `□` boxes. The Brewfile-pinned font is **Maple Mono NF CN**; if glyphs are boxes your terminal's `font-family` isn't pointing at it.
-3. `sleep 4` — line 2 should show yellow `took 4s`.
-4. `false` — line 2 should show red `✘ 1`.
-5. `sleep 100 &` — `$jobs` should show cyan `✦ 1`. `wait` or `kill %1` to clean up.
-6. Inside Claude Code, `$CLAUDECODE=1` — line 2 should show mauve `󰭹 claude`.
-7. Press Esc after typing something — `❯` should turn mauve (vi-normal mode).
+3. `sleep 4` — after the time segment, yellow `took 4s` appears (trails the ribbon, no bg).
+4. `false` — trailing feedback shows **bold red** `✘ ERROR`.
+5. `sleep 100 &` — trailing feedback shows **sapphire** `✦ 1`. `wait` or `kill %1` to clean up.
+6. Inside Claude Code, `$CLAUDECODE=1` — trailing feedback shows **bold mauve** `󰭹 claude`.
+7. Press Esc after typing something — the line-2 arrow flips from green `❯` to **mauve `❮`** (vi-normal).
 
 ## Troubleshooting
 

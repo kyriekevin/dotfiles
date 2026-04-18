@@ -80,6 +80,18 @@ check 'Downloads dir icon U+F019 in config'      'has_cp F019 "$STARSHIP_CFG"'
 check 'Pictures dir icon U+F03E in config'       'has_cp F03E "$STARSHIP_CFG"'
 
 echo
+echo "── Contrast / vi-mode invariants ────────────────────"
+# Regression guards for the fix/starship PR: feedback modules used to live
+# inside the mauve ribbon and had bg:mauve in their style, which killed
+# the semantic-color contrast. vi-normal was written as fg:green, making
+# it visually indistinguishable from the success arrow.
+check '[status] has no bg:mauve'                 '! grep -A2 "^\[status\]" "$STARSHIP_CFG" | grep -q "bg:mauve"'
+check '[cmd_duration] has no bg:mauve'           '! grep -A3 "^\[cmd_duration\]" "$STARSHIP_CFG" | grep -q "bg:mauve"'
+check '[jobs] has no bg:mauve'                   '! grep -A4 "^\[jobs\]" "$STARSHIP_CFG" | grep -q "bg:mauve"'
+check '[custom.claude] has no bg:mauve'          '! grep -A6 "^\[custom.claude\]" "$STARSHIP_CFG" | grep -q "bg:mauve"'
+check 'vimcmd_symbol uses fg:mauve'              'grep -q "^vimcmd_symbol.*fg:mauve" "$STARSHIP_CFG"'
+
+echo
 echo "─────────────────────────────────────────────────────"
 if (( FAIL > 0 )); then
     printf "  \033[31m%d passed, %d failed\033[0m\n" $PASS $FAIL
