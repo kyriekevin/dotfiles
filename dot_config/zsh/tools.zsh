@@ -15,3 +15,9 @@ fi
 if (( $+commands[zoxide] )); then
     eval "$(zoxide init zsh)"
 fi
+
+# starship: prompt. Must init AFTER plugins.zsh so OMZP::vi-mode's
+# KEYMAP hook is in place — otherwise `vimcmd_symbol` won't fire on Esc.
+if (( $+commands[starship] )); then
+    eval "$(starship init zsh)"
+fi

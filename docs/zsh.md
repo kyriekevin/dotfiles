@@ -90,7 +90,7 @@ Turbo plugins load on the `precmd` hook, so `zsh -i -c '...'` or scripted shells
 1. Type `git sta` — "tus" should appear as grey inline suggestion (autosuggestions).
 2. Type `ls` — the command should render colored (green/cyan), not plain white (syntax-highlighting).
 3. Press Tab on an empty `git ` — fzf-style menu should appear (fzf-tab).
-4. Press Esc — right side of prompt should show `[NORMAL]`. *Phase 3 caveat: this requires a prompt theme that calls `vi_mode_prompt_info`. Starship (Phase 4) covers this; until then bindings work but the indicator is invisible.*
+4. Press Esc — `character` symbol should turn mauve (starship `[character].vimcmd_symbol`). See [starship.md](starship.md) for the detail.
 
 ## Startup perf
 
@@ -139,7 +139,7 @@ zinit report author/plugin-name
 
 **First `chezmoi apply` downloads all plugins — expect 30-60s.** Subsequent applies are instant. If it looks hung, it's pulling from GitHub.
 
-**Prompt has no vi-mode indicator until Phase 4.** OMZP::vi-mode defines `vi_mode_prompt_info` but relies on the theme to call it. Bindings work; the visual `[NORMAL]` lands with Starship.
+**vi-mode visual cue is rendered by starship, not zsh.** OMZP::vi-mode defines `vi_mode_prompt_info` and flips `$KEYMAP`; the visible indicator comes from starship's `[character].vimcmd_symbol`. See [starship.md](starship.md).
 
 ## Rebuild from scratch
 

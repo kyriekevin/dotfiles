@@ -90,7 +90,7 @@ Turbo 插件靠 `precmd` hook 触发，`zsh -i -c '...'` 或 script 子进程压
 1. 敲 `git sta` —— "tus" 应以灰色行内建议出现（autosuggestions）。
 2. 敲 `ls` —— 命令本身应着色（绿/青），而非纯白（syntax-highlighting）。
 3. 在空 `git ` 后按 Tab —— 应弹出 fzf 风格菜单（fzf-tab）。
-4. 按 Esc —— 右侧 prompt 应显示 `[NORMAL]`。*Phase 3 局限：需要 prompt theme 调用 `vi_mode_prompt_info`，等 Phase 4 Starship 落地才能看到；Phase 3 内键绑定能用但指示器隐形。*
+4. 按 Esc —— `character` 符号应变 mauve 色（starship `[character].vimcmd_symbol`），详见 [starship.zh.md](starship.zh.md)。
 
 ## 启动性能
 
@@ -139,7 +139,7 @@ zinit report author/plugin-name
 
 **首次 `chezmoi apply` 下载所有 plugin 30-60s 属正常。** 之后都是秒级。看起来卡住是在从 GitHub 拉。
 
-**Phase 4 之前 prompt 没 vi-mode 指示器。** OMZP::vi-mode 定义 `vi_mode_prompt_info` 但依赖 prompt theme 调用它。键绑定现在可用；`[NORMAL]` 要等 Starship。
+**vi-mode 视觉提示由 starship 渲染，不由 zsh。** OMZP::vi-mode 定义 `vi_mode_prompt_info` 并切换 `$KEYMAP`；真正显示的指示是 starship 的 `[character].vimcmd_symbol`，详见 [starship.zh.md](starship.zh.md)。
 
 ## 彻底重建
 

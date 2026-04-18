@@ -9,8 +9,8 @@ elif [[ -x /usr/local/bin/brew ]]; then
     eval "$(/usr/local/bin/brew shellenv)"
 fi
 
-# bat color theme
-export BAT_THEME="Catppuccin Frappe"
+# bat color theme — matches starship palette (catppuccin_mocha) for repo-wide consistency.
+export BAT_THEME="Catppuccin Mocha"
 
 # Hugging Face mirror (大陆网络)
 export HF_ENDPOINT="https://hf-mirror.com"
