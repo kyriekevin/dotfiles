@@ -67,7 +67,7 @@ style       = "bold fg:lavender"
 bash tests/starship.sh
 ```
 
-11 条检查：starship 在 PATH、config 文件存在、`starship print-config` 解析、tools.zsh 接线成功、`starship prompt` 正常 + 异常都能渲染、每个反馈 module 在正确输入下 fire（`--status=1`、`--cmd-duration=5000`、`--jobs=1`、`CLAUDECODE=1`）。
+14 条检查：starship 在 PATH、config 文件存在、`starship print-config` 解析、tools.zsh 接线成功、`starship prompt` 正常 + 异常都能渲染、每个反馈 module 在正确输入下 fire（`--status=1`、`--cmd-duration=5000`、`--jobs=1`、`CLAUDECODE=1`），以及 live prompt 输出里必须携带 Powerline / nerd-font 的 PUA 码点 —— 这些字形在大多数编辑器里隐形，早期重写时被静默吞掉过三次。
 
 ### 手动（需要真实 TTY）
 

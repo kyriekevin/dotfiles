@@ -67,7 +67,7 @@ Append `$custom` to the `format` block once — it expands to every `[custom.*]`
 bash tests/starship.sh
 ```
 
-11 checks: starship on PATH, config file present, `starship print-config` parses, tools.zsh wires it, `starship prompt` renders clean + error states, each feedback module fires under the right input (`--status=1`, `--cmd-duration=5000`, `--jobs=1`, `CLAUDECODE=1`).
+14 checks: starship on PATH, config file present, `starship print-config` parses, tools.zsh wires it, `starship prompt` renders clean + error states, each feedback module fires under the right input (`--status=1`, `--cmd-duration=5000`, `--jobs=1`, `CLAUDECODE=1`), and the live prompt output carries the Powerline/nerd-font codepoints — since PUA glyphs are invisible in most editors and got stripped three times during earlier rewrites.
 
 ### Manual (real TTY required)
 

@@ -47,6 +47,27 @@ check 'custom.claude hidden without CLAUDECODE'  '[[ "$PROMPT_NO_CLAUDE" != *cla
 check 'custom.claude visible with CLAUDECODE=1'  '[[ "$PROMPT_CLAUDE" == *claude* ]]'
 
 echo
+echo "── Nerd-font / Powerline glyph invariants ───────────"
+# These codepoints live in the Private Use Area. They are invisible to
+# most text editors and were silently stripped three times during earlier
+# refactors, yielding a visually broken prompt while every other check
+# passed. Count them from the live render so the failure can't hide again.
+PUA_COUNTS=$(starship prompt 2>/dev/null | python3 -c '
+import sys, re
+raw = sys.stdin.buffer.read().decode("utf-8", errors="replace")
+txt = re.sub(r"\x1b\[[0-9;]*m", "", raw)
+pl = sum(1 for c in txt if 0xE0B0 <= ord(c) <= 0xE0BF)
+mac = sum(1 for c in txt if ord(c) == 0xF0035)
+arrow = sum(1 for c in txt if ord(c) == 0xF432)
+print(f"{pl} {mac} {arrow}")
+')
+read PL MAC ARROW <<<"$PUA_COUNTS"
+export PL MAC ARROW
+check 'Powerline glyphs in prompt (≥5)'          '(( PL >= 5 ))'
+check 'macOS nerd-font icon (U+F0035) present'   '(( MAC >= 1 ))'
+check 'character arrow glyph (U+F432) present'   '(( ARROW >= 1 ))'
+
+echo
 echo "─────────────────────────────────────────────────────"
 if (( FAIL > 0 )); then
     printf "  \033[31m%d passed, %d failed\033[0m\n" $PASS $FAIL
