@@ -5,6 +5,10 @@
 </p>
 
 <p align="center">
+  English · <a href="README.zh.md">中文</a>
+</p>
+
+<p align="center">
   <a href="LICENSE"><img alt="license" src="https://img.shields.io/github/license/kyriekevin/dotfiles?style=flat-square"></a>
   <a href="https://www.chezmoi.io"><img alt="managed by chezmoi" src="https://img.shields.io/badge/managed%20by-chezmoi-5fafd7?style=flat-square&logo=homeassistantcommunitystore&logoColor=white"></a>
   <a href="https://www.conventionalcommits.org"><img alt="conventional commits" src="https://img.shields.io/badge/commits-conventional-fe5196?style=flat-square&logo=conventionalcommits&logoColor=white"></a>

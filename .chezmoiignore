@@ -1,8 +1,11 @@
 README.md
+README.zh.md
 LICENSE
 CONTRIBUTING.md
+CONTRIBUTING.zh.md
 bootstrap.sh
 Brewfile
 .gitignore
 .pre-commit-config.yaml
 .github
+docs

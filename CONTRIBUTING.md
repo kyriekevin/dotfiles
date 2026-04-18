@@ -1,5 +1,7 @@
 # Contributing
 
+> English · [中文](CONTRIBUTING.zh.md)
+
 This repo is a personal dotfiles scaffold, but it's intentionally reusable by teammates. These conventions keep the history readable and review cheap.
 
 ## Branches
@@ -29,7 +31,7 @@ Commit messages are validated by the `commit-msg` pre-commit hook — non-confor
 ## Pull requests
 
 1. Open a PR against `main` from your `feat/<name>` branch — the [PR template](.github/pull_request_template.md) gives you the checklist
-2. Merge via the **GitHub web UI** — Squash for small PRs, Rebase for well-structured multi-commit PRs
+2. Merge via the **GitHub web UI**. **Default is Squash** — phase PRs typically ship 3–5 atomic commits whose granularity was only useful during review, and squashing keeps `main`'s log scannable. Use **Rebase** only when commits come from multiple authors, or when one PR genuinely spans multiple independent features whose history should be preserved
 
 ## Issues
 

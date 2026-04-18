@@ -1,12 +1,12 @@
-name: Bug report
-description: Something in a config is misbehaving
+name: Bug report / Bug 报告
+description: Something in a config is misbehaving / 某份配置行为异常
 title: "fix(<scope>): <subject>"
 labels: [bug]
 body:
   - type: input
     id: affected
     attributes:
-      label: Affected package / config
+      label: Affected package / config — 受影响的包 / 配置
       description: e.g. zsh, nvim, karabiner, ghostty, bootstrap
       placeholder: zsh
     validations:
@@ -15,22 +15,22 @@ body:
   - type: textarea
     id: expected
     attributes:
-      label: What did you expect?
+      label: What did you expect? — 你期望的行为是什么？
     validations:
       required: true
 
   - type: textarea
     id: actual
     attributes:
-      label: What happened instead?
+      label: What happened instead? — 实际发生了什么？
     validations:
       required: true
 
   - type: textarea
     id: repro
     attributes:
-      label: Reproduction
-      description: Commands or steps to trigger the issue. Include `chezmoi --version`, macOS version, and any relevant `chezmoi diff` output.
+      label: Reproduction — 复现步骤
+      description: Commands or steps to trigger the issue. Include `chezmoi --version`, macOS version, and any relevant `chezmoi diff` output. / 触发问题的命令或步骤。附上 `chezmoi --version`、macOS 版本，以及相关的 `chezmoi diff` 输出。
       render: shell
     validations:
       required: true
@@ -38,4 +38,4 @@ body:
   - type: textarea
     id: workaround
     attributes:
-      label: Current workaround (if any)
+      label: Current workaround (if any) — 当前的临时绕过方案（如果有）
