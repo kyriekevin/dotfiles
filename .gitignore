@@ -12,6 +12,9 @@
 # chezmoi local state (per-machine, not versioned)
 .chezmoi.toml
 
+# Claude Code project-level runtime (plans, sessions, etc.)
+.claude/
+
 # Python tooling
 .ruff_cache/
 __pycache__/

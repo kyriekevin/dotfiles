@@ -1,0 +1,40 @@
+name: Feature request
+description: A new tool, config, or automation to add
+title: "feat(<scope>): <subject>"
+labels: [enhancement]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What do you want to add, and why?
+      description: Tool name, use case, why the existing setup doesn't cover it.
+    validations:
+      required: true
+
+  - type: textarea
+    id: approach
+    attributes:
+      label: Proposed approach
+      description: |
+        - Which phase does this belong to (if part of the incremental plan)?
+        - Any chezmoi-specific design notes (new `dot_*` file? template vars? encrypted secret?)
+        - Impact on existing packages
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - low — nice-to-have
+        - medium — would improve daily workflow
+        - high — blocking something
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - label: I plan to open a PR myself
+        - label: This is a request for someone else to implement

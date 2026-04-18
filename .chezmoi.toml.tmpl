@@ -1,0 +1,10 @@
+{{/* Prompts shown once at `chezmoi init`; values stored in ~/.config/chezmoi/chezmoi.toml */}}
+{{- $email  := promptStringOnce . "git_email" "Git user.email" -}}
+{{- $isWork := promptBoolOnce   . "is_work"   "Is this the work Mac?" -}}
+
+[data]
+  git_email = {{ $email | quote }}
+  is_work   = {{ $isWork }}
+  hostname  = {{ .chezmoi.hostname | quote }}
+
+{{/* [age] / [edit] / [diff] blocks are added in later phases when the underlying tools exist. */}}
