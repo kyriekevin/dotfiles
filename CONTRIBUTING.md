@@ -1,5 +1,7 @@
 # Contributing
 
+> English · [中文](CONTRIBUTING.zh.md)
+
 This repo is a personal dotfiles scaffold, but it's intentionally reusable by teammates. These conventions keep the history readable and review cheap.
 
 ## Branches
