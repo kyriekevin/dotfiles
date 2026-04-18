@@ -1,13 +1,26 @@
-# dotfiles
+<h1 align="center">dotfiles</h1>
 
-Personal macOS dotfiles managed with [chezmoi](https://www.chezmoi.io) + [age](https://github.com/FiloSottile/age).
+<p align="center">
+  <em>Personal macOS setup managed with <a href="https://www.chezmoi.io">chezmoi</a> + <a href="https://github.com/FiloSottile/age">age</a>.</em>
+</p>
 
-## Quickstart (fresh Mac)
+<p align="center">
+  <a href="LICENSE"><img alt="license" src="https://img.shields.io/github/license/kyriekevin/dotfiles?style=flat-square"></a>
+  <a href="https://www.chezmoi.io"><img alt="managed by chezmoi" src="https://img.shields.io/badge/managed%20by-chezmoi-5fafd7?style=flat-square&logo=homeassistantcommunitystore&logoColor=white"></a>
+  <a href="https://www.conventionalcommits.org"><img alt="conventional commits" src="https://img.shields.io/badge/commits-conventional-fe5196?style=flat-square&logo=conventionalcommits&logoColor=white"></a>
+  <a href="https://github.com/pre-commit/pre-commit"><img alt="pre-commit" src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?style=flat-square&logo=pre-commit&logoColor=white"></a>
+</p>
+
+---
+
+## ✨ Quickstart
+
+On a fresh Mac:
 
 ```bash
-# 1. Install Homebrew: https://brew.sh
+# 1. Install Homebrew                https://brew.sh
 
-# 2. Put the age private key in place (transfer from existing Mac via iCloud Drive / USB)
+# 2. Drop your age private key       (transferred from an existing Mac)
 mkdir -p ~/.config/chezmoi && chmod 700 ~/.config/chezmoi
 cp /path/to/key.txt ~/.config/chezmoi/key.txt && chmod 600 ~/.config/chezmoi/key.txt
 
@@ -15,25 +28,48 @@ cp /path/to/key.txt ~/.config/chezmoi/key.txt && chmod 600 ~/.config/chezmoi/key
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/kyriekevin/dotfiles/main/bootstrap.sh)"
 ```
 
-On first run, chezmoi will prompt for:
-- `git_email` — the email to put in `~/.gitconfig`
-- `is_work` — true on the work Mac, false on the personal one
+On first run, `chezmoi init` prompts for:
 
-## Source dir
+| Variable    | Purpose                                             |
+| ----------- | --------------------------------------------------- |
+| `git_email` | primary email for `~/.gitconfig` on this machine    |
+| `is_work`   | `true` on the work Mac, `false` on the personal one |
 
-This repo lives at `~/.dotfiles` instead of chezmoi's default `~/.local/share/chezmoi`. All `chezmoi` commands therefore need `--source=$HOME/.dotfiles`, or set `sourceDir = "~/.dotfiles"` in `~/.config/chezmoi/chezmoi.toml`.
+## 🗂 Layout
 
-## Layout
+```text
+~/.dotfiles/
+├── dot_*                         → ~/.*            (real dotfiles)
+├── private_* / encrypted_*       → chmod 0600, age-decrypted on apply
+├── *.tmpl                        → Go-rendered with chezmoi data
+├── run_once_before_* /           → apply-time hooks
+│   run_onchange_after_*
+├── Brewfile                      → brew bundle (triggered by a hook)
+└── bootstrap.sh                  → new-Mac entrypoint
+```
 
-- `dot_*` / `private_*` / `encrypted_*` / `*.tmpl` — chezmoi [source state attributes](https://www.chezmoi.io/reference/source-state-attributes/)
-- `run_once_before_*` / `run_onchange_after_*` — apply-time hooks
-- `Brewfile` — declared packages (applied via a `run_onchange_after_*` hook)
+> [!NOTE]
+> This repo lives at `~/.dotfiles` (not chezmoi's default `~/.local/share/chezmoi`). Every `chezmoi` command needs `--source=$HOME/.dotfiles`, or set `sourceDir = "~/.dotfiles"` in `~/.config/chezmoi/chezmoi.toml`.
 
-## Related repos (selectively useful; not required)
+## 🔐 Secrets
 
-- <https://github.com/nousresearch/hermes-agent>
-- _(future: self-authored Claude agents / skills)_
+Secrets are committed **encrypted** using [age](https://github.com/FiloSottile/age). Files with the `encrypted_` prefix are transparently decrypted on `chezmoi apply`, using the age identity at `~/.config/chezmoi/key.txt` (chmod 600, never committed — enforced by `.gitignore` + `gitleaks`).
 
-## License
+Edit an encrypted secret without manual steps:
+
+```bash
+chezmoi edit ~/.config/zsh/secrets.zsh
+```
+
+## 🧪 Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for commit/branch conventions and pre-commit setup.
+
+## 🔗 Related
+
+- [nousresearch/hermes-agent](https://github.com/nousresearch/hermes-agent) — open-source agent framework
+- _(future)_ self-authored Claude Code agents / skills — extracted to standalone repos
+
+## 📄 License
 
 MIT — see [LICENSE](LICENSE).
