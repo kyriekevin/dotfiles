@@ -2,9 +2,13 @@
 {{- $email  := promptStringOnce . "git_email" "Git user.email" -}}
 {{- $isWork := promptBoolOnce   . "is_work"   "Is this the work Mac?" -}}
 
+encryption = "age"
+
 [data]
   git_email = {{ $email | quote }}
   is_work   = {{ $isWork }}
   hostname  = {{ .chezmoi.hostname | quote }}
 
-{{/* [age] / [edit] / [diff] blocks are added in later phases when the underlying tools exist. */}}
+[age]
+  identity  = "~/.config/chezmoi/key.txt"
+  recipient = "age1t86dgaf2ywufzyet5g4fv8epjj2ycn8hdt59tz32qmwnel3jt44sdzg5g6"
