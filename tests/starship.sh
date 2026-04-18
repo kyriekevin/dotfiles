@@ -111,7 +111,7 @@ check '[status] has no bg:mauve'                 '! section_has status "$STARSHI
 check '[cmd_duration] has no bg:mauve'           '! section_has cmd_duration "$STARSHIP_CFG" "bg:mauve"'
 check '[jobs] has no bg:mauve'                   '! section_has jobs "$STARSHIP_CFG" "bg:mauve"'
 check '[custom.claude] has no bg:mauve'          '! section_has custom.claude "$STARSHIP_CFG" "bg:mauve"'
-check 'vimcmd_symbol uses fg:mauve'              'grep -q "^vimcmd_symbol.*fg:mauve" "$STARSHIP_CFG"'
+check 'vimcmd_symbol uses fg:mauve'              'sed "s/#.*//" "$STARSHIP_CFG" | grep -q "^vimcmd_symbol.*fg:mauve"'
 
 echo
 echo "─────────────────────────────────────────────────────"
