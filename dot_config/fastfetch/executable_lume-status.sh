@@ -30,22 +30,30 @@ render_vms() {
     lume ls --format json 2>/dev/null | python3 -c '
 import json, sys
 try:
-    vms = json.load(sys.stdin) or []
+    vms = json.load(sys.stdin)
 except Exception:
     sys.exit()
+# lume ls --format json currently always returns a list; guard against
+# a future API drift that emits an error object on stdout instead.
+if not isinstance(vms, list):
+    sys.exit()
 GB = 1024 ** 3
+def gb(x):
+    # is-not-None, not truthiness: allocated=0 is a real state on freshly
+    # created VMs and should render as "0G", not "?".
+    return f"{x // GB}G" if x is not None else "?"
 for v in vms:
     name   = v.get("name", "?")
     status = v.get("status", "?")
     cpu    = v.get("cpuCount", "?")
-    mem    = v.get("memorySize")
     disk   = v.get("diskSize") or {}
-    used, total = disk.get("allocated"), disk.get("total")
+    used   = disk.get("allocated")
+    total  = disk.get("total")
     ip     = v.get("ipAddress") or "-"
     net    = v.get("networkMode") or "-"
     loc    = v.get("locationName") or "-"
-    mem_s  = f"{mem // GB}G"  if mem   else "?"
-    disk_s = f"{used // GB}G/{total // GB}G" if used and total else "?"
+    mem_s  = gb(v.get("memorySize"))
+    disk_s = f"{gb(used)}/{gb(total)}"
     extra  = f" \u00b7 {ip}" if ip != "-" else ""
     print(f"{name}: {status} \u00b7 {cpu}c/{mem_s} \u00b7 {disk_s} \u00b7 {net}/{loc}{extra}")
 ' 2>/dev/null
