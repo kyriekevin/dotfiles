@@ -197,7 +197,7 @@
           "type": "command",
           "key": "󰭹 Claude",
           "keyColor": "cyan",
-          "text": "claude --version 2>/dev/null | awk '{print $1}'"
+          "text": "claude --version 2>/dev/null | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+' | head -1"
       },
       {
           "type": "command",

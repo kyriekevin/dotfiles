@@ -41,7 +41,9 @@ GB = 1024 ** 3
 def gb(x):
     # is-not-None, not truthiness: allocated=0 is a real state on freshly
     # created VMs and should render as "0G", not "?".
-    return f"{x // GB}G" if x is not None else "?"
+    # round(), not floor division: 1.9 GiB floors to "1G" which under-reports
+    # the "at a glance" value noticeably for partial sizes.
+    return f"{round(x / GB)}G" if x is not None else "?"
 for v in vms:
     name   = v.get("name", "?")
     status = v.get("status", "?")
