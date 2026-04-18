@@ -41,7 +41,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/kyriekevin/dotfiles/main/b
 
 ## 🧰 工具栈
 
-repo 依赖的核心工具。完整包清单见 `Brewfile`。
+repo 依赖的核心工具。
 
 | 工具 | 作用 | 安装 |
 | --- | --- | --- |

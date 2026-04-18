@@ -41,7 +41,7 @@ On first run, `chezmoi init` prompts for:
 
 ## 🧰 Toolchain
 
-The core tools this repo leans on. Full package list lives in `Brewfile`.
+The core tools this repo leans on.
 
 | Tool | Role | Install |
 | --- | --- | --- |

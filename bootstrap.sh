@@ -39,7 +39,10 @@ command -v gh      >/dev/null 2>&1 || brew install gh
 
 # --- Claude Code ---------------------------------------------------------
 # Installed via official script (not Homebrew). Writes to ~/.local/bin/claude.
-if ! command -v claude >/dev/null 2>&1; then
+# Check the install path too — on a fresh Mac ~/.local/bin isn't on PATH
+# until the shell config is applied + re-sourced, so `command -v` alone
+# would re-run the installer on every bootstrap.
+if ! command -v claude >/dev/null 2>&1 && [[ ! -x "${HOME}/.local/bin/claude" ]]; then
     echo "==> Installing Claude Code"
     curl -fsSL https://claude.ai/install.sh | bash
 fi
