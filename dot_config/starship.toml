@@ -7,20 +7,20 @@ palette = 'catppuccin_mocha'
 #   line 1 — context segments (powerline): os · user · dir · git · lang · time
 #   line 2 — feedback (no bg, invisible when idle): status · cmd_duration · jobs · claude · character
 format = """
-[](surface0)\
+[](surface0)\
 $os\
 $username\
-[](bg:peach fg:surface0)\
+[](bg:peach fg:surface0)\
 $directory\
-[](fg:peach bg:green)\
+[](fg:peach bg:green)\
 $git_branch\
 $git_status\
-[](fg:green bg:teal)\
+[](fg:green bg:teal)\
 $c\
 $python\
-[](fg:teal bg:mauve)\
+[](fg:teal bg:mauve)\
 $time\
-[ ](fg:mauve)\
+[ ](fg:mauve)\
 $line_break\
 $status\
 $cmd_duration\
