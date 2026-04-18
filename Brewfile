@@ -29,6 +29,18 @@ brew "git-delta"  # binary is `delta`
 # ---- Editor ----------------------------------------------------------------
 brew "neovim"
 
+# ---- File manager (yazi) ---------------------------------------------------
+# yazi auto-detects these on PATH for previewers; no yazi.toml wiring needed.
+#   ffmpegthumbnailer → video first-frame thumbs
+#   imagemagick       → HEIC/RAW and other non-native image formats
+#   poppler           → PDF page preview via `pdftoppm`
+#   sevenzip          → archive listing (zip/7z/rar)
+brew "yazi"
+brew "ffmpegthumbnailer"
+brew "imagemagick"
+brew "poppler"
+brew "sevenzip"
+
 # ---- Python ----------------------------------------------------------------
 brew "uv"
 

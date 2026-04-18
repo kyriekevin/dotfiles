@@ -1,0 +1,42 @@
+# Yazi — keymap overrides.
+#
+# Schema: https://yazi-rs.github.io/docs/configuration/keymap
+#
+# `prepend_keymap` stacks on top of yazi's defaults — we only list keys
+# we're changing, not re-declaring the whole vocabulary. To see the full
+# default map at runtime, press `~` (help).
+#
+# Philosophy:
+#   - Keep yazi's vim-ish defaults intact. Muscle memory from vim/ranger
+#     works as-is (hjkl, gg/G, y/x/p/d, /, ?, n/N).
+#   - Only override where a plugin plugs in (smart-enter).
+
+[mgr]
+
+# smart-enter — a single `l` / <Enter> that does the right thing:
+#   - On a directory: cd into it
+#   - On a file:      invoke the opener (nvim for text, `open` otherwise)
+# Default yazi ties `l` to `enter` (dir only) and `<Enter>` to `open`, so
+# you'd press different keys depending on cursor position. Annoying.
+prepend_keymap = [
+    { on = "l",       run = "plugin smart-enter", desc = "Enter dir or open file" },
+    { on = "<Enter>", run = "plugin smart-enter", desc = "Enter dir or open file" },
+]
+
+[input]
+# Reserved. Default input-mode keybinds work fine.
+
+[pick]
+# Reserved. Default picker keybinds work fine.
+
+[cmp]
+# Reserved. Default completion keybinds work fine.
+
+[tasks]
+# Reserved. `w` opens task manager; `Ctrl+c` cancels; Esc closes.
+
+[spot]
+# Reserved. `Tab` cycles metadata panes (file / EXIF / linked targets).
+
+[help]
+# Reserved. `~` opens help overlay.

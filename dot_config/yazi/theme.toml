@@ -1,0 +1,18 @@
+# Yazi theme — activates flavor packs.
+#
+# Flavor = a full theme pack (UI palette + syntect tmTheme for preview
+# syntax highlighting). Installed under ~/.config/yazi/flavors/<name>.yazi/
+# by `ya pkg add`, listed in .chezmoiscripts/run_onchange_after_40-yazi-plugins.sh.
+#
+# Catppuccin Mocha keeps the whole terminal stack aligned:
+#   - bat preview via $BAT_THEME        (env.zsh)
+#   - starship prompt palette           (starship.toml)
+#   - fastfetch color bands             (fastfetch/config.jsonc)
+#   - yazi UI + syntect preview         (this file)
+#
+# The flavor ships both a UI palette (border/selection/hover colors) and
+# a tmTheme for syntax-highlighted previews — so markdown/code in the
+# preview pane now matches what `bat` would render.
+
+[flavor]
+dark = "catppuccin-mocha"

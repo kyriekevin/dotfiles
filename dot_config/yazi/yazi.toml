@@ -1,0 +1,106 @@
+# Yazi — manager / preview / opener config.
+#
+# Schema: https://yazi-rs.github.io/docs/configuration/yazi
+# Reload: none needed — yazi reads config on every launch.
+#
+# Layout philosophy
+#   Three columns (parent / current / preview) at ratio 1:3:4. The preview
+#   column is the widest because most useful info (image, video thumb, file
+#   content) lives there.
+#
+# Image preview
+#   Ghostty implements the Kitty graphics protocol natively. Yazi detects
+#   $TERM=xterm-ghostty and ships pixel-perfect inline images. No extra
+#   backend (sixel/chafa/überzug) needed on this machine.
+
+[mgr]
+ratio          = [1, 3, 4]
+sort_by        = "natural"        # Explorer-style: file1, file2, file10 (not 1, 10, 2).
+sort_sensitive = false
+sort_reverse   = false
+sort_dir_first = true
+linemode       = "size"           # Right-column meta; toggle via `M` submenu.
+show_hidden    = false            # Toggle live with `.`.
+show_symlink   = true
+scrolloff      = 5
+
+[preview]
+wrap          = "no"
+tab_size      = 2
+max_width     = 1000
+max_height    = 1000
+image_delay   = 30                # ms — debounce so rapid `j`/`k` doesn't thrash decoder.
+image_filter  = "triangle"        # Good balance of sharpness vs speed.
+image_quality = 75                # 50–90 is reasonable; 100 is lossless-but-slow.
+# No ueberzug keys — ueberzug is Linux X11/Wayland only; we preview via
+# Ghostty's Kitty graphics protocol. `cache_dir` omitted so yazi falls
+# back to its default ~/.cache/yazi.
+
+[opener]
+# Unix opener for text → our terminal editor. `block = true` reclaims the
+# TTY so nvim can own the screen; yazi resumes when nvim exits.
+edit = [
+    { run = 'nvim "$@"', desc = "nvim", block = true, for = "unix" },
+]
+# macOS default: hand to Launch Services. `open foo.pdf` → Preview.app, etc.
+open = [
+    { run = 'open "$@"', desc = "Open", for = "macos" },
+]
+reveal = [
+    # `"$@"` (not `"$1"`) so multi-select passes every path to `open -R`,
+    # which accepts multiple filenames per `man open`.
+    { run = 'open -R "$@"', desc = "Reveal in Finder", for = "macos" },
+]
+# No `play` / `extract` opener blocks: our `[open] prepend_rules` catch-all
+# routes every non-text file to `open` (Launch Services), which means
+# yazi's default play/extract rules never fire. Defining them here was
+# dead code. Add entries back *with a matching prepend_rule* if you
+# want to peel archives off the catch-all path.
+
+[open]
+# `prepend_rules` stacks above yazi defaults so we can override without
+# having to re-declare every MIME yazi already handles.
+prepend_rules = [
+    # Text + code families → our editor, not Launch Services. (Finder would
+    # open a .sh in TextEdit which is never what you want.) Listed one MIME
+    # per line because yazi's glob matcher doesn't do brace-expansion.
+    { mime = "text/*",                       use = [ "edit", "reveal" ] },
+    { mime = "application/json",             use = [ "edit", "reveal" ] },
+    { mime = "application/x-yaml",           use = [ "edit", "reveal" ] },
+    { mime = "application/x-shellscript",    use = [ "edit", "reveal" ] },
+    { mime = "application/xml",              use = [ "edit", "reveal" ] },
+    { mime = "application/toml",             use = [ "edit", "reveal" ] },
+    # Catch-all fallback — Launch Services. macOS knows best for binary types.
+    { name = "*",                                    use = [ "open", "reveal" ] },
+    { name = "*/",                                   use = [ "open", "reveal" ] },
+]
+
+[tasks]
+micro_workers    = 10
+macro_workers    = 10
+bizarre_retry    = 3
+# Image memory guard — oversized pics get downsized before render so yazi
+# doesn't OOM on a 60MP shot.
+image_alloc      = 536_870_912     # 512 MiB
+image_bound      = [0, 0]
+suppress_preload = false
+
+[plugin]
+# fetcher = runs on every directory enter to decorate the file list.
+# `url` (not `name`) is the pattern field in yazi ≥26; `id` stays for
+# ≤26.1.22 backcompat (the git plugin README says it's safe to remove
+# on newer). `group = "git"` namespaces the fetcher so status updates
+# fan out correctly across nested dirs.
+prepend_fetchers = [
+    { id = "git", url = "*",  run = "git", group = "git" },
+    { id = "git", url = "*/", run = "git", group = "git" },
+]
+
+[input]
+# Confirm dialogs — keep key ratio + position at yazi defaults. Reserved
+# here as the first place to look when you want to tweak dialog layout.
+
+[which]
+sort_by        = "none"
+sort_sensitive = false
+sort_reverse   = false
