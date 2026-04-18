@@ -41,20 +41,17 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/kyriekevin/dotfiles/main/b
 
 ## 🧰 工具栈
 
-`bootstrap.sh` 负责最外层的用户态栈——列在这里是为了透明：
-
-| 工具 | 作用 | 如何安装 |
-| --- | --- | --- |
-| [Homebrew](https://brew.sh) | macOS 包管理器 | `bootstrap.sh` 在缺失时非交互式安装 |
-| [chezmoi](https://www.chezmoi.io) | dotfiles 管理工具 | `brew install chezmoi`（在 bootstrap 内） |
-| [age](https://github.com/FiloSottile/age) | 密文加密 | `brew install age`（在 bootstrap 内） |
-
-贡献者专属工具（改 repo 才需要，日常使用不需要）：
+repo 依赖的核心工具。完整包清单见 `Brewfile`。
 
 | 工具 | 作用 | 安装 |
 | --- | --- | --- |
-| [uv](https://github.com/astral-sh/uv) | Python 工具运行器 | `brew install uv` · 或 `curl -LsSf https://astral.sh/uv/install.sh \| sh` |
-| [pre-commit](https://pre-commit.com) | Git hooks（空白符/密钥/conventional-commits） | `uv tool install pre-commit` —— 完整流程见 [CONTRIBUTING.zh.md](CONTRIBUTING.zh.md) |
+| [Homebrew](https://brew.sh) | macOS 包管理器 | `bootstrap.sh`（非交互式） |
+| [chezmoi](https://www.chezmoi.io) | dotfiles 管理工具 | bootstrap → `brew install chezmoi` |
+| [age](https://github.com/FiloSottile/age) | 密文加密 | bootstrap → `brew install age` |
+| [gh](https://cli.github.com) | GitHub CLI（PR / review 流程必备） | bootstrap → `brew install gh` |
+| [Claude Code](https://claude.com/claude-code) | AI coding CLI | bootstrap → `curl -fsSL https://claude.ai/install.sh \| bash` |
+| [uv](https://github.com/astral-sh/uv) | Python 工具运行器 | Brewfile → `brew install uv` |
+| [pre-commit](https://pre-commit.com) | Git hooks（空白符/密钥/conventional-commits） | `uv tool install pre-commit` —— 流程见 [CONTRIBUTING.zh.md](CONTRIBUTING.zh.md) |
 
 ## 🗂 目录结构
 
