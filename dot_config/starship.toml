@@ -15,16 +15,17 @@ $directory\
 [](fg:peach bg:green)\
 $git_branch\
 $git_status\
+[](fg:green bg:teal)\
 $c\
 $python\
-[](fg:green bg:mauve)\
+[](fg:teal bg:mauve)\
 $time\
-[ ](fg:mauve)\
-$line_break\
 $status\
 $cmd_duration\
 $jobs\
 $custom\
+[ ](fg:mauve)\
+$line_break\
 $character"""
 
 [palettes.catppuccin_mocha]
@@ -100,11 +101,11 @@ format = '[($all_status$ahead_behind )](fg:base bg:green)'
 
 [c]
 symbol = " "
-format = '[ $symbol( $version) ](fg:base bg:green)'
+format = '[ $symbol( $version) ](fg:base bg:teal)'
 
 [python]
 symbol = ""
-format = '[ $symbol( ${version})(\($virtualenv\)) ](fg:base bg:green)'
+format = '[ $symbol( ${version})(\($virtualenv\)) ](fg:base bg:teal)'
 
 [time]
 disabled = false
@@ -120,20 +121,20 @@ disabled = false
 disabled = false
 symbol = "✘ "
 format = '[$symbol$common_meaning$signal_name$maybe_int ]($style)'
-style = "bold fg:red"
+style = "bold fg:red bg:mauve"
 map_symbol = true
 
 [cmd_duration]
 # Only show when the previous command ran ≥ 3s — signal, not noise.
 min_time = 3_000
 format = '[took $duration ]($style)'
-style = "fg:yellow"
+style = "fg:mantle bg:mauve"
 
 [jobs]
 symbol = "✦ "
 number_threshold = 1
 format = '[$symbol$number ]($style)'
-style = "fg:sapphire"
+style = "fg:sapphire bg:mauve"
 
 [custom.claude]
 # Active when $CLAUDECODE=1 is injected by a Claude Code session, so the
@@ -142,7 +143,7 @@ description = "Claude Code session indicator"
 when = 'test -n "$CLAUDECODE"'
 command = "echo"
 format = '[󰭹 claude ]($style)'
-style = "bold fg:lavender"
+style = "bold fg:lavender bg:mauve"
 
 [character]
 success_symbol = '[](bold fg:green)'
