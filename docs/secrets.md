@@ -37,13 +37,17 @@ The from-scratch path — when you're authoring content fresh and don't want a p
 vim /tmp/secrets_plain.zsh
 
 # 2. Encrypt directly into the source tree (note the filename prefix — see Gotchas)
-age -r "$(awk -F' = ' '/^\s*recipient/ {gsub(/"/, "", $2); print $2}' \
-    ~/.config/chezmoi/chezmoi.toml)" \
+#    `age-keygen -y <identity>` derives the public key from the private key file,
+#    which is the most portable way to get the recipient string.
+age -r "$(age-keygen -y ~/.config/chezmoi/key.txt)" \
     -o ~/.dotfiles/dot_config/zsh/encrypted_private_secrets.zsh.age \
     /tmp/secrets_plain.zsh
 
-# 3. Wipe the plaintext
-shred -u /tmp/secrets_plain.zsh 2>/dev/null || rm -f /tmp/secrets_plain.zsh
+# 3. Wipe the plaintext. `rm -P` is the BSD equivalent of `shred -u`; on APFS the
+#    multi-pass overwrite is effectively a no-op (CoW filesystem), but /tmp is
+#    volatile on macOS so this is a defence-in-depth belt rather than a strict
+#    guarantee.
+rm -P /tmp/secrets_plain.zsh 2>/dev/null || rm -f /tmp/secrets_plain.zsh
 
 # 4. Verify chezmoi resolves it correctly
 chezmoi --source=$HOME/.dotfiles managed | grep secrets.zsh
@@ -62,10 +66,11 @@ chezmoi apply                 # or: chezmoi apply ~/.config/zsh/secrets.zsh
 ## Rotate the age key
 
 1. `age-keygen -o ~/.config/chezmoi/key-new.txt && chmod 600 ~/.config/chezmoi/key-new.txt` — generate new pair
-2. For every `encrypted_*.age` file in source: decrypt with old key, re-encrypt with new public key
+2. For every `encrypted_*.age` file in source: decrypt with old key, re-encrypt with new public key. **Never write to the same file in a pipeline** — shell redirection truncates `<file>` before `age -d` reads it, permanently losing the ciphertext. Go through a temp file:
    ```bash
    age -d -i ~/.config/chezmoi/key.txt <file> \
-     | age -r <new-pub> -o <file>
+     | age -r <new-pub> -o <file>.tmp \
+     && mv <file>.tmp <file>
    ```
 3. Update `[age].recipient` in `.chezmoi.toml.tmpl` **and** `~/.config/chezmoi/chezmoi.toml`
 4. Swap: `mv key-new.txt key.txt` — **distribute the new private key to every Mac that needs it**
