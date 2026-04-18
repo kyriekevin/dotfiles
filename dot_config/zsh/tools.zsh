@@ -21,3 +21,22 @@ fi
 if (( $+commands[starship] )); then
     eval "$(starship init zsh)"
 fi
+
+# yazi: `y` drops you into the TUI and, on quit, cd's the outer shell
+# to wherever yazi last was. This is the canonical shell integration
+# from https://yazi-rs.github.io/docs/quick-start — keeps yazi usable
+# as a fuzzy cd tool, not just a viewer.
+#
+# `command cat` bypasses our `cat=bat` alias (see aliases.zsh) so the
+# temp file is read raw, not prettified.
+if (( $+commands[yazi] )); then
+    y() {
+        local tmp cwd
+        tmp="$(mktemp -t 'yazi-cwd.XXXXXX')"
+        yazi "$@" --cwd-file="$tmp"
+        if cwd="$(command cat -- "$tmp")" && [[ -n $cwd && $cwd != "$PWD" ]]; then
+            builtin cd -- "$cwd"
+        fi
+        rm -f -- "$tmp"
+    }
+fi
