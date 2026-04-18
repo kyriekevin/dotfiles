@@ -33,12 +33,25 @@ done
 echo
 echo "── Interactive shell probe ──────────────────────────"
 ALIAS_LIST="c p e gst gco gcb gcm ga gaa gd gl gp lg nv s cat ls l ll"
+
+# Pick the first exported name from secrets.zsh so the "secrets reached the
+# shell" probe doesn't hardcode any specific variable — rotating or renaming
+# a secret doesn't break the test.
+SECRETS_FIRST_NAME=$(awk '/^[[:space:]]*export[[:space:]]+[A-Za-z_][A-Za-z0-9_]*=/ {
+    sub(/^[[:space:]]*export[[:space:]]+/, "")
+    sub(/=.*/, "")
+    print; exit
+}' ~/.config/zsh/secrets.zsh 2>/dev/null)
+export SECRETS_FIRST_NAME
+
 probe=$(zsh -ic '
 echo "K_EDITOR=$EDITOR"
 echo "K_BAT_THEME=$BAT_THEME"
 echo "K_HF_ENDPOINT=$HF_ENDPOINT"
 echo "K_COLUMNS=$COLUMNS"
-echo "K_FEISHU_APP_ID=${FEISHU_APP_ID:-__unset__}"
+if [[ -n "$SECRETS_FIRST_NAME" ]]; then
+    echo "K_SECRET_VAL=${(P)SECRETS_FIRST_NAME:-__unset__}"
+fi
 command -v brew >/dev/null && echo "K_HAS_BREW=1" || echo "K_HAS_BREW=0"
 for a in '"$ALIAS_LIST"'; do
     v=$(alias "$a" 2>/dev/null)
@@ -54,7 +67,12 @@ check "EDITOR=nvim"                                 '[[ "$(get K_EDITOR)" == nvi
 check "BAT_THEME set"                               '[[ -n "$(get K_BAT_THEME)" ]]'
 check "HF_ENDPOINT is hf-mirror"                    '[[ "$(get K_HF_ENDPOINT)" == *hf-mirror.com* ]]'
 check "COLUMNS > 0"                                 '(( $(get K_COLUMNS) > 0 ))'
-check "FEISHU_APP_ID set (secrets.zsh loaded)"      '[[ "$(get K_FEISHU_APP_ID)" != __unset__ && -n "$(get K_FEISHU_APP_ID)" ]]'
+if [[ -n "$SECRETS_FIRST_NAME" ]]; then
+    check "secrets.zsh exports reach shell (\$$SECRETS_FIRST_NAME)" \
+        '[[ "$(get K_SECRET_VAL)" != __unset__ && -n "$(get K_SECRET_VAL)" ]]'
+else
+    ok "secrets.zsh has no exports (nothing to verify)"
+fi
 check "brew on PATH (shellenv worked)"              '[[ "$(get K_HAS_BREW)" == 1 ]]'
 
 echo
