@@ -62,8 +62,7 @@ The full package list (shell / git / editor utilities + GUI casks) lives in [`Br
 ├── dot_*                         → ~/.*            (real dotfiles)
 ├── encrypted_private_*.age       → chmod 0600, age-decrypted on apply
 ├── *.tmpl                        → Go-rendered with chezmoi data
-├── run_once_before_* /           → apply-time hooks
-│   run_onchange_after_*
+├── .chezmoiscripts/              → apply-time hooks (run_once_before_*, run_onchange_after_*)
 ├── Brewfile                      → brew bundle (triggered by a hook)
 ├── bootstrap.sh                  → new-Mac entrypoint
 ├── docs/                         → operator runbooks (secrets, …)
@@ -77,6 +76,26 @@ The full package list (shell / git / editor utilities + GUI casks) lives in [`Br
 
 > [!NOTE]
 > This repo lives at `~/.dotfiles` (not chezmoi's default `~/.local/share/chezmoi`). Every `chezmoi` command needs `--source=$HOME/.dotfiles`, or set `sourceDir = "~/.dotfiles"` in `~/.config/chezmoi/chezmoi.toml`.
+
+## ⚙️ Scripts
+
+`chezmoi apply` runs any `run_*` file under [`.chezmoiscripts/`](.chezmoiscripts). The filename is the execution contract — each token controls one dimension of behavior:
+
+```text
+run_onchange_after_20-brew-bundle.sh.tmpl
+└─┬┘ └───┬──┘ └─┬─┘ └┬┘ └────┬────┘ └─┬┘ └─┬─┘
+  │     │      │    │       │       │    └─ .tmpl = Go-rendered with chezmoi data
+  │     │      │    │       │       └──── .sh    = shell interpreter
+  │     │      │    │       └──────────── descriptive name
+  │     │      │    └──────────────────── sort order (numeric, ascending)
+  │     │      └───────────────────────── before / after writing dotfiles
+  │     └──────────────────────────────── once (per success) / onchange / always
+  └────────────────────────────────────── run_ prefix = script, not a dotfile
+```
+
+`onchange` scripts that depend on an *external* file (e.g. `Brewfile`) should embed the external file's hash in a comment — the external change then flows into the script's own content hash, which is what chezmoi watches to decide re-runs.
+
+See [chezmoi source-state attributes](https://www.chezmoi.io/reference/source-state-attributes/) for the full list.
 
 ## 🔐 Secrets
 

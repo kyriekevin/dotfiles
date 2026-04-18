@@ -62,8 +62,7 @@ repo 依赖的核心工具。
 ├── dot_*                         → ~/.*            （真正的 dotfiles）
 ├── encrypted_private_*.age       → chmod 0600，apply 时 age 解密
 ├── *.tmpl                        → 用 chezmoi data 做 Go 模板渲染
-├── run_once_before_* /           → apply 时触发的 hook
-│   run_onchange_after_*
+├── .chezmoiscripts/              → apply 时触发的 hook（run_once_before_*, run_onchange_after_*）
 ├── Brewfile                      → brew bundle（由 hook 触发）
 ├── bootstrap.sh                  → 新 Mac 的入口脚本
 ├── docs/                         → 运维手册（secrets 等）
@@ -77,6 +76,26 @@ repo 依赖的核心工具。
 
 > [!NOTE]
 > 本 repo 位于 `~/.dotfiles`（不是 chezmoi 默认的 `~/.local/share/chezmoi`）。每个 `chezmoi` 命令都需要带 `--source=$HOME/.dotfiles`，或者在 `~/.config/chezmoi/chezmoi.toml` 设置 `sourceDir = "~/.dotfiles"`。
+
+## ⚙️ 脚本
+
+`chezmoi apply` 会执行 [`.chezmoiscripts/`](.chezmoiscripts) 下所有 `run_*` 文件。文件名本身是一份执行契约 —— 每一段都控制一个维度的行为：
+
+```text
+run_onchange_after_20-brew-bundle.sh.tmpl
+└─┬┘ └───┬──┘ └─┬─┘ └┬┘ └────┬────┘ └─┬┘ └─┬─┘
+  │     │      │    │       │       │    └─ .tmpl = 用 chezmoi data 渲染的 Go 模板
+  │     │      │    │       │       └──── .sh    = 解释器
+  │     │      │    │       └──────────── 可读名字
+  │     │      │    └──────────────────── 排序前缀（数字，升序）
+  │     │      └───────────────────────── before / after 相对 apply 写 dotfile
+  │     └──────────────────────────────── once（成功一次）/ onchange / always
+  └────────────────────────────────────── run_ 前缀 = 脚本，非 dotfile
+```
+
+`onchange` 脚本如果依赖**外部文件**（例如 `Brewfile`），要把外部文件的 hash 内嵌在脚本注释里 —— 外部一变，脚本自身内容 hash 跟着变，chezmoi 据此决定是否重跑。
+
+完整属性列表见 [chezmoi source-state attributes](https://www.chezmoi.io/reference/source-state-attributes/)。
 
 ## 🔐 Secrets
 
