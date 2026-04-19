@@ -50,6 +50,7 @@ The core tools this repo leans on.
 | [age](https://github.com/FiloSottile/age) | secret encryption | bootstrap → `brew install age` |
 | [gh](https://cli.github.com) | GitHub CLI (PR / review flow) | bootstrap → `brew install gh` |
 | [Claude Code](https://claude.com/claude-code) | AI coding CLI | bootstrap → `curl -fsSL https://claude.ai/install.sh \| bash` |
+| [Node.js](https://nodejs.org) | Runtime for Claude Code plugin hooks (`.mjs`) and `npx`-based guards | Brewfile → `brew install node` |
 | [uv](https://github.com/astral-sh/uv) | Python tool runner | Brewfile → `brew install uv` |
 | [pre-commit](https://pre-commit.com) | Git hooks (whitespace / secrets / conventional-commits) | `uv tool install pre-commit` — setup in [CONTRIBUTING.md](CONTRIBUTING.md) |
 

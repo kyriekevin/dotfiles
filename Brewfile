@@ -44,6 +44,13 @@ brew "sevenzip"
 # ---- Python ----------------------------------------------------------------
 brew "uv"
 
+# ---- Node.js ---------------------------------------------------------------
+# Required by Claude Code plugins that ship .mjs hooks (e.g. openai-codex's
+# SessionStart/SessionEnd/Stop lifecycle hooks) and by the PreToolUse guard
+# `npx block-no-verify@1.1.2`. `bun` is not a drop-in replacement here — the
+# hooks rely on Node's native ESM/stream semantics.
+brew "node"
+
 # ---- Mac App Store CLI -----------------------------------------------------
 brew "mas"
 
