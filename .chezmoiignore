@@ -15,3 +15,43 @@ tests
 # — oauth_token itself is in macOS Keychain, but don't risk it). Never
 # track; ignore pre-emptively in case the file lands in source.
 dot_config/gh/hosts.yml
+
+# Phase 6b: ~/.claude is a live runtime directory. Only settings.json is
+# source-managed (via dot_claude/settings.json). Everything else below
+# is per-machine state — sessions, caches, logs, auto-memory, plugin
+# install state, permission allowlists — and must never enter the repo.
+#
+# The pattern is: deny the whole tree, then stop (we simply don't `chezmoi
+# add` these). Listed defensively so an accidental `chezmoi add ~/.claude`
+# is a no-op for runtime paths.
+dot_claude/settings.local.json
+dot_claude/backups/**
+dot_claude/cache/**
+dot_claude/chrome/**
+dot_claude/downloads/**
+dot_claude/file-history/**
+dot_claude/homunculus/**
+dot_claude/image-cache/**
+dot_claude/metrics/**
+dot_claude/paste-cache/**
+dot_claude/plans/**
+dot_claude/plugins/**
+dot_claude/projects/**
+dot_claude/session-data/**
+dot_claude/session-env/**
+dot_claude/sessions/**
+dot_claude/shell-snapshots/**
+dot_claude/tasks/**
+dot_claude/telemetry/**
+dot_claude/*.jsonl
+dot_claude/*.log
+dot_claude/*-cache.json
+# Extension points we don't yet version (agents / skills / commands /
+# rules / user-level CLAUDE.md). Ignored pre-emptively so that if they
+# appear on disk they don't sneak into source on a stray `chezmoi add`.
+# Delete an entry here before opting a path into source control.
+dot_claude/agents/**
+dot_claude/skills/**
+dot_claude/commands/**
+dot_claude/rules/**
+dot_claude/CLAUDE.md
