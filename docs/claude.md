@@ -4,7 +4,7 @@
 
 Cross-machine Claude Code config: **`~/.claude/settings.json` only.** Everything else under `~/.claude/` — sessions, auto-memory, plugin caches, session-env, logs, allowlists — is machine-local runtime state and **ignored on purpose** (see `.chezmoiignore`).
 
-Phase 6c will tackle plugins / MCP / skills separately; this phase is just the settings spine.
+The per-plugin / per-MCP / per-skill deep-dive lives in [`claude-plugins.md`](claude-plugins.md); this doc is the settings spine.
 
 ## How it works
 
@@ -38,8 +38,8 @@ The second system is worth knowing about but *must not* enter the repo: `~/.clau
 | `$schema` | `json.schemastore.org/claude-code-settings.json` | Autocomplete + inline validation in any JSON-schema-aware editor. Zero runtime cost. |
 | `hooks.PreToolUse[Bash]` | `npx block-no-verify@1.1.2` | Intercepts `git commit --no-verify` / `git push --no-verify` — matches the "never skip hooks" rule in CLAUDE.md. |
 | `statusLine` | `bash -c '... bun … claude-hud/src/index.ts'` | Picks highest-versioned claude-hud install, execs it via bun. Hardcoded `/opt/homebrew/bin/bun` is fine on Apple Silicon Macs (both of ours). |
-| `enabledPlugins` | 3 entries | `claude-hud` (status HUD) · `codex` (OpenAI Codex lifecycle hooks) · `andrej-karpathy-skills` (skill pack). |
-| `extraKnownMarketplaces` | 3 GitHub sources | Registers the `github:owner/repo` marketplaces that satisfy `enabledPlugins`. Needed on a fresh Mac before Claude can resolve plugin IDs. |
+| `enabledPlugins` | 4 entries | `claude-hud` (status HUD) · `codex` (OpenAI Codex lifecycle hooks) · `andrej-karpathy-skills` (skill pack) · `chrome-devtools-mcp` (frontend debug over live Chrome). |
+| `extraKnownMarketplaces` | 4 GitHub sources | Registers the `github:owner/repo` marketplaces that satisfy `enabledPlugins`. Needed on a fresh Mac before Claude can resolve plugin IDs. |
 | `syntaxHighlightingDisabled` | `true` | Response highlighting has intermittent terminal-render bugs in ghostty — killed it, prefer plain. |
 | `effortLevel` | `"xhigh"` | Claude's [extended-thinking budget](https://code.claude.com/docs/en/model-config#adjust-effort-level). Persisted automatically when you run `/effort`; pin it so new Macs don't default back to medium. |
 
@@ -49,7 +49,7 @@ The second system is worth knowing about but *must not* enter the repo: `~/.clau
 
 | Path | Contains | Why not cross-machine |
 |---|---|---|
-| `dot_claude/settings.local.json` | Per-project Bash/WebFetch allowlists | Paths are `/Users/bytedance/...` — worthless on another Mac. Also holds bytedance-internal allowlist entries. |
+| `dot_claude/settings.local.json` | Per-project Bash/WebFetch allowlists | Paths are `/Users/bytedance/...` — worthless on another Mac. Entries can also embed machine-specific internal URLs or credential fragments. |
 | `dot_claude/sessions/` | JSONL transcripts of every Claude run | Grows to MB/day. Resume data, not config. |
 | `dot_claude/projects/<proj>/memory/` | Auto-memory files Claude writes itself | Docs: **machine-local by design**. Sharing would collide between work and personal. |
 | `dot_claude/plans/` | `/plan` mode outputs | Work artifacts, not config. Our `0-1-dotfiles-*.md` plan lives here locally; each machine has its own. |
@@ -62,6 +62,7 @@ The second system is worth knowing about but *must not* enter the repo: `~/.clau
 | `dot_claude/chrome/` `downloads/` | Browser-extension cache | Machine-local. |
 | `dot_claude/*.jsonl` `*.log` `*-cache.json` | `history.jsonl`, `bash-commands.log`, `cost-tracker.log`, `stats-cache.json` | Logs and caches. |
 | `dot_claude/agents/` `skills/` `commands/` `rules/` `CLAUDE.md` | **Unused extension points** | Not currently populated. Pre-emptively ignored so a stray `chezmoi add ~/.claude` can't silently start versioning something we haven't evaluated. Delete the ignore entry before opting any of these into source. |
+| `dot_claude.json` (note: `.claude.json`, **not** under `.claude/`) | App state: `mcpServers{}` entries (often embedding API tokens / OAuth secrets in plaintext env blocks), OAuth account, onboarding + feature-flag caches | Per-machine runtime + live credentials. Defensive ignore so `chezmoi add ~/.claude.json` is a no-op. Any MCP with a token is configured per-user with `claude mcp add` and stays in this file. |
 
 ## Scopes cheat-sheet (2026)
 
@@ -88,19 +89,20 @@ Hooks we intentionally *don't* configure at user level:
 - Plugin `.mjs` hooks (e.g. `openai-codex` SessionStart/SessionEnd/Stop) live in `~/.claude/plugins/cache/openai-codex/…/hooks/hooks.json` — installed by the plugin itself when `enabledPlugins` references it. **We don't duplicate them in `settings.json`.**
 - Anything project-scoped (e.g. PostToolUse lint hooks) belongs in that project's `.claude/settings.json`, not here.
 
-## Plugin model (preview — full story in Phase 6c)
+## Plugin model
 
-`enabledPlugins` + `extraKnownMarketplaces` is a **declaration**, not a vendoring. On `~/.claude/plugins/` being empty, Claude re-fetches from GitHub on next launch.
+`enabledPlugins` + `extraKnownMarketplaces` is a **declaration**, not a vendoring. On `~/.claude/plugins/` being empty, Claude re-fetches from the declared marketplaces on next launch.
 
-Three plugins are currently declared:
+Four plugins are currently declared — see [`claude-plugins.md`](claude-plugins.md) for per-plugin usage / commands / skills:
 
 | Plugin | What it ships | Namespace |
 |---|---|---|
 | `claude-hud@claude-hud` | `statusLine` backend (the bun script pointed to by our `statusLine` field) | — |
-| `codex@openai-codex` | `.mjs` SessionStart / SessionEnd / Stop hooks | `/codex:*` skills |
+| `codex@openai-codex` | `.mjs` SessionStart / SessionEnd / Stop hooks + `codex-rescue` subagent | `/codex:*` skills |
 | `andrej-karpathy-skills@karpathy-skills` | Skill pack | `/karpathy-skills:*` skills |
+| `chrome-devtools-mcp@claude-plugins-official` | MCP server wrapping Chrome DevTools Protocol — console / network / performance traces against a live Chrome | MCP tools (no skill namespace) |
 
-> **Company-internal plugins / MCPs** (e.g. `feishu-lark-mcp`, `bytedcli`) are **not** declared here. They're work-Mac-only, auth-token-dependent, and documented in the internal Feishu runbook instead — Phase 6c will wire that up.
+> **Token-bearing or network-restricted MCPs** are not declared in this repo. Add them per-user with `claude mcp add` — the config lands in `~/.claude.json` (which we `.chezmoiignore` defensively so secrets can't leak in).
 
 ---
 
@@ -356,7 +358,7 @@ claude --bare -p "Summarize this paper" --allowedTools "Read"
 bash tests/claude.sh
 ```
 
-~38 checks: binary presence (`claude`, `bun`, `npx`, `node`), source + target JSON validity, every pinned field, all `.chezmoiignore` runtime exclusions, plugin-cache populated, smoke for `claude --version` + `npx block-no-verify` resolution.
+~43 checks: binary presence (`claude`, `bun`, `npx`, `node`, `ccusage`), source + target JSON validity, every pinned field (4 enabled plugins + 4 marketplaces + statusLine + PreToolUse + syntax + effort), all `.chezmoiignore` runtime exclusions (incl. `dot_claude.json` defensive guard), plugin-cache populated for all 4 plugins, smoke for `claude --version` + `npx block-no-verify` resolution.
 
 ### Manual
 
@@ -365,7 +367,8 @@ bash tests/claude.sh
 - [ ] `/hooks` lists the PreToolUse Bash hook + all plugin hooks, zero "command not found" errors
 - [ ] `/status` shows `~/.claude/settings.json` as the source for `effortLevel: xhigh` and `syntaxHighlightingDisabled: true`
 - [ ] Attempting `git commit --no-verify` inside a Claude session is blocked by the PreToolUse hook
-- [ ] `/plugin list` shows `claude-hud`, `codex`, `andrej-karpathy-skills` all enabled
+- [ ] `/plugin list` shows `claude-hud`, `codex`, `andrej-karpathy-skills`, `chrome-devtools-mcp` all enabled
+- [ ] `ccusage daily` prints a usage table without errors (reads `~/.claude/projects/**/*.jsonl`)
 - [ ] On the **other** machine after `chezmoi apply`: the same six fields are present in `~/.claude/settings.json`
 
 ## Troubleshooting
@@ -416,8 +419,8 @@ rm -rf ~/.claude/projects/<proj>/memory
 
 ## Related
 
-- [`Brewfile`](../Brewfile) — `node` is declared there; the inline comment covers why Claude Code plugin hooks need it
+- [`claude-plugins.md`](claude-plugins.md) — per-plugin / per-MCP / per-skill usage, bundled-skill reference, how to add custom skills/agents, and the internal-vs-external split
+- [`Brewfile`](../Brewfile) — `node` + `ccusage` are declared there; the inline comments cover why
 - [Claude Code settings reference](https://code.claude.com/docs/en/settings)
 - [Claude Code hooks reference](https://code.claude.com/docs/en/hooks)
 - [Claude Code memory reference](https://code.claude.com/docs/en/memory)
-- **Phase 6c** (upcoming) — plugins / MCP / skills deep-dive + internal-vs-external split

@@ -28,6 +28,7 @@ check "claude on PATH"                          "command -v claude >/dev/null"
 check "bun on PATH (statusLine)"                "command -v bun >/dev/null"
 check "npx on PATH (PreToolUse hook)"           "command -v npx >/dev/null"
 check "node on PATH (plugin .mjs hooks)"        "command -v node >/dev/null"
+check "ccusage on PATH (usage reports)"          "command -v ccusage >/dev/null"
 
 echo
 echo "── Source file ──────────────────────────────────────"
@@ -52,9 +53,11 @@ check "statusLine shells to bun (Apple Silicon)" "grep -q '/opt/homebrew/bin/bun
 check "claude-hud plugin enabled"               "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"enabledPlugins\"][\"claude-hud@claude-hud\"] is True' $SRC"
 check "openai-codex plugin enabled"             "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"enabledPlugins\"][\"codex@openai-codex\"] is True' $SRC"
 check "karpathy-skills plugin enabled"          "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"enabledPlugins\"][\"andrej-karpathy-skills@karpathy-skills\"] is True' $SRC"
+check "chrome-devtools-mcp plugin enabled"      "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"enabledPlugins\"][\"chrome-devtools-mcp@claude-plugins-official\"] is True' $SRC"
 check "claude-hud marketplace registered"       "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"extraKnownMarketplaces\"][\"claude-hud\"][\"source\"][\"repo\"]==\"jarrodwatts/claude-hud\"' $SRC"
 check "openai-codex marketplace registered"     "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"extraKnownMarketplaces\"][\"openai-codex\"][\"source\"][\"repo\"]==\"openai/codex-plugin-cc\"' $SRC"
 check "karpathy-skills marketplace registered"  "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"extraKnownMarketplaces\"][\"karpathy-skills\"][\"source\"][\"repo\"]==\"forrestchang/andrej-karpathy-skills\"' $SRC"
+check "claude-plugins-official registered"      "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"extraKnownMarketplaces\"][\"claude-plugins-official\"][\"source\"][\"repo\"]==\"anthropics/claude-plugins-official\"' $SRC"
 check "syntaxHighlightingDisabled = true"       "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"syntaxHighlightingDisabled\"] is True' $SRC"
 check "effortLevel = xhigh"                     "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"effortLevel\"]==\"xhigh\"' $SRC"
 
@@ -76,7 +79,8 @@ for path in \
     "dot_claude/tasks/**" \
     "dot_claude/*.jsonl" \
     "dot_claude/*.log" \
-    "dot_claude/*-cache.json"
+    "dot_claude/*-cache.json" \
+    "dot_claude.json"
 do
     check "ignored: $path"                       "grep -qF '$path' $IGN"
 done
@@ -94,6 +98,10 @@ else
 fi
 check "codex plugin cache populated"             "ls -d $HOME/.claude/plugins/cache/openai-codex/codex/*/ >/dev/null 2>&1"
 check "karpathy-skills plugin cache populated"   "ls -d $HOME/.claude/plugins/cache/karpathy-skills/andrej-karpathy-skills/*/ >/dev/null 2>&1"
+# chrome-devtools-mcp is fetched from a `url` source (not a versioned GitHub
+# release), so its cache folder is literally named `latest/` rather than a
+# semver directory like the other three plugins above. Match that exact shape.
+check "chrome-devtools-mcp cache populated"      "test -d $HOME/.claude/plugins/cache/claude-plugins-official/chrome-devtools-mcp/latest"
 
 echo
 echo "── Smoke ────────────────────────────────────────────"
