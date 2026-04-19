@@ -76,11 +76,11 @@ AI Chat is high-frequency. Routing it through `ctrl+r space` (two separate keypr
 
 ### `ctrl+x` sublayer — macOS system actions (osascript, no Raycast dependency)
 
-| Key | Action |
-|---|---|
-| `m` | Toggle mute |
-| `=` | Volume +10 |
-| `-` | Volume −10 |
+| Key | Action | Repeat mode |
+|---|---|---|
+| `m` | Toggle mute | One-shot (prevents double-toggle on accidental repeat) |
+| `=` | Volume +10 | Sticky (`ctrl+x ==== ` → +40% in one chord) |
+| `-` | Volume −10 | Sticky (timeout 500ms after last press) |
 
 ## Feature deep-dives
 

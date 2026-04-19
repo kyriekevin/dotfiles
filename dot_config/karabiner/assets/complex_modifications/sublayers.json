@@ -219,9 +219,16 @@
                     "type": "basic",
                     "from": { "key_code": "equal_sign", "modifiers": { "optional": ["any"] } },
                     "to": [
-                        { "shell_command": "osascript -e 'set volume output volume ((output volume of (get volume settings)) + 10)'" },
-                        { "set_variable": { "name": "layer_x", "value": 0 } }
+                        { "shell_command": "osascript -e 'set volume output volume ((output volume of (get volume settings)) + 10)'" }
                     ],
+                    "to_delayed_action": {
+                        "to_if_invoked": [
+                            { "set_variable": { "name": "layer_x", "value": 0 } }
+                        ]
+                    },
+                    "parameters": {
+                        "basic.to_delayed_action_delay_milliseconds": 500
+                    },
                     "conditions": [
                         { "type": "variable_if", "name": "layer_x", "value": 1 }
                     ]
@@ -230,9 +237,16 @@
                     "type": "basic",
                     "from": { "key_code": "hyphen", "modifiers": { "optional": ["any"] } },
                     "to": [
-                        { "shell_command": "osascript -e 'set volume output volume ((output volume of (get volume settings)) - 10)'" },
-                        { "set_variable": { "name": "layer_x", "value": 0 } }
+                        { "shell_command": "osascript -e 'set volume output volume ((output volume of (get volume settings)) - 10)'" }
                     ],
+                    "to_delayed_action": {
+                        "to_if_invoked": [
+                            { "set_variable": { "name": "layer_x", "value": 0 } }
+                        ]
+                    },
+                    "parameters": {
+                        "basic.to_delayed_action_delay_milliseconds": 500
+                    },
                     "conditions": [
                         { "type": "variable_if", "name": "layer_x", "value": 1 }
                     ]

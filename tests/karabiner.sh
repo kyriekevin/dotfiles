@@ -103,6 +103,12 @@ echo "── System layer (ctrl+x) native actions ──────────
 check "x-layer: m → toggle mute (osascript)"    "grep -qE 'osascript.*output muted not' $SUBL"
 check "x-layer: = → volume up (osascript)"      "jq -e '.rules[].manipulators[] | select(.from.key_code==\"equal_sign\") | .to[0].shell_command | test(\"output volume.*\\\\+ 10\")' $SUBL >/dev/null"
 check "x-layer: - → volume down (osascript)"    "jq -e '.rules[].manipulators[] | select(.from.key_code==\"hyphen\") | .to[0].shell_command | test(\"output volume.*- 10\")' $SUBL >/dev/null"
+# Sticky behavior — vol +/- keep layer_x alive across repeats (ctrl+x ===
+# = +30%), while mute stays one-shot (prevents double-toggle on accidental
+# repeat within timeout window). Guard both shapes.
+check "x-layer: vol +/- are sticky (no inline clear)" "jq -e '[.rules[].manipulators[] | select(.from.key_code==\"equal_sign\" or .from.key_code==\"hyphen\") | [.to[] | select(.set_variable.name==\"layer_x\")] | length] | unique == [0]' $SUBL >/dev/null"
+check "x-layer: vol +/- have delayed clear"     "jq -e '[.rules[].manipulators[] | select(.from.key_code==\"equal_sign\" or .from.key_code==\"hyphen\") | .to_delayed_action.to_if_invoked[0].set_variable.name] | unique == [\"layer_x\"]' $SUBL >/dev/null"
+check "x-layer: mute stays one-shot (inline clear)" "jq -e '.rules[].manipulators[] | select(.from.key_code==\"m\" and (.conditions[0].name==\"layer_x\")) | [.to[] | select(.set_variable.name==\"layer_x\")] | length == 1' $SUBL >/dev/null"
 
 echo
 echo "── Timeout + delayed_action parameters ──────────────"
