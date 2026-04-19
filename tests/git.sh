@@ -17,10 +17,10 @@ check() {
     if out=$(eval "$cmd" 2>&1); then ok "$name"; else bad "$name" "$out"; fi
 }
 
-SRC="/Users/bytedance/.dotfiles/dot_gitconfig.tmpl"
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+SRC="$REPO_ROOT/dot_gitconfig.tmpl"
 GC="$HOME/.gitconfig"
 GI="$HOME/.gitignore_global"
-
 LG="$HOME/.config/lazygit/config.yml"
 GHCFG="$HOME/.config/gh/config.yml"
 
@@ -71,30 +71,31 @@ echo
 echo "── lazygit config ───────────────────────────────────"
 # XDG_CONFIG_HOME must be set in zshenv, else lazygit reads
 # ~/Library/Application Support/lazygit/ on macOS and our config is dead.
-check "XDG_CONFIG_HOME set in dot_zshenv"       "grep -q 'export XDG_CONFIG_HOME=\"\$HOME/.config\"' /Users/bytedance/.dotfiles/dot_zshenv"
-check "lazygit config.yml parses (yaml)"        "python3 -c 'import yaml,sys; yaml.safe_load(open(\"$LG\"))'"
+check "XDG_CONFIG_HOME set in dot_zshenv"       "grep -q 'export XDG_CONFIG_HOME=\"\$HOME/.config\"' $REPO_ROOT/dot_zshenv"
+# YAML syntax is pre-validated by pre-commit `check-yaml` (commit-time
+# gate); here we only spot-check semantics that grep can verify.
 check "lazygit theme = catppuccin mocha blue"   "grep -q '#89b4fa' $LG"
 check "lazygit uses delta pager"                "grep -q 'pager: delta' $LG"
 check "lazygit edit = nvim"                     "grep -q \"edit: 'nvim {{filename}}'\" $LG"
 
 echo
 echo "── gh config ────────────────────────────────────────"
-check "gh config.yml parses (yaml)"             "python3 -c 'import yaml,sys; yaml.safe_load(open(\"$GHCFG\"))'"
 check "gh git_protocol = https"                 "grep -q 'git_protocol: https' $GHCFG"
 check "gh alias 'co' (pr checkout)"             "grep -q 'co: pr checkout' $GHCFG"
 check "gh alias 'pv' (pr view)"                 "grep -q 'pv: pr view' $GHCFG"
 check "gh alias 'pc' (pr checks)"               "grep -q 'pc: pr checks' $GHCFG"
-# Cross-check: gh actually parses the aliases (not just YAML-valid but
-# gh-valid). `gh alias list` exits non-zero if the file is corrupt.
+# `gh alias list` parses the entire config through gh's own schema —
+# catches structural breakage that grep would miss and obsoletes a
+# generic YAML parse check.
 check "gh alias list succeeds"                  "gh alias list >/dev/null"
-check "hosts.yml ignored in chezmoi source"     "grep -q 'dot_config/gh/hosts.yml' /Users/bytedance/.dotfiles/.chezmoiignore"
+check "hosts.yml ignored in chezmoi source"     "grep -q 'dot_config/gh/hosts.yml' $REPO_ROOT/.chezmoiignore"
 
 echo
 echo "── Smoke ────────────────────────────────────────────"
 # Active identity matches the active machine's is_work — we're always on
 # one or the other, so whichever renders must be self-consistent.
 check "active identity matches template"        "git config --global user.email | grep -qE '^(zhongyuzhe@bytedance\.com|yuzhezhong0117@qq\.com)$'"
-check "git lg alias renders (cat pager)"        "git -C /Users/bytedance/.dotfiles -c core.pager=cat lg -1 >/dev/null"
+check "git lg alias renders (cat pager)"        "git -C $REPO_ROOT -c core.pager=cat lg -1 >/dev/null"
 
 echo
 if [ $FAIL -eq 0 ]; then
