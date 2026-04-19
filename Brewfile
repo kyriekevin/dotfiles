@@ -51,6 +51,13 @@ brew "uv"
 # hooks rely on Node's native ESM/stream semantics.
 brew "node"
 
+# ---- Claude Code companion CLIs --------------------------------------------
+# ccusage: reads ~/.claude/projects/**/*.jsonl transcripts and reports token
+# usage by day/week/month/session/block — `/stats`-style numbers without
+# launching Claude, and a stable input any skill/script that needs usage
+# data can shell out to. Deps: node only.
+brew "ccusage"
+
 # ---- Mac App Store CLI -----------------------------------------------------
 brew "mas"
 

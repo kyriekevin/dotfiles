@@ -16,6 +16,14 @@ tests
 # track; ignore pre-emptively in case the file lands in source.
 dot_config/gh/hosts.yml
 
+# Phase 6c: ~/.claude.json is the Claude Code application state file (note:
+# *not* under ~/.claude/ — it sits in $HOME directly). It holds per-project
+# mcpServers{} entries (which often embed API tokens / OAuth secrets in
+# plaintext env blocks), OAuth account state, and onboarding / feature-flag
+# caches. All per-machine. Ignored defensively so an accidental
+# `chezmoi add ~/.claude.json` is a no-op — never track this file.
+dot_claude.json
+
 # Phase 6b: ~/.claude is a live runtime directory. Only settings.json is
 # source-managed (via dot_claude/settings.json). Everything else below
 # is per-machine state — sessions, caches, logs, auto-memory, plugin
