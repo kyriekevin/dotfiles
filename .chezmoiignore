@@ -10,3 +10,8 @@ Brewfile
 .github
 docs
 tests
+
+# Phase 6a: gh hosts.yml holds per-machine auth state (user, token path
+# — oauth_token itself is in macOS Keychain, but don't risk it). Never
+# track; ignore pre-emptively in case the file lands in source.
+dot_config/gh/hosts.yml

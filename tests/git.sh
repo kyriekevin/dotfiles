@@ -21,14 +21,21 @@ SRC="/Users/bytedance/.dotfiles/dot_gitconfig.tmpl"
 GC="$HOME/.gitconfig"
 GI="$HOME/.gitignore_global"
 
+LG="$HOME/.config/lazygit/config.yml"
+GHCFG="$HOME/.config/gh/config.yml"
+
 echo "── Binary ───────────────────────────────────────────"
 check "git on PATH"                             "command -v git >/dev/null"
 check "delta on PATH"                           "command -v delta >/dev/null"
+check "lazygit on PATH"                         "command -v lazygit >/dev/null"
+check "gh on PATH"                              "command -v gh >/dev/null"
 
 echo
 echo "── Target files present ─────────────────────────────"
 check "~/.gitconfig present"                    "test -r $GC"
 check "~/.gitignore_global present"             "test -r $GI"
+check "~/.config/lazygit/config.yml present"    "test -r $LG"
+check "~/.config/gh/config.yml present"         "test -r $GHCFG"
 
 echo
 echo "── Active global config ─────────────────────────────"
@@ -59,6 +66,28 @@ check "work name (zyz) in template"             "grep -q 'name  = zyz' $SRC"
 check "work email (bytedance) in template"      "grep -q 'email = zhongyuzhe@bytedance.com' $SRC"
 check "personal name (Kyrie) in template"       "grep -q 'name  = Kyrie' $SRC"
 check "personal email (qq) in template"         "grep -q 'email = yuzhezhong0117@qq.com' $SRC"
+
+echo
+echo "── lazygit config ───────────────────────────────────"
+# XDG_CONFIG_HOME must be set in zshenv, else lazygit reads
+# ~/Library/Application Support/lazygit/ on macOS and our config is dead.
+check "XDG_CONFIG_HOME set in dot_zshenv"       "grep -q 'export XDG_CONFIG_HOME=\"\$HOME/.config\"' /Users/bytedance/.dotfiles/dot_zshenv"
+check "lazygit config.yml parses (yaml)"        "python3 -c 'import yaml,sys; yaml.safe_load(open(\"$LG\"))'"
+check "lazygit theme = catppuccin mocha blue"   "grep -q '#89b4fa' $LG"
+check "lazygit uses delta pager"                "grep -q 'pager: delta' $LG"
+check "lazygit edit = nvim"                     "grep -q \"edit: 'nvim {{filename}}'\" $LG"
+
+echo
+echo "── gh config ────────────────────────────────────────"
+check "gh config.yml parses (yaml)"             "python3 -c 'import yaml,sys; yaml.safe_load(open(\"$GHCFG\"))'"
+check "gh git_protocol = https"                 "grep -q 'git_protocol: https' $GHCFG"
+check "gh alias 'co' (pr checkout)"             "grep -q 'co: pr checkout' $GHCFG"
+check "gh alias 'pv' (pr view)"                 "grep -q 'pv: pr view' $GHCFG"
+check "gh alias 'pc' (pr checks)"               "grep -q 'pc: pr checks' $GHCFG"
+# Cross-check: gh actually parses the aliases (not just YAML-valid but
+# gh-valid). `gh alias list` exits non-zero if the file is corrupt.
+check "gh alias list succeeds"                  "gh alias list >/dev/null"
+check "hosts.yml ignored in chezmoi source"     "grep -q 'dot_config/gh/hosts.yml' /Users/bytedance/.dotfiles/.chezmoiignore"
 
 echo
 echo "── Smoke ────────────────────────────────────────────"

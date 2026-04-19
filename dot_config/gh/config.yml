@@ -1,0 +1,17 @@
+# gh CLI config — aliases optimized for PR-heavy workflows (reviewing,
+# merging, checking CI). Only non-default values are listed; unset keys
+# fall back to gh's built-in defaults (run `gh config list` to confirm).
+# hosts.yml holds per-machine auth state and is NEVER tracked.
+
+version: 1
+git_protocol: https
+
+aliases:
+    co: pr checkout      # check out a PR locally
+    pv: pr view          # view PR in terminal (use -w for browser)
+    pl: pr list
+    pc: pr checks        # CI status for current branch's PR
+    pm: pr merge
+    prs: pr status       # PRs involving you
+    il: issue list
+    iv: issue view

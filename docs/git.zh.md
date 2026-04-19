@@ -1,6 +1,6 @@
-# Git
+# Git 及配套工具
 
-极简全局 git 配置 + 短短一份全局 ignore。身份按 `is_work` chezmoi prompt 切机器 —— 不用 `includeIf`，不按目录切。
+极简全局 git 配置 + 全局 ignore，外加 `lazygit`（TUI）和 `gh`（CLI）。身份按 `is_work` chezmoi prompt 切机器 —— 不用 `includeIf`，不按目录切。
 
 ---
 
@@ -10,8 +10,12 @@
 |---|---|---|
 | `dot_gitconfig.tmpl` | `~/.gitconfig` | 身份由 `is_work` 切；共享项（delta、rebase、conflict style…）所有机器一致 |
 | `dot_gitignore_global` | `~/.gitignore_global` | 通过 `core.excludesFile` 引用 |
+| `dot_config/lazygit/config.yml` | `~/.config/lazygit/config.yml` | Catppuccin Mocha 主题 + delta pager + nvim edit |
+| `dot_config/gh/config.yml` | `~/.config/gh/config.yml` | PR 高频 alias（`pv`、`pl`、`pc`、`pm`…） |
 
 chezmoi 在每次 `chezmoi apply` 时渲染模板 —— 不需要 hook 脚本。
+
+> **关于 lazygit 的 config 路径。** macOS 下 lazygit 默认读 `~/Library/Application Support/lazygit/`。我们在 `dot_zshenv` 里 `export XDG_CONFIG_HOME="$HOME/.config"`，让 lazygit（以及所有 XDG-aware 工具）改读 `~/.config/` —— 跟 Linux 一致。验证：`lazygit --print-config-dir` 应返回 `~/.config/lazygit`。
 
 ---
 
@@ -60,6 +64,39 @@ shell 层的 git alias 在 `dot_config/zsh/aliases.zsh`（Phase 3）：`gst`、`
 
 ---
 
+## lazygit
+
+Kickstart 风格 80%-够用配置 —— 按实际需求再定制化。
+
+- **主题：** Catppuccin Mocha，跟 ghostty / yazi / starship 同色板（`#89b4fa` 蓝色活动边框、`#313244` 选中背景…）
+- **Pager：** `delta --paging=never`，让 lazygit diff pane 跟 `git diff` 输出一致
+- **编辑器：** `nvim` 经 `os.edit` / `os.editAtLine` —— staging pane 上按 `e` 打开文件时会跳到正确行
+- **其他：** 文件树开、随机 tip 关、mouse events 开、nerd fonts v3
+
+运行时注意：lazygit **不读** `~/.gitconfig` 的 `[alias]` —— TUI 由 lazygit 自己的 keymap 驱动。shell 用的 git alias 照常留在 `~/.gitconfig`。
+
+---
+
+## gh（GitHub CLI）
+
+`config.yml` 只写非默认值；没列的 key 用 gh 内置默认。用 `gh config list` 核对。
+
+为 PR review 流程优化的 alias：
+
+| Alias | 展开 | 用途 |
+|---|---|---|
+| `gh co` | `pr checkout` | 把 PR 拉下来本地测 |
+| `gh pv` | `pr view` | 终端读 PR body + 评论（`-w` 开浏览器） |
+| `gh pl` | `pr list` | 看未合并 PR |
+| `gh pc` | `pr checks` | 当前分支 PR 的 CI 状态 |
+| `gh pm` | `pr merge` | 合（按 repo 策略加 `--squash` / `--rebase`） |
+| `gh prs` | `pr status` | 跟自己有关的 PR（author / assignee / review-requested） |
+| `gh il` / `gh iv` | `issue list` / `issue view` | Issue 版本 |
+
+> **`hosts.yml` 不跟踪。** 那里放 per-machine 认证状态（用户名 + keyring 路径；oauth_token 本身在 macOS Keychain 里）。`.chezmoiignore` 预防性地排掉 `dot_config/gh/hosts.yml`，防它万一漏进 source。
+
+---
+
 ## 改 / 加一项设置
 
 1. 改 `dot_gitconfig.tmpl`（或 `dot_gitignore_global`）。
@@ -85,6 +122,9 @@ bash tests/git.sh
 - [ ] `git diff <有改动的文件>` 经 delta 渲染（双栏、行号可见）
 - [ ] `git lg -5` 出彩色 graph
 - [ ] 全新 HTTPS repo clone 第一次问凭据，之后走 Keychain 缓存
+- [ ] `lazygit --print-config-dir` 返回 `~/.config/lazygit`（不是 `~/Library/…`）
+- [ ] `lazygit` 打开后是 Mocha 蓝色边框 + delta 渲染的 diff
+- [ ] `gh pv` / `gh pc` 在任意目录里针对当前 repo 的 PR 起效
 - [ ] 在**另一台** Mac 上 `chezmoi apply` 后，`user.email` 是另一个身份
 
 ---
@@ -98,6 +138,8 @@ bash tests/git.sh
 | `fatal: unknown style 'zdiff3'` | git < 2.35 | `brew upgrade git` |
 | `git diff` 没走 delta | PATH 里没 `delta` | `brew install git-delta` |
 | 非 tty 输出夹杂 `interactive.diffFilter` 噪声 | 预期：只在交互式触发 | 不是 bug |
+| lazygit 忽略 `~/.config/lazygit/config.yml` | 当前 shell 没 export `XDG_CONFIG_HOME` | 开新 zsh（会读 `dot_zshenv`），或手动 `export XDG_CONFIG_HOME=$HOME/.config` |
+| `gh` 在已登录过的机器上又问登录 | `hosts.yml` 没了（本来就不跟踪） | `gh auth login` —— 每台机器做一次 |
 
 ---
 

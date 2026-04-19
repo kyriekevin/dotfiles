@@ -1,6 +1,6 @@
-# Git
+# Git & companion tools
 
-Minimal global git config plus a short global ignore file. Identity switches per machine via the `is_work` chezmoi prompt — no `includeIf`, no per-directory rules.
+Minimal global git config + global ignore, plus `lazygit` (TUI) and `gh` (CLI). Identity switches per machine via the `is_work` chezmoi prompt — no `includeIf`, no per-directory rules.
 
 ---
 
@@ -10,8 +10,12 @@ Minimal global git config plus a short global ignore file. Identity switches per
 |---|---|---|
 | `dot_gitconfig.tmpl` | `~/.gitconfig` | Identity switched by `is_work`; shared knobs (delta, rebase, conflict style, …) are the same on every machine |
 | `dot_gitignore_global` | `~/.gitignore_global` | Referenced from `core.excludesFile` |
+| `dot_config/lazygit/config.yml` | `~/.config/lazygit/config.yml` | Catppuccin Mocha theme + delta pager + nvim edit |
+| `dot_config/gh/config.yml` | `~/.config/gh/config.yml` | PR-heavy aliases (`pv`, `pl`, `pc`, `pm`, …) |
 
 chezmoi renders the template on each `chezmoi apply` — no hook scripts needed.
+
+> **Note on lazygit's config path.** macOS lazygit defaults to `~/Library/Application Support/lazygit/`. We set `XDG_CONFIG_HOME="$HOME/.config"` in `dot_zshenv` so lazygit (and every XDG-aware tool) reads `~/.config/` instead — same as Linux. Verify with `lazygit --print-config-dir` (expected: `~/.config/lazygit`).
 
 ---
 
@@ -60,6 +64,39 @@ Shell aliases for git live in `dot_config/zsh/aliases.zsh` (Phase 3): `gst`, `gc
 
 ---
 
+## lazygit
+
+Kickstart-style 80%-useful config — customize as real needs emerge.
+
+- **Theme:** Catppuccin Mocha, same palette as ghostty / yazi / starship (`#89b4fa` blue active border, `#313244` selection background, …)
+- **Pager:** `delta --paging=never` so lazygit's diff pane matches `git diff` output
+- **Editor:** `nvim` via `os.edit` / `os.editAtLine` — `e` on a file in the staging pane opens it at the right line
+- **Other:** file tree on, random tip off, mouse events on, nerd fonts v3
+
+Runtime note: lazygit **does not** read `~/.gitconfig` `[alias]` entries; lazygit's own keymap drives the TUI. Keep custom git aliases in `~/.gitconfig` for shell use.
+
+---
+
+## gh (GitHub CLI)
+
+Only non-default values are in `config.yml`; unset keys fall back to gh's built-in defaults. Verify with `gh config list`.
+
+Aliases optimized for the PR-review loop:
+
+| Alias | Expands to | Use case |
+|---|---|---|
+| `gh co` | `pr checkout` | Pull a PR locally for testing |
+| `gh pv` | `pr view` | Read PR body + comments in terminal (`-w` for browser) |
+| `gh pl` | `pr list` | See open PRs |
+| `gh pc` | `pr checks` | CI status for the current branch's PR |
+| `gh pm` | `pr merge` | Merge (use `--squash` / `--rebase` per repo policy) |
+| `gh prs` | `pr status` | PRs involving you (authored / assigned / review-requested) |
+| `gh il` / `gh iv` | `issue list` / `issue view` | Issue equivalents |
+
+> **`hosts.yml` is NOT tracked.** It holds per-machine auth state (username + keyring path; the oauth token itself lives in macOS Keychain). `.chezmoiignore` pre-emptively excludes `dot_config/gh/hosts.yml` in case it ever lands in source.
+
+---
+
 ## Change / Add a setting
 
 1. Edit `dot_gitconfig.tmpl` (or `dot_gitignore_global`).
@@ -85,6 +122,9 @@ Covers: binary presence, target-file presence, every pinned setting under `[core
 - [ ] `git diff <some-file-with-changes>` renders through delta (side-by-side, line numbers visible)
 - [ ] `git lg -5` shows a colored graph
 - [ ] Cloning a fresh HTTPS repo prompts for credentials once, then caches via Keychain
+- [ ] `lazygit --print-config-dir` returns `~/.config/lazygit` (not `~/Library/…`)
+- [ ] `lazygit` opens with Mocha-blue borders and delta-rendered diffs
+- [ ] `gh pv` / `gh pc` run from any dir and target the current repo's PR
 - [ ] On the **other** machine after `chezmoi apply`: `user.email` is the other identity
 
 ---
@@ -98,6 +138,8 @@ Covers: binary presence, target-file presence, every pinned setting under `[core
 | `fatal: unknown style 'zdiff3'` | git < 2.35 | `brew upgrade git` |
 | Delta not invoked on `git diff` | `delta` missing from PATH | `brew install git-delta` |
 | `interactive.diffFilter` noise when stdin is not a tty | Expected: it only triggers interactively | Not a bug |
+| lazygit ignores `~/.config/lazygit/config.yml` | `XDG_CONFIG_HOME` not exported in current shell | Open a new zsh (reads `dot_zshenv`), or `export XDG_CONFIG_HOME=$HOME/.config` manually |
+| `gh` asks to re-auth on a machine that was logged in | `hosts.yml` missing (never tracked) | `gh auth login` — runs once per machine |
 
 ---
 
