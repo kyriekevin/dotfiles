@@ -22,7 +22,9 @@ opt.expandtab = true
 opt.tabstop = 4
 opt.softtabstop = 4
 opt.shiftwidth = 4
-opt.smartindent = true
+-- No smartindent: it predates filetype plugins and does weird things (notably
+-- Python `#` comments getting re-indented to col 0 because C preprocessor
+-- semantics). nvim ships per-filetype indent under runtime/indent/ — better.
 
 opt.wrap = false
 opt.linebreak = true
@@ -41,7 +43,9 @@ opt.splitbelow = true
 opt.swapfile = false
 opt.backup = false
 opt.undofile = true
-opt.undodir = vim.fn.stdpath("state") .. "/undo"
+-- undodir defaults to stdpath("state").."/undo//" — the trailing `//` tells
+-- nvim to encode the full path into the undo filename, preventing collisions
+-- between same-basename files in different dirs. Don't override, default wins.
 
 opt.updatetime = 250
 opt.timeoutlen = 400
@@ -166,7 +170,10 @@ require("lazy").setup({
     },
 
     -- Auto-close + smart-delete for () [] {} '' "" ``.
-    { "echasnovski/mini.pairs",    version = false, event = "InsertEnter", opts = {} },
+    -- version = "*" tracks the latest semver tag (mini.nvim ships v0.15/0.16/…).
+    -- lazy-lock.json is still the authoritative pin — `version` only affects
+    -- which commit `:Lazy update` selects.
+    { "echasnovski/mini.pairs",    version = "*",   event = "InsertEnter", opts = {} },
 
     -- LazyVim-style `gs` prefix (add=gsa delete=gsd replace=gsr find=gsf
     -- find_left=gsF highlight=gsh update_n_lines=gsn). Avoids `s` (reserved
@@ -174,7 +181,7 @@ require("lazy").setup({
     -- `gd/gr/gI` (LSP go-to family in 7c).
     {
         "echasnovski/mini.surround",
-        version = false,
+        version = "*",
         event = "VeryLazy",
         opts = {
             mappings = {
