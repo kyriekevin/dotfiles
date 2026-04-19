@@ -98,10 +98,14 @@ check "karpathy-skills plugin cache populated"   "ls -d $HOME/.claude/plugins/ca
 echo
 echo "── Smoke ────────────────────────────────────────────"
 check "claude --version runs"                    "claude --version >/dev/null"
-# PreToolUse hook: npx must resolve block-no-verify. Cold network on a
-# fresh Mac will pull it; subsequent runs are cached. --help is the only
-# flag the package supports and proves the binary resolved.
-check "npx block-no-verify resolves"             "npx --no-install block-no-verify@1.1.2 --help >/dev/null 2>&1 || npx -y block-no-verify@1.1.2 --help >/dev/null"
+# PreToolUse hook: block-no-verify must be resolvable by npx. Pure
+# readonly check — `--no-install` fails fast if the package isn't in
+# npx's cache yet, no network, no side effects. On a fresh Mac this
+# check will red until the first Claude Bash call primes the cache via
+# the hook itself (npx auto-installs on first actual invocation). That's
+# a correct signal, not a bug: it says "the hook hasn't been exercised
+# yet on this machine."
+check "npx block-no-verify cached"               "npx --no-install block-no-verify@1.1.2 --help >/dev/null 2>&1"
 
 echo
 if [ $FAIL -eq 0 ]; then
