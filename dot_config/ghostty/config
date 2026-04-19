@@ -1,0 +1,162 @@
+# Ghostty config — kickstart style, heavy inline commentary.
+#
+# Reload:  ctrl+s then r   (chord; see keybinds below)
+# Verify:  ghostty +validate-config --config-file=$HOME/.config/ghostty/config
+# Reset:   comment out any stanza and reload — ghostty falls back to defaults.
+#
+# Layout:
+#   1. Appearance  (theme / font / padding)
+#   2. Window      (titlebar / save-state / cursor)
+#   3. Shell       (integration, mouse, clipboard)
+#   4. Quick term  (global drop-down)
+#   5. Keybinds    (tmux-style ctrl+s prefix chord)
+
+
+# =============================================================================
+# 1. Appearance
+# =============================================================================
+
+# Ghostty ships Catppuccin Mocha as a built-in theme — no extra install needed.
+# Keeping this identical to bat / starship / yazi / fastfetch Mocha palette so
+# the whole terminal stack reads as one visual surface.
+theme = Catppuccin Mocha
+
+# xterm-256color is the portable choice. Ghostty's own xterm-ghostty terminfo
+# is richer (truecolor + image protocol advertised) but many servers lack it,
+# and Ghostty auto-upgrades capabilities locally either way.
+term = xterm-256color
+
+# Maple Mono NF CN: NF = Nerd Font (powerline + mdi glyphs for starship's
+# mac-icon + feedback modules). CN = full CJK coverage. We lock upright (not
+# Italic) as the body face so plain text stays neutral; italics still apply
+# to code spans that request an italic style.
+font-family = Maple Mono NF CN
+font-size = 12
+font-thicken = true
+adjust-cell-height = 2
+
+# Translucent + blurred background on macOS — keeps focus on content while
+# the wallpaper stays as a soft visual anchor. 0.8 is the sweet spot: enough
+# transparency to breathe, still readable over light wallpapers.
+background-opacity = 0.8
+background-blur-radius = 20
+
+window-padding-x = 10
+window-padding-y = 10
+
+
+# =============================================================================
+# 2. Window
+# =============================================================================
+
+# `transparent` gives a seamless edge on macOS — the titlebar becomes a thin
+# strip with no visible chrome, matching the blurred background.
+macos-titlebar-style = transparent
+
+# Ghostty restores split/tab layout on relaunch. Good for long-running shells
+# (claude-code sessions, long builds); cheap to disable per-window via cmd+q.
+window-save-state = always
+window-theme = auto
+
+cursor-style = bar
+cursor-style-blink = true
+cursor-opacity = 0.8
+
+
+# =============================================================================
+# 3. Shell / input / clipboard
+# =============================================================================
+
+# `detect` → ghostty injects shell integration when it recognizes the shell
+# (zsh/bash/fish). Unlocks prompt-hook marks (for `jump_to_prompt`), cwd
+# reporting (new splits inherit cwd), and exit-status-aware behavior.
+shell-integration = detect
+
+mouse-hide-while-typing = true
+
+# copy-on-select mirrors tmux/iTerm behavior — select with mouse, paste with
+# cmd+v without an explicit copy. Ghostty writes to the system clipboard
+# (not just a selection buffer) so paste works even after switching apps.
+copy-on-select = clipboard
+
+scrollback-limit = 10000
+
+# Paste safety — warns when pasted text looks like it contains newlines or
+# control sequences a shell would execute. Catches "curl | bash"-shaped
+# mistakes where a multiline URL triggers immediately on paste.
+clipboard-paste-protection = true
+clipboard-paste-bracketed-safe = true
+
+
+# =============================================================================
+# 4. Quick terminal  (macOS drop-down from top, global hotkey)
+# =============================================================================
+
+# Used for one-off commands without switching windows — e.g. "what's my IP",
+# "run a grep in a scratch dir". Auto-hides on focus loss so it doesn't
+# clutter the active workspace.
+quick-terminal-position = top
+quick-terminal-screen = mouse
+quick-terminal-autohide = true
+quick-terminal-animation-duration = 0.15
+
+
+# =============================================================================
+# 5. Keybinds — tmux-style chord (ctrl+s prefix)
+# =============================================================================
+#
+# Why chord, not bare ctrl+<key>?
+#   - Karabiner maps Ctrl+h/j/k/l → arrow keys globally, so bare ctrl+hjkl
+#     can't be used here. Chord prefix isolates hjkl behind ctrl+s, so the
+#     second key is a bare letter that Karabiner leaves alone.
+#   - Preserves shell readline (ctrl+a / ctrl+e / ctrl+w) and vim ctrl+<key>
+#     motions — chord prefix steals only ctrl+s, nothing else.
+#
+# Why ctrl+s (not ctrl+a / ctrl+b)?
+#   - Matches prior tmux muscle memory for this user.
+#   - ctrl+s historically triggered terminal XOFF (freeze output). Ghostty
+#     intercepts keybinds BEFORE the PTY sees them, so ctrl+s-as-prefix
+#     never freezes anything here. (If you ever want literal ctrl+s sent to
+#     a foreground app, add a pass-through: `ctrl+s>ctrl+s=text:\x13`.)
+#
+# Chord timeout: Ghostty waits ~1s after the prefix for the next key. Type
+# nothing and the prefix is dropped silently — no stuck-modifier state.
+
+# ---- Global (not chord — toggles even when Ghostty isn't focused) -----------
+keybind = global:cmd+grave_accent=toggle_quick_terminal
+
+# ---- Tabs (≈ tmux windows) --------------------------------------------------
+keybind = ctrl+s>c=new_tab
+keybind = ctrl+s>n=next_tab
+keybind = ctrl+s>p=previous_tab
+keybind = ctrl+s>one=goto_tab:1
+keybind = ctrl+s>two=goto_tab:2
+keybind = ctrl+s>three=goto_tab:3
+keybind = ctrl+s>four=goto_tab:4
+keybind = ctrl+s>five=goto_tab:5
+keybind = ctrl+s>six=goto_tab:6
+keybind = ctrl+s>seven=goto_tab:7
+keybind = ctrl+s>eight=goto_tab:8
+keybind = ctrl+s>nine=goto_tab:9
+
+# ---- Splits (≈ tmux panes) --------------------------------------------------
+# | and - picked for visual mnemonics: | = vertical divider (split right),
+# - = horizontal divider (split down). Matches tmux's `bind |` / `bind -`.
+keybind = ctrl+s>shift+backslash=new_split:right
+keybind = ctrl+s>minus=new_split:down
+
+# hjkl navigation inside chord — Karabiner doesn't intercept post-chord keys.
+keybind = ctrl+s>h=goto_split:left
+keybind = ctrl+s>j=goto_split:bottom
+keybind = ctrl+s>k=goto_split:top
+keybind = ctrl+s>l=goto_split:right
+
+keybind = ctrl+s>z=toggle_split_zoom
+keybind = ctrl+s>equal=equalize_splits
+
+# x = close the current surface (split OR tab, whichever is focused).
+keybind = ctrl+s>x=close_surface
+
+# ---- Misc -------------------------------------------------------------------
+keybind = ctrl+s>r=reload_config
+keybind = ctrl+s>left_bracket=scroll_to_top
