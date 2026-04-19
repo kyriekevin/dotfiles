@@ -1,0 +1,98 @@
+{
+    "title": "Base layer: caps→ctrl, ctrl→esc, ctrl+hjkl→arrows",
+    "rules": [
+        {
+            "description": "caps_lock: tap → escape, hold → left_control (laptop-friendly)",
+            "manipulators": [
+                {
+                    "type": "basic",
+                    "from": {
+                        "key_code": "caps_lock",
+                        "modifiers": { "optional": ["any"] }
+                    },
+                    "to": [
+                        { "key_code": "left_control", "lazy": true }
+                    ],
+                    "to_if_alone": [
+                        { "key_code": "escape" }
+                    ]
+                }
+            ]
+        },
+        {
+            "description": "left_control alone → escape (HHKB-friendly; hold still acts as ctrl)",
+            "manipulators": [
+                {
+                    "type": "basic",
+                    "from": {
+                        "key_code": "left_control",
+                        "modifiers": { "optional": ["any"] }
+                    },
+                    "to": [
+                        { "key_code": "left_control", "lazy": true }
+                    ],
+                    "to_if_alone": [
+                        { "key_code": "escape" }
+                    ]
+                }
+            ]
+        },
+        {
+            "description": "ctrl+h/j/k/l → ← ↓ ↑ → (global arrow layer; yields to sublayers; preserves shift-select)",
+            "manipulators": [
+                {
+                    "type": "basic",
+                    "from": {
+                        "key_code": "h",
+                        "modifiers": { "mandatory": ["control"], "optional": ["any"] }
+                    },
+                    "to": [{ "key_code": "left_arrow" }],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_w", "value": 0 },
+                        { "type": "variable_if", "name": "layer_r", "value": 0 },
+                        { "type": "variable_if", "name": "layer_x", "value": 0 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": {
+                        "key_code": "j",
+                        "modifiers": { "mandatory": ["control"], "optional": ["any"] }
+                    },
+                    "to": [{ "key_code": "down_arrow" }],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_w", "value": 0 },
+                        { "type": "variable_if", "name": "layer_r", "value": 0 },
+                        { "type": "variable_if", "name": "layer_x", "value": 0 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": {
+                        "key_code": "k",
+                        "modifiers": { "mandatory": ["control"], "optional": ["any"] }
+                    },
+                    "to": [{ "key_code": "up_arrow" }],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_w", "value": 0 },
+                        { "type": "variable_if", "name": "layer_r", "value": 0 },
+                        { "type": "variable_if", "name": "layer_x", "value": 0 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": {
+                        "key_code": "l",
+                        "modifiers": { "mandatory": ["control"], "optional": ["any"] }
+                    },
+                    "to": [{ "key_code": "right_arrow" }],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_w", "value": 0 },
+                        { "type": "variable_if", "name": "layer_r", "value": 0 },
+                        { "type": "variable_if", "name": "layer_x", "value": 0 }
+                    ]
+                }
+            ]
+        }
+    ]
+}
