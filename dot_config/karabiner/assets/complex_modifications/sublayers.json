@@ -8,7 +8,7 @@
                     "type": "basic",
                     "from": {
                         "key_code": "w",
-                        "modifiers": { "mandatory": ["left_control"], "optional": ["any"] }
+                        "modifiers": { "mandatory": ["left_control"] }
                     },
                     "to": [
                         { "set_variable": { "name": "layer_w", "value": 1 } }
@@ -113,7 +113,7 @@
                     "type": "basic",
                     "from": {
                         "key_code": "r",
-                        "modifiers": { "mandatory": ["left_control"], "optional": ["any"] }
+                        "modifiers": { "mandatory": ["left_control"] }
                     },
                     "to": [
                         { "set_variable": { "name": "layer_r", "value": 1 } }
@@ -185,7 +185,7 @@
                     "type": "basic",
                     "from": {
                         "key_code": "x",
-                        "modifiers": { "mandatory": ["left_control"], "optional": ["any"] }
+                        "modifiers": { "mandatory": ["left_control"] }
                     },
                     "to": [
                         { "set_variable": { "name": "layer_x", "value": 1 } }

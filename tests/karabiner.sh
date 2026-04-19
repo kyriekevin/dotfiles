@@ -46,6 +46,13 @@ check "ctrl+h → left_arrow"                     "jq -e '.rules[2].manipulators
 check "ctrl+j → down_arrow"                     "jq -e '.rules[2].manipulators[] | select(.from.key_code==\"j\") | .to[0].key_code==\"down_arrow\"' $CAPS >/dev/null"
 check "ctrl+k → up_arrow"                       "jq -e '.rules[2].manipulators[] | select(.from.key_code==\"k\") | .to[0].key_code==\"up_arrow\"' $CAPS >/dev/null"
 check "ctrl+l → right_arrow"                    "jq -e '.rules[2].manipulators[] | select(.from.key_code==\"l\") | .to[0].key_code==\"right_arrow\"' $CAPS >/dev/null"
+# Gemini-round-1 fixes (make durable as regression guards):
+# - mandatory:control (not left_control) → works with external right-ctrl too
+# - optional:any → shift+ctrl+h preserves shift-select (→ shift+left_arrow)
+# - variable_if conditions → arrow yields to sublayers if any layer is active
+check "arrow rule uses 'control' (not left_)"   "jq -e 'all(.rules[2].manipulators[]; .from.modifiers.mandatory[0]==\"control\")' $CAPS >/dev/null"
+check "arrow rule allows optional any"          "jq -e 'all(.rules[2].manipulators[]; .from.modifiers.optional[0]==\"any\")' $CAPS >/dev/null"
+check "arrow yields to all 3 sublayers"         "jq -e 'all(.rules[2].manipulators[]; [.conditions[] | select(.type==\"variable_if\" and .value==0) | .name] | sort == [\"layer_r\",\"layer_w\",\"layer_x\"])' $CAPS >/dev/null"
 
 echo
 echo "── Sublayer leaders (ctrl+w / ctrl+r / ctrl+x) ──────"
@@ -54,6 +61,10 @@ echo "── Sublayer leaders (ctrl+w / ctrl+r / ctrl+x) ──────"
 check "ctrl+w → sets layer_w=1"                 "jq -e '.rules[] | select(.description | test(\"ctrl\\\\+w →\")) | .manipulators[0] | .from.key_code==\"w\" and .from.modifiers.mandatory[0]==\"left_control\" and .to[0].set_variable.name==\"layer_w\"' $SUBL >/dev/null"
 check "ctrl+r → sets layer_r=1"                 "jq -e '.rules[] | select(.description | test(\"ctrl\\\\+r →\")) | .manipulators[0] | .from.key_code==\"r\" and .to[0].set_variable.name==\"layer_r\"' $SUBL >/dev/null"
 check "ctrl+x → sets layer_x=1"                 "jq -e '.rules[] | select(.description | test(\"ctrl\\\\+x →\")) | .manipulators[0] | .from.key_code==\"x\" and .to[0].set_variable.name==\"layer_x\"' $SUBL >/dev/null"
+# Gemini-round-1 fix: leaders must NOT have optional:any — otherwise
+# ctrl+shift+w, ctrl+opt+w, etc. get swallowed (breaking app shortcuts).
+# Leader should trigger ONLY on the exact bare left_control combo.
+check "leaders have no optional:any (precise)"  "jq -e '[.rules[].manipulators[] | select((.to[0].set_variable.name // \"\") | startswith(\"layer_\")) | (.from.modifiers.optional // [])] | flatten | length == 0' $SUBL >/dev/null"
 
 echo
 echo "── Window layer (ctrl+w) deeplinks ──────────────────"
