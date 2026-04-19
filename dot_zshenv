@@ -8,3 +8,9 @@ export PATH="$HOME/.local/bin:$PATH"
 export EDITOR="nvim"
 export VISUAL="$EDITOR"
 export LANG="en_US.UTF-8"
+
+# XDG base — makes macOS-native apps (lazygit, …) read ~/.config/ too,
+# so every tool's config lives in one place instead of splitting between
+# ~/.config/ and ~/Library/Application Support/. Data/cache keep their
+# defaults (tools already use XDG fallback for those where relevant).
+export XDG_CONFIG_HOME="$HOME/.config"

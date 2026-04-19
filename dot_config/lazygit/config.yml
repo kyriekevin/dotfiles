@@ -1,0 +1,46 @@
+# lazygit — general-purpose kickstart config.
+# Theme: Catppuccin Mocha (matches ghostty / yazi / starship palette).
+# Only 80%-useful knobs; customize later as needs emerge.
+# Schema ref: https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+
+gui:
+  # Catppuccin Mocha — same palette as the other Phase-4 UIs.
+  theme:
+    activeBorderColor:
+      - "#89b4fa"   # blue
+      - bold
+    inactiveBorderColor:
+      - "#a6adc8"   # subtext0
+    optionsTextColor:
+      - "#89b4fa"
+    selectedLineBgColor:
+      - "#313244"   # surface0
+    cherryPickedCommitBgColor:
+      - "#94e2d5"   # teal
+    cherryPickedCommitFgColor:
+      - "#89b4fa"
+    unstagedChangesColor:
+      - "#f38ba8"   # red
+    defaultFgColor:
+      - "#cdd6f4"   # text
+    searchingActiveBorderColor:
+      - "#f9e2af"   # yellow
+  showFileTree: true
+  showRandomTip: false
+  showBottomLine: false
+  nerdFontsVersion: "3"
+  mouseEvents: true
+
+git:
+  # Route diffs through delta so lazygit's diff pane matches `git diff`.
+  # Schema: lazygit ≥ 0.40 replaced `git.paging` (object) with `git.pagers`
+  # (array). Each entry is a pager candidate; single unnamed entry = default.
+  pagers:
+    - colorArg: always
+      pager: delta --paging=never
+  autoFetch: true
+  autoRefresh: true
+
+os:
+  edit: 'nvim {{filename}}'
+  editAtLine: 'nvim +{{line}} {{filename}}'
