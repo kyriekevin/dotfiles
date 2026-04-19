@@ -1,0 +1,46 @@
+{{/* Identity per machine — see docs/git.md "Identity per machine". */}}
+[user]
+{{- if .is_work }}
+	name  = zyz
+	email = zhongyuzhe@bytedance.com
+{{- else }}
+	name  = Kyrie
+	email = yuzhezhong0117@qq.com
+{{- end }}
+
+[core]
+	editor       = nvim
+	pager        = delta
+	excludesFile = ~/.gitignore_global
+
+[init]
+	defaultBranch = main
+
+[push]
+	autoSetupRemote = true
+
+[fetch]
+	prune = true
+
+[rebase]
+	autoStash = true
+
+[merge]
+	conflictstyle = zdiff3
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate     = true
+	side-by-side = true
+	line-numbers = true
+
+[commit]
+	verbose = true
+
+[credential]
+	helper = osxkeychain
+
+[alias]
+	lg = log --graph --pretty=format:'%C(auto)%h%d %s %C(blue)(%cr) %C(bold blue)<%an>' --abbrev-commit

@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor swap / temp
+.*.swp
+.*.swo
+*~
+
+# Local-only env overrides (keep .env/.env.example tracked per-project)
+.env.local
+.envrc.local
