@@ -58,13 +58,16 @@ echo
 echo "── Sublayer leaders (ctrl+w / ctrl+r / ctrl+x) ──────"
 # Leaders set layer_{w,r,x}=1 with 500ms delayed_action to clear.
 # If anyone changes the prefix letter, docs/key-muscle-memory break.
-check "ctrl+w → sets layer_w=1"                 "jq -e '.rules[] | select(.description | test(\"ctrl\\\\+w →\")) | .manipulators[0] | .from.key_code==\"w\" and .from.modifiers.mandatory[0]==\"left_control\" and .to[0].set_variable.name==\"layer_w\"' $SUBL >/dev/null"
+check "ctrl+w → sets layer_w=1"                 "jq -e '.rules[] | select(.description | test(\"ctrl\\\\+w →\")) | .manipulators[0] | .from.key_code==\"w\" and .from.modifiers.mandatory[0]==\"control\" and .to[0].set_variable.name==\"layer_w\"' $SUBL >/dev/null"
 check "ctrl+r → sets layer_r=1"                 "jq -e '.rules[] | select(.description | test(\"ctrl\\\\+r →\")) | .manipulators[0] | .from.key_code==\"r\" and .to[0].set_variable.name==\"layer_r\"' $SUBL >/dev/null"
 check "ctrl+x → sets layer_x=1"                 "jq -e '.rules[] | select(.description | test(\"ctrl\\\\+x →\")) | .manipulators[0] | .from.key_code==\"x\" and .to[0].set_variable.name==\"layer_x\"' $SUBL >/dev/null"
 # Gemini-round-1 fix: leaders must NOT have optional:any — otherwise
 # ctrl+shift+w, ctrl+opt+w, etc. get swallowed (breaking app shortcuts).
 # Leader should trigger ONLY on the exact bare left_control combo.
 check "leaders have no optional:any (precise)"  "jq -e '[.rules[].manipulators[] | select((.to[0].set_variable.name // \"\") | startswith(\"layer_\")) | (.from.modifiers.optional // [])] | flatten | length == 0' $SUBL >/dev/null"
+# Gemini-round-2 fix: leaders use mandatory:control (not left_control)
+# for symmetry with caps.json arrow rule — external right-ctrl works too.
+check "leaders use 'control' (not left_)"       "jq -e '[.rules[].manipulators[] | select((.to[0].set_variable.name // \"\") | startswith(\"layer_\")) | .from.modifiers.mandatory[0]] | unique == [\"control\"]' $SUBL >/dev/null"
 
 echo
 echo "── Window layer (ctrl+w) deeplinks ──────────────────"
