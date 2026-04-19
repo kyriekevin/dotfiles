@@ -1,0 +1,243 @@
+{
+    "title": "Sublayers: ctrl+w window, ctrl+r raycast, ctrl+x system",
+    "rules": [
+        {
+            "description": "ctrl+w → window layer (enter; auto-clears after 500ms timeout)",
+            "manipulators": [
+                {
+                    "type": "basic",
+                    "from": {
+                        "key_code": "w",
+                        "modifiers": { "mandatory": ["left_control"], "optional": ["any"] }
+                    },
+                    "to": [
+                        { "set_variable": { "name": "layer_w", "value": 1 } }
+                    ],
+                    "to_delayed_action": {
+                        "to_if_invoked": [
+                            { "set_variable": { "name": "layer_w", "value": 0 } }
+                        ]
+                    },
+                    "parameters": {
+                        "basic.to_delayed_action_delay_milliseconds": 500
+                    }
+                }
+            ]
+        },
+        {
+            "description": "ctrl+w layer: half-screens + displays via Raycast Window Management deeplinks",
+            "manipulators": [
+                {
+                    "type": "basic",
+                    "from": { "key_code": "h", "modifiers": { "optional": ["any"] } },
+                    "to": [
+                        { "shell_command": "open -g 'raycast://extensions/raycast/window-management/left-half'" },
+                        { "set_variable": { "name": "layer_w", "value": 0 } }
+                    ],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_w", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": { "key_code": "l", "modifiers": { "optional": ["any"] } },
+                    "to": [
+                        { "shell_command": "open -g 'raycast://extensions/raycast/window-management/right-half'" },
+                        { "set_variable": { "name": "layer_w", "value": 0 } }
+                    ],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_w", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": { "key_code": "k", "modifiers": { "optional": ["any"] } },
+                    "to": [
+                        { "shell_command": "open -g 'raycast://extensions/raycast/window-management/top-half'" },
+                        { "set_variable": { "name": "layer_w", "value": 0 } }
+                    ],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_w", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": { "key_code": "j", "modifiers": { "optional": ["any"] } },
+                    "to": [
+                        { "shell_command": "open -g 'raycast://extensions/raycast/window-management/bottom-half'" },
+                        { "set_variable": { "name": "layer_w", "value": 0 } }
+                    ],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_w", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": { "key_code": "m", "modifiers": { "optional": ["any"] } },
+                    "to": [
+                        { "shell_command": "open -g 'raycast://extensions/raycast/window-management/maximize'" },
+                        { "set_variable": { "name": "layer_w", "value": 0 } }
+                    ],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_w", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": { "key_code": "n", "modifiers": { "optional": ["any"] } },
+                    "to": [
+                        { "shell_command": "open -g 'raycast://extensions/raycast/window-management/next-display'" },
+                        { "set_variable": { "name": "layer_w", "value": 0 } }
+                    ],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_w", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": { "key_code": "p", "modifiers": { "optional": ["any"] } },
+                    "to": [
+                        { "shell_command": "open -g 'raycast://extensions/raycast/window-management/previous-display'" },
+                        { "set_variable": { "name": "layer_w", "value": 0 } }
+                    ],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_w", "value": 1 }
+                    ]
+                }
+            ]
+        },
+        {
+            "description": "ctrl+r → raycast layer (enter; auto-clears after 500ms timeout)",
+            "manipulators": [
+                {
+                    "type": "basic",
+                    "from": {
+                        "key_code": "r",
+                        "modifiers": { "mandatory": ["left_control"], "optional": ["any"] }
+                    },
+                    "to": [
+                        { "set_variable": { "name": "layer_r", "value": 1 } }
+                    ],
+                    "to_delayed_action": {
+                        "to_if_invoked": [
+                            { "set_variable": { "name": "layer_r", "value": 0 } }
+                        ]
+                    },
+                    "parameters": {
+                        "basic.to_delayed_action_delay_milliseconds": 500
+                    }
+                }
+            ]
+        },
+        {
+            "description": "ctrl+r layer: Raycast built-in commands via deeplinks (AI Chat stays as direct hyper+space)",
+            "manipulators": [
+                {
+                    "type": "basic",
+                    "from": { "key_code": "s", "modifiers": { "optional": ["any"] } },
+                    "to": [
+                        { "shell_command": "open -g 'raycast://extensions/raycast/clipboard-history/clipboard-history'" },
+                        { "set_variable": { "name": "layer_r", "value": 0 } }
+                    ],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_r", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": { "key_code": "f", "modifiers": { "optional": ["any"] } },
+                    "to": [
+                        { "shell_command": "open -g 'raycast://extensions/raycast/navigation/search-files'" },
+                        { "set_variable": { "name": "layer_r", "value": 0 } }
+                    ],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_r", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": { "key_code": "semicolon", "modifiers": { "optional": ["any"] } },
+                    "to": [
+                        { "shell_command": "open -g 'raycast://extensions/raycast/translator/translate'" },
+                        { "set_variable": { "name": "layer_r", "value": 0 } }
+                    ],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_r", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": { "key_code": "e", "modifiers": { "optional": ["any"] } },
+                    "to": [
+                        { "shell_command": "open -g 'raycast://extensions/raycast/emoji-symbols/search-emoji-symbols'" },
+                        { "set_variable": { "name": "layer_r", "value": 0 } }
+                    ],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_r", "value": 1 }
+                    ]
+                }
+            ]
+        },
+        {
+            "description": "ctrl+x → system layer (enter; auto-clears after 500ms timeout)",
+            "manipulators": [
+                {
+                    "type": "basic",
+                    "from": {
+                        "key_code": "x",
+                        "modifiers": { "mandatory": ["left_control"], "optional": ["any"] }
+                    },
+                    "to": [
+                        { "set_variable": { "name": "layer_x", "value": 1 } }
+                    ],
+                    "to_delayed_action": {
+                        "to_if_invoked": [
+                            { "set_variable": { "name": "layer_x", "value": 0 } }
+                        ]
+                    },
+                    "parameters": {
+                        "basic.to_delayed_action_delay_milliseconds": 500
+                    }
+                }
+            ]
+        },
+        {
+            "description": "ctrl+x layer: macOS system actions via osascript (native, no install)",
+            "manipulators": [
+                {
+                    "type": "basic",
+                    "from": { "key_code": "m", "modifiers": { "optional": ["any"] } },
+                    "to": [
+                        { "shell_command": "osascript -e 'set volume output muted not (output muted of (get volume settings))'" },
+                        { "set_variable": { "name": "layer_x", "value": 0 } }
+                    ],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_x", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": { "key_code": "equal_sign", "modifiers": { "optional": ["any"] } },
+                    "to": [
+                        { "shell_command": "osascript -e 'set volume output volume ((output volume of (get volume settings)) + 10)'" },
+                        { "set_variable": { "name": "layer_x", "value": 0 } }
+                    ],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_x", "value": 1 }
+                    ]
+                },
+                {
+                    "type": "basic",
+                    "from": { "key_code": "hyphen", "modifiers": { "optional": ["any"] } },
+                    "to": [
+                        { "shell_command": "osascript -e 'set volume output volume ((output volume of (get volume settings)) - 10)'" },
+                        { "set_variable": { "name": "layer_x", "value": 0 } }
+                    ],
+                    "conditions": [
+                        { "type": "variable_if", "name": "layer_x", "value": 1 }
+                    ]
+                }
+            ]
+        }
+    ]
+}
