@@ -9,6 +9,11 @@ elif [[ -x /usr/local/bin/brew ]]; then
     eval "$(/usr/local/bin/brew shellenv)"
 fi
 
+# Re-prepend ~/.local/bin so user shims win over brew.
+# brew shellenv unconditionally puts /opt/homebrew/bin first, which demotes the
+# ~/.local/bin entry that zshenv already added.
+export PATH="$HOME/.local/bin:$PATH"
+
 # bat color theme — matches starship palette (catppuccin_mocha) for repo-wide consistency.
 export BAT_THEME="Catppuccin Mocha"
 

@@ -24,3 +24,7 @@ uv.lock
 
 # Editor
 .vscode/
+
+# Per-machine shims that wrap non-public tooling — live under ~/.local/bin
+# via symlink, but the body stays out of the public tree.
+/scripts/codex-ttadk-shim.js
