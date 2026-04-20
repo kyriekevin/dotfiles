@@ -200,7 +200,7 @@ Each line in `init.lua` → one plugin. 7c/7d append to the same `require("lazy"
 | `echasnovski/mini.ai` | Extended `a`/`i` textobjects | `event = "VeryLazy"` | Defaults: bracket / quote / arg / tag. `af`/`ic` need nvim-treesitter → 7c. |
 | `echasnovski/mini.comment` | `gcc` / `gc{motion}` / visual `gc` comment toggle | `event = "VeryLazy"` | Auto-detects `commentstring` per filetype. |
 | `nvim-lualine/lualine.nvim` | Statusline | `event = "VeryLazy"` | `globalstatus = true` → one bar across all splits. Theme = `catppuccin`. |
-| `akinsho/bufferline.nvim` | Top tab-bar for buffers | `event = "VeryLazy"` | `opts = function()` so `catppuccin.groups.integrations.bufferline` can be `require`'d AFTER catppuccin loads. `offsets` keeps neo-tree's sidebar from overlapping the tab-bar. |
+| `akinsho/bufferline.nvim` | Top tab-bar for buffers | `event = "VeryLazy"` | `opts = function()` so `catppuccin.special.bufferline` can be `require`'d AFTER catppuccin loads. `offsets` keeps neo-tree's sidebar from overlapping the tab-bar. |
 
 ## Change a setting
 
@@ -291,7 +291,7 @@ Open `nvim some-file.lua` in a real terminal:
 | Neo-tree sidebar shows broken icon squares | Terminal font lacks Nerd Font glyphs | Confirm Ghostty is using a Nerd Font (`Maple Mono NF` per the ghostty config). Non-Nerd fonts → blank squares. |
 | Pressing `<space>` inside neo-tree does nothing / steals leader | neo-tree's default "toggle node" on `<space>` vs our leader | We override `window.mappings["<space>"] = "none"` in the spec. If this rots, re-check the neo-tree block in `init.lua`. |
 | Lualine bar doesn't appear | Plugin lazy-loaded too late (no file opened yet to trigger VeryLazy) | `:Lazy load lualine.nvim`. Or just open any file — `event = "VeryLazy"` fires shortly after startup. |
-| Bufferline tabs missing colors / look default | catppuccin loaded after bufferline (racy) | We use `opts = function() ... require("catppuccin.groups.integrations.bufferline").get() ... end` so the require resolves at plugin-load time, after catppuccin. If you see this, check that the `opts` is a function, not a table. |
+| Bufferline tabs missing colors / look default | catppuccin loaded after bufferline (racy) | We use `opts = function() ... require("catppuccin.special.bufferline").get_theme() ... end` so the require resolves at plugin-load time, after catppuccin. If you see this, check that the `opts` is a function, not a table. |
 | Gitsigns signs don't appear in the gutter | File isn't git-tracked, or inside `.git/info/exclude` | `:Gitsigns attach` force-attaches. For un-tracked files there are no hunks to show — expected. |
 
 ## Gotchas
@@ -307,7 +307,7 @@ Open `nvim some-file.lua` in a real terminal:
 - **flash's `s` overrides vim substitute-char.** Use `cl` for single-char substitute instead. `r{char}` (normal-mode replace) is unaffected — flash only binds `r` in operator-pending mode.
 - **snacks has a `Snacks` global.** Set at startup by snacks.nvim (lazy=false + priority=900). All picker keys call `Snacks.picker.files()` etc. — if the global is missing, every picker keybind fails. `bash tests/nvim.sh` checks `_G.Snacks ~= nil`.
 - **neo-tree eats `<space>` inside its own window.** Default mapping is "toggle node"; we override to `"none"` so leader still works. If you later add neo-tree features, preserve this override.
-- **bufferline uses `opts = function()`.** The `highlights = require("catppuccin.groups.integrations.bufferline").get()` call must resolve AFTER catppuccin loads. Table form (`opts = {...}`) would evaluate at spec-read time and race.
+- **bufferline uses `opts = function()`.** The `highlights = require("catppuccin.special.bufferline").get_theme()` call must resolve AFTER catppuccin loads. Table form (`opts = {...}`) would evaluate at spec-read time and race.
 - **treesitter is intentionally absent in 7b.** It comes in 7c. Consequences: flash `S`/`R` (treesitter jump/search) aren't bound; mini.ai's function/class textobjects (`af`/`ac`) fall back to defaults. Syntax highlighting is vim-legacy regex until 7c.
 
 ## Rebuild from scratch

@@ -230,6 +230,9 @@ require("lazy").setup({
             indent       = { enabled = true },
             input        = { enabled = true },
             statuscolumn = { enabled = true },
+            -- bufdelete closes buffers without collapsing the window — better
+            -- than :bdelete when you have splits open. `<leader>bd` below uses it.
+            bufdelete    = { enabled = true },
         },
         keys = {
             -- Picker: <leader>f* (files+search unified, no <leader>s* split)
@@ -300,7 +303,7 @@ require("lazy").setup({
         event = { "BufReadPre", "BufNewFile" },
         opts = {
             on_attach = function(bufnr)
-                local gs = package.loaded.gitsigns
+                local gs = require("gitsigns")
                 local function m(lhs, rhs, desc)
                     vim.keymap.set("n", lhs, rhs, { buffer = bufnr, desc = desc })
                 end
@@ -359,9 +362,9 @@ require("lazy").setup({
         event = "VeryLazy",
         dependencies = { "nvim-tree/nvim-web-devicons" },
         keys = {
-            { "]b",          "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
-            { "[b",          "<cmd>BufferLineCyclePrev<cr>", desc = "Previous buffer" },
-            { "<leader>bd",  "<cmd>bdelete<cr>",             desc = "Delete buffer" },
+            { "]b",          "<cmd>BufferLineCycleNext<cr>",     desc = "Next buffer" },
+            { "[b",          "<cmd>BufferLineCyclePrev<cr>",     desc = "Previous buffer" },
+            { "<leader>bd",  function() Snacks.bufdelete() end,  desc = "Delete buffer" },
         },
         opts = function()
             return {
