@@ -3,9 +3,11 @@
 --
 -- Phase 7a (core):  options + keymaps + autocmds + lazy bootstrap
 --                   + catppuccin / which-key / mini.pairs / mini.surround
--- Phase 7b (nav):   telescope / oil / flash / gitsigns / lazygit  [TODO]
--- Phase 7c (lsp):   mason / lspconfig / blink.cmp / conform        [TODO]
--- Phase 7d (polish):treesitter / lualine / comment / indent-blankline / todo [TODO]
+-- Phase 7b (nav):   snacks (picker+lazygit+…) / neo-tree / flash / gitsigns
+--                   / mini.ai / mini.comment / lualine / bufferline
+-- Phase 7c (lsp):   mason / lspconfig / blink.cmp / conform + treesitter
+--                   + todo-comments + trouble                              [TODO]
+-- Phase 7d (polish):indent-blankline / undotree / others                   [TODO]
 
 -- ─── Leader (must come before any plugin loads) ─────────────────────────────
 vim.g.mapleader = " "
@@ -69,7 +71,7 @@ opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 -- Karabiner on this machine maps Caps→Ctrl and Ctrl+hjkl→arrow keys at the OS
 -- layer. That means <C-h/j/k/l> never reach nvim — avoid binding them. Use
 -- <leader>…, <C-w>… (window ops), and arrow keys instead.
-vim.g.loaded_netrw = 1      -- oil.nvim will replace netrw in Phase 7b
+vim.g.loaded_netrw = 1      -- neo-tree replaces netrw (Phase 7b)
 vim.g.loaded_netrwPlugin = 1
 
 -- ─── Keymaps ────────────────────────────────────────────────────────────────
@@ -92,10 +94,12 @@ map("v", ">", ">gv", { desc = "Indent right + reselect" })
 
 -- Diagnostics (LSP comes in 7c; these still work with vim.diagnostic today).
 -- Normal-mode K is intentionally left unbound here — Phase 7c wires it to
--- vim.lsp.buf.hover() on LSP-attach.
+-- vim.lsp.buf.hover() on LSP-attach. <leader>e moved to neo-tree in 7b;
+-- the diagnostic float reads off the <leader>c* (code) cluster that 7c
+-- will extend with <leader>ca code-action and <leader>cr rename.
 map("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous diagnostic" })
 map("n", "]d", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
-map("n", "<leader>e", vim.diagnostic.open_float, { desc = "Diagnostic float" })
+map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Diagnostic float" })
 
 -- ─── Autocmds ───────────────────────────────────────────────────────────────
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -144,7 +148,11 @@ require("lazy").setup({
             integrations = {
                 mini = { enabled = true },
                 which_key = true,
-                -- 7b+ will enable telescope / gitsigns / blink_cmp here.
+                gitsigns = true,
+                neotree = true,
+                flash = true,
+                snacks = { enabled = true, indent_scope_color = "lavender" },
+                -- 7c will add: native_lsp, blink_cmp, mason, trouble.
             },
         },
         config = function(_, o)
@@ -194,6 +202,184 @@ require("lazy").setup({
                 update_n_lines = "gsn",
             },
         },
+    },
+
+    -- ─── Phase 7b (nav) ─────────────────────────────────────────────────────
+
+    -- Shared icon font used by neo-tree / lualine / bufferline / snacks.
+    -- Needs a Nerd Font at the terminal layer (Ghostty uses Maple Mono NF).
+    { "nvim-tree/nvim-web-devicons", lazy = true },
+
+    -- Snacks: LazyVim 2025 umbrella. We use picker (file/grep/buffer finder),
+    -- lazygit (floating lazygit), notifier (vim.notify UI), bigfile (disables
+    -- features on >1.5MB files), quickfile (fast direct-open startup),
+    -- indent (indent guides — replaces indent-blankline), input (vim.ui.input
+    -- replacement), statuscolumn (gutter layout). lazy=false + priority so
+    -- the `Snacks` global and bigfile autocmd are ready for first BufRead.
+    {
+        "folke/snacks.nvim",
+        priority = 900,
+        lazy = false,
+        ---@type snacks.Config
+        opts = {
+            picker       = { enabled = true },
+            lazygit      = { enabled = true },
+            notifier     = { enabled = true, timeout = 3000 },
+            bigfile      = { enabled = true },
+            quickfile    = { enabled = true },
+            indent       = { enabled = true },
+            input        = { enabled = true },
+            statuscolumn = { enabled = true },
+        },
+        keys = {
+            -- Picker: <leader>f* (files+search unified, no <leader>s* split)
+            { "<leader>ff",      function() Snacks.picker.files() end,              desc = "Find files" },
+            { "<leader><space>", function() Snacks.picker.buffers() end,            desc = "Buffers" },
+            { "<leader>fr",      function() Snacks.picker.recent() end,             desc = "Recent files" },
+            { "<leader>fg",      function() Snacks.picker.grep() end,               desc = "Grep project" },
+            { "<leader>fw",      function() Snacks.picker.grep_word() end,          desc = "Grep word", mode = { "n", "x" } },
+            { "<leader>fh",      function() Snacks.picker.help() end,               desc = "Help tags" },
+            { "<leader>fk",      function() Snacks.picker.keymaps() end,            desc = "Keymaps" },
+            { "<leader>fd",      function() Snacks.picker.diagnostics() end,        desc = "Diagnostics" },
+            { "<leader>fn",      "<cmd>enew<cr>",                                   desc = "New file" },
+            -- Lazygit (only <leader>gg — user scoped out gf/gl)
+            { "<leader>gg",      function() Snacks.lazygit() end,                   desc = "Lazygit" },
+        },
+    },
+
+    -- neo-tree: sidebar file tree. bind_to_cwd=false keeps the tree anchored
+    -- while you :cd around in nvim. filesystem.follow_current_file auto-
+    -- reveals the current buffer on toggle. window.mappings <space>=none
+    -- unbinds neo-tree's own <space> (which would eat our leader when the
+    -- tree is focused).
+    {
+        "nvim-neo-tree/neo-tree.nvim",
+        branch = "v3.x",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-tree/nvim-web-devicons",
+            "MunifTanjim/nui.nvim",
+        },
+        cmd = "Neotree",
+        keys = {
+            { "<leader>e", "<cmd>Neotree toggle<cr>", desc = "Explorer (neo-tree)" },
+        },
+        opts = {
+            filesystem = {
+                bind_to_cwd = false,
+                follow_current_file = { enabled = true },
+                use_libuv_file_watcher = true,
+            },
+            window = {
+                mappings = {
+                    ["<space>"] = "none",
+                },
+            },
+        },
+    },
+
+    -- flash: two-char jump. 7b binds only `s` (jump, n/x/o) and `r` (remote, o).
+    -- `S` (treesitter select) and `R` (treesitter search) require nvim-treesitter
+    -- and are deferred to 7c. `s` overrides vim's substitute-char — use `cl`.
+    {
+        "folke/flash.nvim",
+        event = "VeryLazy",
+        ---@type Flash.Config
+        opts = {},
+        keys = {
+            { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end,   desc = "Flash jump" },
+            { "r", mode = "o",               function() require("flash").remote() end, desc = "Remote flash" },
+        },
+    },
+
+    -- gitsigns: gutter +/−/~ + hunk operations. Keymaps live in on_attach so
+    -- they're buffer-local (only active in tracked files). nav_hunk is the
+    -- newer API; next_hunk/prev_hunk are deprecated aliases.
+    {
+        "lewis6991/gitsigns.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        opts = {
+            on_attach = function(bufnr)
+                local gs = package.loaded.gitsigns
+                local function m(lhs, rhs, desc)
+                    vim.keymap.set("n", lhs, rhs, { buffer = bufnr, desc = desc })
+                end
+                m("]h",          function() gs.nav_hunk("next") end,              "Next hunk")
+                m("[h",          function() gs.nav_hunk("prev") end,              "Previous hunk")
+                m("<leader>ghs", gs.stage_hunk,                                   "Stage hunk")
+                m("<leader>ghr", gs.reset_hunk,                                   "Reset hunk")
+                m("<leader>ghu", gs.undo_stage_hunk,                              "Undo stage hunk")
+                m("<leader>ghp", gs.preview_hunk,                                 "Preview hunk")
+                m("<leader>ghb", function() gs.blame_line({ full = true }) end,   "Blame line (full)")
+                m("<leader>ghd", gs.diffthis,                                     "Diff this file")
+            end,
+        },
+    },
+
+    -- mini.ai: extended textobjects. Defaults cover ab/ib (bracket), aq/iq
+    -- (quote), aa/ia (argument), at/it (html-like tag). af/ic (function/class)
+    -- need nvim-treesitter — deferred to 7c.
+    { "echasnovski/mini.ai",      version = "*", event = "VeryLazy", opts = {} },
+
+    -- mini.comment: gcc line toggle, gc{motion} range toggle, visual gc block
+    -- toggle. Auto-detects commentstring: Python `#`, C++ `//`, Lua `--`, …
+    { "echasnovski/mini.comment", version = "*", event = "VeryLazy", opts = {} },
+
+    -- lualine: statusbar (mode / branch / diff / diagnostics / file / ft / loc).
+    -- globalstatus=true = single bar spanning all splits (nvim 0.7+ feature).
+    {
+        "nvim-lualine/lualine.nvim",
+        event = "VeryLazy",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        opts = {
+            options = {
+                theme                = "catppuccin",
+                globalstatus         = true,
+                component_separators = "|",
+                section_separators   = "",
+            },
+            sections = {
+                lualine_a = { "mode" },
+                lualine_b = { "branch", "diff", "diagnostics" },
+                lualine_c = { { "filename", path = 1 } },
+                lualine_x = { "encoding", "fileformat", "filetype" },
+                lualine_y = { "progress" },
+                lualine_z = { "location" },
+            },
+        },
+    },
+
+    -- bufferline: top tab-bar for buffers. Catppuccin exposes bufferline
+    -- highlights at `catppuccin.special.bufferline.get_theme()` (NOT under
+    -- groups.integrations — that tree has a different purpose). opts is a
+    -- function so the require resolves AFTER catppuccin's lazy=false load,
+    -- preventing "module not found" races at spec-read time.
+    {
+        "akinsho/bufferline.nvim",
+        event = "VeryLazy",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        keys = {
+            { "]b",          "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+            { "[b",          "<cmd>BufferLineCyclePrev<cr>", desc = "Previous buffer" },
+            { "<leader>bd",  "<cmd>bdelete<cr>",             desc = "Delete buffer" },
+        },
+        opts = function()
+            return {
+                options = {
+                    diagnostics            = "nvim_lsp",
+                    always_show_bufferline = true,
+                    offsets = {
+                        {
+                            filetype   = "neo-tree",
+                            text       = "Neo-tree",
+                            highlight  = "Directory",
+                            text_align = "left",
+                        },
+                    },
+                },
+                highlights = require("catppuccin.special.bufferline").get_theme(),
+            }
+        end,
     },
 }, {
     ui = { border = "rounded" },
