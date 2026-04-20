@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# Non-interactive nvim health check. Covers Phase 7a (core) — options parse,
-# lazy.nvim bootstraps, the 4 Phase 7a plugins install, catppuccin loads.
-# Visual checks (colors, which-key popup, mini.pairs/surround interaction)
-# live in docs/nvim.md → Health check → Manual.
+# Non-interactive nvim health check. Covers Phase 7a (core) + 7b (nav) —
+# options parse, lazy.nvim bootstraps, all declared plugins install,
+# catppuccin + snacks load at startup. Visual checks (colors, which-key
+# popup, picker UI, neo-tree reveal, flash jump, gitsigns gutter, lualine
+# bar, bufferline tab) live in docs/nvim.md → Health check → Manual.
 set -uo pipefail
 
 PASS=0
@@ -63,8 +64,24 @@ else
 fi
 
 echo
-echo "── Plugin directories populated ─────────────────────"
-for p in lazy.nvim catppuccin which-key.nvim mini.pairs mini.surround; do
+echo "── Plugin directories populated (7a + 7b) ───────────"
+for p in \
+    lazy.nvim \
+    catppuccin \
+    which-key.nvim \
+    mini.pairs \
+    mini.surround \
+    snacks.nvim \
+    neo-tree.nvim \
+    nui.nvim \
+    plenary.nvim \
+    nvim-web-devicons \
+    flash.nvim \
+    gitsigns.nvim \
+    mini.ai \
+    mini.comment \
+    lualine.nvim \
+    bufferline.nvim; do
     check "$p installed"               "test -d $NVIM_DATA/lazy/$p"
 done
 
@@ -73,18 +90,17 @@ echo "── Lock file ───────────────────
 check "lazy-lock.json exists"          "test -r $NVIM_CONFIG/lazy-lock.json"
 
 echo
-echo "── Runtime probe (colorscheme / leader / opts) ──────"
-probe=$(nvim --headless \
-    -c 'lua print("K_LEADER=" .. vim.g.mapleader)' \
-    -c 'lua print("K_COLORS=" .. (vim.g.colors_name or ""))' \
-    -c 'lua print("K_NUMBER=" .. tostring(vim.opt.number:get()))' \
-    -c 'lua print("K_RELNUM=" .. tostring(vim.opt.relativenumber:get()))' \
-    -c 'lua print("K_EXPANDTAB=" .. tostring(vim.opt.expandtab:get()))' \
-    -c 'lua print("K_TS=" .. tostring(vim.opt.tabstop:get()))' \
-    -c 'lua print("K_SW=" .. tostring(vim.opt.shiftwidth:get()))' \
-    -c 'lua print("K_UNDOFILE=" .. tostring(vim.opt.undofile:get()))' \
-    -c 'lua print("K_NETRW=" .. tostring(vim.g.loaded_netrw))' \
-    '+qa' 2>&1)
+echo "── Runtime probe (colorscheme / leader / opts / 7b) ──"
+# Probe lives in tests/nvim_probe.lua and is loaded via +luafile — avoids
+# the fragile "multi-line lua inside a single -c arg" pattern flagged by
+# code review. +luafile runs AFTER init.lua, so plugins are initialized.
+probe_script="$(dirname "$0")/nvim_probe.lua"
+if [[ ! -r "$probe_script" ]]; then
+    bad "probe script $probe_script missing"
+    probe=""
+else
+    probe=$(nvim --headless "+luafile $probe_script" '+qa' 2>&1)
+fi
 
 get() { awk -F= -v k="$1" '$1==k { sub(/^[^=]+=/, ""); print; exit }' <<<"$probe"; }
 export -f get
@@ -99,6 +115,8 @@ check "tabstop = 4"                    '[[ "$(get K_TS)" == 4 ]]'
 check "shiftwidth = 4"                 '[[ "$(get K_SW)" == 4 ]]'
 check "undofile on"                    '[[ "$(get K_UNDOFILE)" == true ]]'
 check "netrw disabled (1)"             '[[ "$(get K_NETRW)" == 1 ]]'
+check "Snacks global loaded"           '[[ "$(get K_SNACKS)" == true ]]'
+check "<leader>cd diagnostic bound"    '[[ "$(get K_LEADER_CD)" == true ]]'
 
 echo
 echo "─────────────────────────────────────────────────────"
@@ -106,8 +124,9 @@ if (( FAIL > 0 )); then
     printf "  \033[31m%d passed, %d failed\033[0m\n" $PASS $FAIL
     echo
     echo "  Visual features (catppuccin colors in a real TTY, which-key popup,"
-    echo "  mini.pairs auto-close, mini.surround sa/sd/sr) are NOT covered —"
-    echo "  open nvim and run the Manual checklist in docs/nvim.md."
+    echo "  snacks.picker UI, neo-tree sidebar, flash hint chars, gitsigns"
+    echo "  gutter, lualine bar, bufferline tabs) are NOT covered — open"
+    echo "  nvim and run the Manual checklist in docs/nvim.md."
     exit 1
 fi
 printf "  \033[32m%d passed, %d failed\033[0m\n" $PASS $FAIL
