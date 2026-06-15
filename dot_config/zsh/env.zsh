@@ -12,6 +12,8 @@ fi
 # Re-prepend ~/.local/bin so user shims win over brew.
 # brew shellenv unconditionally puts /opt/homebrew/bin first, which demotes the
 # ~/.local/bin entry that zshenv already added.
+# typeset -U keeps PATH unique, so re-sourcing this file can't pile up duplicates.
+typeset -U path PATH
 export PATH="$HOME/.local/bin:$PATH"
 
 # bat color theme — matches starship palette (catppuccin_mocha) for repo-wide consistency.

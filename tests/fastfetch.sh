@@ -15,14 +15,11 @@ check() {
 }
 
 CFG="$HOME/.config/fastfetch/config.jsonc"
-LUME_SH="$HOME/.config/fastfetch/lume-status.sh"
 ALIASES="$HOME/.config/zsh/aliases.zsh"
 
 echo "── File presence ────────────────────────────────────"
 check "fastfetch on PATH"                        "command -v fastfetch >/dev/null"
 check "~/.config/fastfetch/config.jsonc"         "test -r $CFG"
-check "lume-status.sh present"                   "test -r $LUME_SH"
-check "lume-status.sh executable"                "test -x $LUME_SH"
 
 echo
 echo "── Config parses + prompt renders ───────────────────"
@@ -45,28 +42,13 @@ echo "── Modules fire ──────────────────
 # config got trimmed — both regressions worth flagging loudly.
 for k in Account os Host Kernel Uptime Packages Terminal Shell \
          CPU GPU Memory Battery Swap LocalIP \
-         PhysicalDisk FileSystem Dev Editor Claude lume; do
+         PhysicalDisk FileSystem Dev Editor Claude; do
     check "\$$k in output"                       "[[ \"\$PROMPT\" == *$k* ]]"
 done
 
 echo
 echo "── Dev-group command invariants ─────────────────────"
 check "claude on PATH (backs Dev.Claude)"        "command -v claude >/dev/null"
-check "lume on PATH (backs Dev.lume)"            "command -v lume >/dev/null"
-check "python3 on PATH (backs lume-status.sh)"   "command -v python3 >/dev/null"
-# lume row = version + tree-indented per-VM sub-lines (├/└ prefixes). If the
-# helper ever stops emitting the version or the tree markers we've broken
-# the Hermes ops view. Zero-VMs case still has a version; skip the sub-row
-# check when no VMs are registered locally.
-check "lume version looks like N.N.N"            '[[ "$PROMPT" =~ lume.*[0-9]+\.[0-9]+\.[0-9]+ ]]'
-# Detect "has any VMs" via lume itself, then require the tree prefix + ':'
-# in the rendered output (indicating per-VM row made it through).
-if lume ls --format json 2>/dev/null | python3 -c 'import json,sys; sys.exit(0 if json.load(sys.stdin) else 1)' 2>/dev/null; then
-    check "lume sub-line has └ or ├ tree prefix" '[[ "$PROMPT" == *"└ "* ]] || [[ "$PROMPT" == *"├ "* ]]'
-    check "lume sub-line shows status"           '[[ "$PROMPT" =~ (stopped|running) ]]'
-else
-    ok "lume sub-line check skipped (no VMs registered)"
-fi
 
 echo
 echo "── Schema drift regression guards ───────────────────"
@@ -97,7 +79,6 @@ check "LocalIP glyph U+F0A5F in config"          'has_cp F0A5F "$CFG"'
 check "Dev header glyph U+F06A9 in config"       'has_cp F06A9 "$CFG"'
 check "Editor glyph U+F0219 in config"           'has_cp F0219 "$CFG"'
 check "Claude glyph U+F0B79 in config"           'has_cp F0B79 "$CFG"'
-check "lume glyph U+F0862 in config"             'has_cp F0862 "$CFG"'
 
 echo
 echo "─────────────────────────────────────────────────────"
