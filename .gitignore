@@ -24,3 +24,6 @@ uv.lock
 
 # Editor
 .vscode/
+
+# opencode local tooling state (node_modules, lockfiles — per-machine)
+.opencode/
