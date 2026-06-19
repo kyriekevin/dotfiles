@@ -50,6 +50,8 @@ check "alias am"                               "grep -qE \"^alias am='agentmux'\
 check "alias ad"                               "grep -qE \"^alias ad='agentdesk'\" $ALIASES"
 check "agentmux function declared"             "grep -qE '^    agentmux\\(\\)' $TOOLS"
 check "agentdesk function declared"            "grep -qE '^    agentdesk\\(\\)' $TOOLS"
+check "helpers switch inside tmux"             "grep -q 'tmux switch-client -t' $TOOLS"
+check "helpers attach outside tmux"            "grep -q 'tmux attach-session -t' $TOOLS"
 
 echo
 echo "─────────────────────────────────────────────────────"

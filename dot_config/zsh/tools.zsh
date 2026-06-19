@@ -52,10 +52,22 @@ if (( $+commands[tmux] )); then
         [[ -n "$base" ]] && print -- "$base" || print -- agents
     }
 
+    _agent_tmux_open() {
+        local session="$1"
+        if [[ -n ${TMUX:-} ]]; then
+            tmux switch-client -t "$session"
+        else
+            tmux attach-session -t "$session"
+        fi
+    }
+
     agentmux() {
         local session
         session="$(_agent_session_name "${1:-}")"
-        tmux new-session -A -s "$session" -c "$PWD"
+        if ! tmux has-session -t "$session" 2>/dev/null; then
+            tmux new-session -d -s "$session" -c "$PWD"
+        fi
+        _agent_tmux_open "$session"
     }
 
     agentdesk() {
@@ -73,6 +85,6 @@ if (( $+commands[tmux] )); then
             tmux select-window -t "$session:shell"
         fi
 
-        tmux attach-session -t "$session"
+        _agent_tmux_open "$session"
     }
 fi
