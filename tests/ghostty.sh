@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-# Non-interactive ghostty health check. ~1s. Covers binary presence, config
-# parseability, keybind integrity (chord prefix + no bare ctrl+hjkl that
-# Karabiner would steal), and font/theme availability. Visual fidelity
-# (blur, transparent titlebar, quick-terminal drop-down, image preview in
-# yazi) is Manual-only — see docs/ghostty.md → Health check → Manual.
+# Non-interactive Ghostty-compatible config check. cmux is the actual terminal
+# surface now; this validates the ~/.config/ghostty/config file that cmux/
+# libghostty reads for terminal rendering and keybind defaults. Standalone
+# Ghostty.app is optional and intentionally not required.
 set -uo pipefail
 
 PASS=0
@@ -18,21 +17,32 @@ check() {
 
 CFG="$HOME/.config/ghostty/config"
 
-echo "── Binary + app ─────────────────────────────────────"
-check "ghostty on PATH"                         "command -v ghostty >/dev/null"
-check "Ghostty.app installed"                   "test -d /Applications/Ghostty.app"
+echo "── Standalone app status ────────────────────────────"
+if command -v ghostty >/dev/null 2>&1; then
+    ok "ghostty on PATH (optional)"
+else
+    ok "ghostty CLI absent (cmux-only setup)"
+fi
+if [[ -d /Applications/Ghostty.app ]]; then
+    ok "Ghostty.app installed (optional)"
+else
+    ok "Ghostty.app absent (cmux-only setup)"
+fi
 
 echo
 echo "── Config presence + syntax ─────────────────────────"
 check "config present"                          "test -r $CFG"
-# Ghostty's own validator is authoritative — catches typos, unknown actions,
-# bad enum values, malformed chords. Exits non-zero on any error.
-check "ghostty +validate-config passes"         "ghostty +validate-config --config-file=$CFG"
+if command -v ghostty >/dev/null 2>&1; then
+    # Ghostty's own validator is authoritative when the optional CLI exists.
+    check "ghostty +validate-config passes"     "ghostty +validate-config --config-file=$CFG"
+else
+    ok "ghostty validator skipped (CLI absent)"
+fi
 
 echo
 echo "── Appearance fields ────────────────────────────────"
-# Each of these backs a visible claim in docs/ghostty.md. If someone deletes
-# a line during refactor, the docs start lying — flag here.
+# These back the cmux/libghostty terminal profile. If someone deletes a line
+# during refactor, the profile drifts from the workflow docs — flag here.
 check "theme = Catppuccin Mocha"                "grep -qE '^theme *= *Catppuccin Mocha' $CFG"
 check "font-family = Maple Mono NF CN"          "grep -qE '^font-family *= *Maple Mono NF CN\$' $CFG"
 check "font-size = 12"                          "grep -qE '^font-size *= *12\$' $CFG"
@@ -52,6 +62,7 @@ check "chord: ctrl+s>j = goto_split:bottom"     "grep -qE '^keybind *= *ctrl\\+s
 check "chord: ctrl+s>k = goto_split:top"        "grep -qE '^keybind *= *ctrl\\+s>k *= *goto_split:top' $CFG"
 check "chord: ctrl+s>l = goto_split:right"      "grep -qE '^keybind *= *ctrl\\+s>l *= *goto_split:right' $CFG"
 check "chord: ctrl+s>c = new_tab"               "grep -qE '^keybind *= *ctrl\\+s>c *= *new_tab' $CFG"
+check "chord: ctrl+s>m = toggle_split_zoom"     "grep -qE '^keybind *= *ctrl\\+s>m *= *toggle_split_zoom' $CFG"
 check "chord: ctrl+s>x = close_surface"         "grep -qE '^keybind *= *ctrl\\+s>x *= *close_surface' $CFG"
 check "chord: ctrl+s>r = reload_config"         "grep -qE '^keybind *= *ctrl\\+s>r *= *reload_config' $CFG"
 check "global: cmd+grave → quick_terminal"      "grep -qE '^keybind *= *global:cmd\\+grave_accent *= *toggle_quick_terminal' $CFG"
@@ -63,26 +74,27 @@ check "no bare ctrl+hjkl binding (karabiner)"   "! grep -qE '^keybind *= *ctrl\\
 
 echo
 echo "── Font + theme availability ────────────────────────"
-# `ghostty +list-fonts` reads the active font cache; if Maple isn't
-# listed, cask "font-maple-mono-nf-cn" hasn't applied yet or font cache
-# needs a refresh (atsutil databases -remove + relaunch ghostty).
-#
-# Capture-then-match (not `grep -q` on the pipe) because `ghostty +list-*`
-# output is long and grep -q exits on first match → ghostty dies with
-# SIGPIPE → `set -o pipefail` fails the whole check. Reading into a var
-# first drains ghostty cleanly.
-_fonts=$(ghostty +list-fonts 2>/dev/null || true)
-_themes=$(ghostty +list-themes 2>/dev/null || true)
-check "font 'Maple Mono NF CN' available"       "grep -q '^Maple Mono NF CN\$' <<<\"\$_fonts\""
-check "theme 'Catppuccin Mocha' available"      "grep -q 'Catppuccin Mocha' <<<\"\$_themes\""
+if command -v ghostty >/dev/null 2>&1; then
+    # Capture-then-match (not `grep -q` on the pipe) because `ghostty +list-*`
+    # output is long and grep -q exits on first match → ghostty dies with
+    # SIGPIPE → `set -o pipefail` fails the whole check. Reading into a var
+    # first drains ghostty cleanly.
+    _fonts=$(ghostty +list-fonts 2>/dev/null || true)
+    _themes=$(ghostty +list-themes 2>/dev/null || true)
+    check "font 'Maple Mono NF CN' available"   "grep -q '^Maple Mono NF CN\$' <<<\"\$_fonts\""
+    check "theme 'Catppuccin Mocha' available"  "grep -q 'Catppuccin Mocha' <<<\"\$_themes\""
+else
+    ok "font availability check skipped (Ghostty CLI absent)"
+    ok "theme availability check skipped (Ghostty CLI absent)"
+fi
 
 echo
 echo "── Runtime context ──────────────────────────────────"
 # Informational — helps debug when tests run from a non-ghostty shell.
 if [[ ${TERM_PROGRAM:-} == "ghostty" ]] || [[ ${TERM:-} == "xterm-ghostty" ]]; then
-    ok "running inside Ghostty (TERM=$TERM) — visual tests possible"
+    ok "running inside a Ghostty/libghostty terminal (TERM=$TERM)"
 else
-    ok "not inside Ghostty (TERM=${TERM:-?}) — walk docs Manual checklist in a real Ghostty tab"
+    ok "not inside Ghostty/libghostty (TERM=${TERM:-?})"
 fi
 
 echo
@@ -90,12 +102,10 @@ echo "────────────────────────�
 if (( FAIL > 0 )); then
     printf "  \033[31m%d passed, %d failed\033[0m\n" $PASS $FAIL
     echo
-    echo "  Visual fidelity (blur, transparent titlebar, quick-terminal"
-    echo "  drop-down, chord prefix timing) is NOT covered here — open"
-    echo "  Ghostty and walk the Manual checklist in docs/ghostty.md."
+    echo "  Visual fidelity and chord timing are NOT covered here — test"
+    echo "  them interactively in cmux."
     exit 1
 fi
 printf "  \033[32m%d passed, %d failed\033[0m\n" $PASS $FAIL
 echo
-echo "  Config + keybind logic OK. Visual still needs a real window —"
-echo "  see docs/ghostty.md → Health check → Manual."
+echo "  Config + keybind logic OK. Visual behavior still needs a real cmux window."

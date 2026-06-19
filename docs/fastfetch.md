@@ -67,7 +67,7 @@ bash tests/fastfetch.sh
 
 ### Manual (real TTY required)
 
-1. Run `s` in a fresh Ghostty tab.
+1. Run `s` in a fresh cmux tab.
 2. Apple logo renders as ASCII art (not boxes).
 3. All nerd-font glyphs render (󰀵 mac, 󰂯 bluetooth, ● circles), not `□`.
 4. Five color bands are visibly distinct (green → yellow → red/magenta → cyan → blue).

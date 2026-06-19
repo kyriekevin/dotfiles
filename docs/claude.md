@@ -40,7 +40,7 @@ The second system is worth knowing about but *must not* enter the repo: `~/.clau
 | `statusLine` | `bash -c '... bun … claude-hud/src/index.ts'` | Picks highest-versioned claude-hud install, execs it via bun. Hardcoded `/opt/homebrew/bin/bun` is fine on Apple Silicon Macs (both of ours). |
 | `enabledPlugins` | 4 entries | `claude-hud` (status HUD) · `codex` (OpenAI Codex lifecycle hooks) · `andrej-karpathy-skills` (skill pack) · `chrome-devtools-mcp` (frontend debug over live Chrome). |
 | `extraKnownMarketplaces` | 4 GitHub sources | Registers the `github:owner/repo` marketplaces that satisfy `enabledPlugins`. Needed on a fresh Mac before Claude can resolve plugin IDs. |
-| `syntaxHighlightingDisabled` | `true` | Response highlighting has intermittent terminal-render bugs in ghostty — killed it, prefer plain. |
+| `syntaxHighlightingDisabled` | `true` | Response highlighting has intermittent terminal-render bugs — killed it, prefer plain. |
 | `effortLevel` | `"xhigh"` | Claude's [extended-thinking budget](https://code.claude.com/docs/en/model-config#adjust-effort-level). Persisted automatically when you run `/effort`; pin it so new Macs don't default back to medium. |
 
 ## Runtime exclusions (why each is ignored)

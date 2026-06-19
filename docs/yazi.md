@@ -239,7 +239,7 @@ bash tests/yazi.sh
 
 ### Manual (real TTY required)
 
-1. In a fresh Ghostty tab: `y`.
+1. In a fresh cmux tab: `y`.
 2. Three-column layout visible with **rounded borders** (`full-border` plugin).
 3. Arrow through a git repo — modified files carry a colored `M` / `A` / `?` glyph in the left gutter (`git` plugin).
 4. `l` on a directory → enters it; `l` on a text file → opens in nvim (`smart-enter` plugin). Quit nvim → back in yazi.

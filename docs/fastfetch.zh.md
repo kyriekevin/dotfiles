@@ -67,7 +67,7 @@ bash tests/fastfetch.sh
 
 ### 手动（需要真实 TTY）
 
-1. 在新的 Ghostty tab 里跑 `s`。
+1. 在新的 cmux tab 里跑 `s`。
 2. Apple logo 渲成 ASCII（不是方框）。
 3. 所有 nerd-font 字形正常（󰀵 mac、󰂯 蓝牙、● 圆点），不是 `□`。
 4. 5 条色带视觉上明显（green → yellow → red/magenta → cyan → blue）。

@@ -19,7 +19,7 @@ chezmoi 把两个文件写到 `~/.config/karabiner/assets/complex_modifications/
 用户在 HHKB（caps 位置 = ctrl）和 MacBook 自带键盘（ctrl 在左下角）之间切换。caps→ctrl 让 MacBook 键盘也获得 HHKB 的按位。单击→escape 复用同一个键，因为 vim/shell 用户基本用不到原生的 CAPS 切换行为。
 
 ### 为什么 ctrl+hjkl → 方向键（全局）
-HHKB 没有独立方向键；笔记本上按方向键要离开 home row。`ctrl+hjkl` 在 **Karabiner 层**把 vim 式移动映射成真箭头事件——**任何 app 都能收到真箭头**，不需要 app 原生支持 vim 绑定。这条同时也是 Ghostty chord 前缀的前提（见 `docs/ghostty.zh.md`）。
+HHKB 没有独立方向键；笔记本上按方向键要离开 home row。`ctrl+hjkl` 在 **Karabiner 层**把 vim 式移动映射成真箭头事件——**任何 app 都能收到真箭头**，不需要 app 原生支持 vim 绑定。这条同时也是 cmux/libghostty chord 前缀的前提（见 `docs/agent-workflows.zh.md`）。
 
 ### 为什么用语义 sublayer，不用单一扁平前缀
 tmux 式扁平 `prefix → letter` 很快就把助记字母用完。语义 sublayer（`w` = window / `r` = raycast / `x` = system）按域分组，**每个 sublayer 的命名空间很小，字母可以跨域复用**（比如 `m` 在 `w` 里是 maximize，在 `x` 里是 mute）。
@@ -90,8 +90,8 @@ AI Chat 是高频命令。走 `ctrl+r space`（两次按键）会增加用户不
 ### Raycast deeplink 的 `-g` flag
 Raycast 的 Window Management 扩展要求**目标 app 处于焦点状态**——不是 Raycast 自己。`open raycast://...`（无 `-g`）会短暂聚焦 Raycast，扩展看到的 frontmost 是 Raycast 本身，resize 就打到错误的窗口上。`open -g` 在"后台"打开 URL 不激活 Raycast，原焦点 app 保持焦点被正确 resize。
 
-### 和 Ghostty `ctrl+s` chord 的共存
-Ghostty 有自己的 `ctrl+s` chord 前缀（见 `docs/ghostty.zh.md`）。Karabiner sublayer 用 `ctrl+w / ctrl+r / ctrl+x`——字母完全不同，**无冲突**。在 Ghostty 里：`ctrl+s` → Ghostty chord；`ctrl+w` → Karabiner 窗口层（全局触发，不看 frontmost 是谁）。
+### 和 cmux/libghostty `ctrl+s` chord 的共存
+cmux/libghostty 有自己的 `ctrl+s` chord 前缀（见 `docs/agent-workflows.zh.md`）。Karabiner sublayer 用 `ctrl+w / ctrl+r / ctrl+x`——字母完全不同，**无冲突**。在 cmux 里：`ctrl+s` → terminal chord；`ctrl+w` → Karabiner 窗口层（全局触发，不看 frontmost 是谁）。
 
 ### 和 Raycast Hyper Key 的共存
 Raycast 的 Hyper Key 功能把左 option 映射成 `cmd+ctrl+opt+shift`。我们保留启用，好让用户历史上的 `hyper+space` 绑定继续给 AI Chat 用。代价：**左 option 被 Raycast 吃掉，打不出 option 修饰的字符**。右 option 不受影响。
