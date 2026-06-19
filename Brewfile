@@ -58,6 +58,13 @@ brew "node"
 # data can shell out to. Deps: node only.
 brew "ccusage"
 
+# ---- Agent attention / multi-session experiments ---------------------------
+# cmux is the preferred terminal surface for Claude/Codex-heavy workflows:
+# native macOS, Ghostty/libghostty rendering, vertical tabs, notification
+# rings/panel, and a CLI. tmux stays as a low-level fallback.
+tap "manaflow-ai/cmux"
+brew "tmux"
+
 # ---- Mac App Store CLI -----------------------------------------------------
 brew "mas"
 
@@ -68,5 +75,5 @@ brew "mas"
 cask "font-maple-mono-nf-cn"
 
 # ---- GUI apps --------------------------------------------------------------
-cask "ghostty"
+cask "cmux"
 cask "karabiner-elements"

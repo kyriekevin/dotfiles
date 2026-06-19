@@ -19,7 +19,7 @@ Chezmoi writes both files to `~/.config/karabiner/assets/complex_modifications/`
 User alternates between HHKB (ctrl at caps position) and MacBook built-in keyboard (ctrl at bottom-left). Caps→ctrl makes the MacBook keyboard behave like HHKB. Tap→escape piggybacks on the same key since the plain caps-lock behavior (CAPS toggle) is rarely wanted by vim/shell users.
 
 ### Why ctrl+hjkl → arrows (global)
-HHKB has no dedicated arrow keys; reaching for arrows on the laptop breaks home-row flow. `ctrl+hjkl` maps vim-style motion to arrows *at Karabiner layer*, so every app receives real arrow events — including apps that don't natively support vim bindings. The mapping is also the foundation the Ghostty chord prefix depends on (see `docs/ghostty.md`).
+HHKB has no dedicated arrow keys; reaching for arrows on the laptop breaks home-row flow. `ctrl+hjkl` maps vim-style motion to arrows *at Karabiner layer*, so every app receives real arrow events — including apps that don't natively support vim bindings. The mapping is also the foundation the cmux/libghostty chord prefix depends on (see `docs/agent-workflows.md`).
 
 ### Why semantic sublayers, not a single flat prefix
 Tmux-style flat `prefix → letter` runs out of mnemonic space fast. Semantic sublayers (`w` = window, `r` = raycast, `x` = system) group actions by domain, so each sublayer's namespace stays small and letters can repeat across domains (e.g., `m` = maximize in `w`, `m` = mute in `x`).
@@ -90,8 +90,8 @@ Pressing a leader key (`ctrl+w` / `ctrl+r` / `ctrl+x`) sets `layer_{w,r,x} = 1` 
 ### The `-g` flag on Raycast deeplinks
 Raycast's Window Management extension requires the *target app* to be focused when the command runs — not Raycast itself. Using `open raycast://...` without `-g` briefly focuses Raycast, so the extension sees Raycast as the frontmost window and the resize misfires. `open -g` opens the URL "in the background" without activating Raycast, so the previously focused app stays focused and gets resized correctly.
 
-### Coexistence with Ghostty's `ctrl+s` chord prefix
-Ghostty has its own `ctrl+s` chord prefix (see `docs/ghostty.md`). Karabiner's sublayers use `ctrl+w / ctrl+r / ctrl+x` — all different letters — so there is no collision. Inside Ghostty: `ctrl+s` → Ghostty chord; `ctrl+w` → Karabiner window layer (fires globally regardless of frontmost app).
+### Coexistence with cmux/libghostty's `ctrl+s` chord prefix
+cmux/libghostty has its own `ctrl+s` chord prefix (see `docs/agent-workflows.md`). Karabiner's sublayers use `ctrl+w / ctrl+r / ctrl+x` — all different letters — so there is no collision. Inside cmux: `ctrl+s` → terminal chord; `ctrl+w` → Karabiner window layer (fires globally regardless of frontmost app).
 
 ### Coexistence with Raycast's Hyper Key
 Raycast's Hyper Key feature maps left-option → `cmd+ctrl+opt+shift`. We keep this enabled so the user's historical `hyper+space` binding for AI Chat still works. The tradeoff: left-option is consumed by Raycast and can't be used for typing option-modifier characters. Right-option is untouched.

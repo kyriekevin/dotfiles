@@ -40,3 +40,51 @@ if (( $+commands[yazi] )); then
         rm -f -- "$tmp"
     }
 fi
+
+# tmux agent sessions: optional layer above Ghostty native tabs/splits.
+# `agentmux` attaches to a named session in the current cwd.
+# `agentdesk` creates a lightweight three-window desk: shell, Claude, Codex.
+if (( $+commands[tmux] )); then
+    _agent_session_name() {
+        local base
+        base="${1:-${PWD:t}}"
+        base="${base//[^A-Za-z0-9_.-]/-}"
+        [[ -n "$base" ]] && print -- "$base" || print -- agents
+    }
+
+    _agent_tmux_open() {
+        local session="$1"
+        if [[ -n ${TMUX:-} ]]; then
+            tmux switch-client -t "$session"
+        else
+            tmux attach-session -t "$session"
+        fi
+    }
+
+    agentmux() {
+        local session
+        session="$(_agent_session_name "${1:-}")"
+        if ! tmux has-session -t "$session" 2>/dev/null; then
+            tmux new-session -d -s "$session" -c "$PWD"
+        fi
+        _agent_tmux_open "$session"
+    }
+
+    agentdesk() {
+        local session
+        session="$(_agent_session_name "${1:-}")"
+
+        if ! tmux has-session -t "$session" 2>/dev/null; then
+            tmux new-session -d -s "$session" -n shell -c "$PWD"
+            if (( $+commands[claude] )); then
+                tmux new-window -t "$session:" -n claude -c "$PWD" claude
+            fi
+            if (( $+commands[codex] )); then
+                tmux new-window -t "$session:" -n codex -c "$PWD" codex
+            fi
+            tmux select-window -t "$session:shell"
+        fi
+
+        _agent_tmux_open "$session"
+    }
+fi

@@ -36,6 +36,7 @@ check "zsh y() wrapper in tools.zsh"             "grep -q 'yazi.*--cwd-file' $TO
 
 echo
 echo "── TOML parses ──────────────────────────────────────"
+check "yazi accepts loaded config"               "yazi --help >/dev/null"
 # Python 3.11+ ships tomllib; earlier macOS CLT python3 (3.9) doesn't.
 # When absent, skip parse-validation — structural grep below still catches
 # obvious breakage (missing section headers).
@@ -56,9 +57,11 @@ for sect in '\[mgr\]' '\[preview\]' '\[opener\]' '\[open\]' '\[tasks\]' '\[plugi
     check "yazi.toml has $sect"                  "grep -qE '^$sect' $CFG"
 done
 check "yazi.toml: fetcher 'git' registered"      "grep -q 'id = \"git\"' $CFG"
-# url (not name) is the yazi ≥26 pattern key — using `name` made the fetcher
-# silently no-op, which is how we shipped broken git-status on the first cut.
-check "yazi.toml: fetcher uses url= (not name=)" "grep -q 'url = \"\\*\"' $CFG"
+# url (not name) is the yazi ≥26 pattern key in plugin fetchers and open rules.
+# Using name= in [open] prevents current yazi from loading the config at all.
+check "yazi.toml: open fallback uses url="       "grep -q '{ url = \"\\*\".*use = \\[ \"open\", \"reveal\" \\]' $CFG"
+check "yazi.toml: no invalid open name fallback" "! awk '/^\\[open\\]/{section=1; next} /^\\[/{section=0} section && /name = \"\\*\"/{found=1} END{exit found ? 0 : 1}' $CFG"
+check "yazi.toml: fetcher uses url="             "grep -q 'id = \"git\", url = \"\\*\"' $CFG"
 check "keymap: smart-enter bound"                "grep -q 'plugin smart-enter' $KEYMAP"
 check "init.lua: full-border setup"              "grep -q 'full-border' $INIT"
 check "init.lua: git setup"                      "grep -q 'require(\"git\")' $INIT"
@@ -112,7 +115,7 @@ if (( FAIL > 0 )); then
     printf "  \033[31m%d passed, %d failed\033[0m\n" $PASS $FAIL
     echo
     echo "  Visual fidelity (image preview, rounded borders, git gutter"
-    echo "  glyphs) is NOT covered here — run 'y' in a real Ghostty tab"
+    echo "  glyphs) is NOT covered here — run 'y' in a real cmux tab"
     echo "  and walk the Manual checklist in docs/yazi.md."
     exit 1
 fi

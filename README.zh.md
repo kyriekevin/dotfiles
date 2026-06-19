@@ -50,6 +50,8 @@ repo 依赖的核心工具。
 | [age](https://github.com/FiloSottile/age) | 密文加密 | bootstrap → `brew install age` |
 | [gh](https://cli.github.com) | GitHub CLI（PR / review 流程必备） | bootstrap → `brew install gh` |
 | [Claude Code](https://claude.com/claude-code) | AI coding CLI | bootstrap → `curl -fsSL https://claude.ai/install.sh \| bash` |
+| [cmux](https://github.com/manaflow-ai/cmux) | 首选多 agent 控制面试验 | Brewfile → `brew install --cask cmux`；流程见 [Agent 工作流试验](docs/agent-workflows.zh.md) |
+| [tmux](https://tmux.github.io/) | 可选低层 fallback 面板 | Brewfile → `brew install tmux`；流程见 [Agent 工作流试验](docs/agent-workflows.zh.md) |
 | [Node.js](https://nodejs.org) | Claude Code 插件 `.mjs` hook 与 `npx` 守卫的运行时 | Brewfile → `brew install node` |
 | [uv](https://github.com/astral-sh/uv) | Python 工具运行器 | Brewfile → `brew install uv` |
 | [pre-commit](https://pre-commit.com) | Git hooks（空白符/密钥/conventional-commits） | `uv tool install pre-commit` —— 流程见 [CONTRIBUTING.zh.md](CONTRIBUTING.zh.md) |

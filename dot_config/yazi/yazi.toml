@@ -71,8 +71,10 @@ prepend_rules = [
     { mime = "application/xml",              use = [ "edit", "reveal" ] },
     { mime = "application/toml",             use = [ "edit", "reveal" ] },
     # Catch-all fallback — Launch Services. macOS knows best for binary types.
-    { name = "*",                                    use = [ "open", "reveal" ] },
-    { name = "*/",                                   use = [ "open", "reveal" ] },
+    # Yazi 26 validates [open] rules with url/mime matchers; name= here fails
+    # config loading before yazi can start.
+    { url = "*",                                     use = [ "open", "reveal" ] },
+    { url = "*/",                                    use = [ "open", "reveal" ] },
 ]
 
 [tasks]

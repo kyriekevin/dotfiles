@@ -88,7 +88,6 @@ clipboard-paste-protection = true
 clipboard-paste-bracketed-safe = true
 
 
-# =============================================================================
 # 4. Quick terminal  (macOS drop-down from top, global hotkey)
 # =============================================================================
 
@@ -151,7 +150,7 @@ keybind = ctrl+s>j=goto_split:bottom
 keybind = ctrl+s>k=goto_split:top
 keybind = ctrl+s>l=goto_split:right
 
-keybind = ctrl+s>z=toggle_split_zoom
+keybind = ctrl+s>m=toggle_split_zoom
 keybind = ctrl+s>equal=equalize_splits
 
 # x = close the current surface (split OR tab, whichever is focused).
