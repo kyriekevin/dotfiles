@@ -239,7 +239,7 @@ bash tests/yazi.sh
 
 ### 手动（需要真实 TTY）
 
-1. 新 cmux tab 里：`y`。
+1. 新 Ghostty tab 或 Herdr pane 里：`y`。
 2. 三栏布局，带**圆角边框**（`full-border` 插件起效）。
 3. 在 git repo 里逛 —— 修改过的文件左侧挂彩色 `M` / `A` / `?` 字符（`git` 插件）。
 4. `l` 在目录上 → 进入；`l` 在文本文件上 → 打开 nvim（`smart-enter` 插件）。退出 nvim → 回 yazi。

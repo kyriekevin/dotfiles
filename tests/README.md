@@ -19,7 +19,7 @@ bash tests/<pkg>.sh
 
 Exit 0 = all checks green. Exit 1 = at least one red; script prints each failure and points back at the manual checklist.
 
-Agent workflow checks are split by layer: `tests/cmux.sh` for the preferred terminal surface, `tests/ghostty.sh` for the Ghostty-compatible config that cmux/libghostty reads, `tests/claude.sh` for Claude Code hooks, and `tests/tmux.sh` for the optional fallback.
+Agent workflow checks are split by layer: `tests/ghostty.sh` for the primary terminal surface, `tests/herdr.sh` for the in-terminal agent multiplexer, and `tests/claude.sh` for Claude Code hooks.
 
 ## Add a new one (new phase)
 

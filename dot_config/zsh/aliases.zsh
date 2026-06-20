@@ -20,9 +20,7 @@ alias nv='nvim'
 alias s='fastfetch'
 alias cc='claude'
 alias cx='codex'
-alias cm='cmux'
-alias am='agentmux'
-alias ad='agentdesk'
+alias hd='herdr'
 alias oc='ttadk code -t opencode'
 
 # ─── File tools (override POSIX defaults with eza/bat) ───────────────

@@ -39,6 +39,7 @@ dot_claude/chrome/**
 dot_claude/downloads/**
 dot_claude/file-history/**
 dot_claude/homunculus/**
+dot_claude/hooks/**
 dot_claude/image-cache/**
 dot_claude/metrics/**
 dot_claude/paste-cache/**

@@ -1,0 +1,66 @@
+# Herdr config. Ghostty is the terminal; Herdr is the in-terminal agent
+# multiplexer. Keep the default tmux-like prefix rather than translating it to
+# the older Ghostty ctrl+s chord.
+onboarding = false
+
+[terminal]
+shell_mode = "auto"
+new_cwd = "follow"
+
+[theme]
+# Follow Ghostty's terminal palette instead of maintaining a second color
+# scheme in Herdr.
+name = "terminal"
+
+[ui]
+sidebar_width = 32
+sidebar_min_width = 18
+sidebar_max_width = 40
+mouse_capture = true
+confirm_close = true
+prompt_new_tab_name = false
+agent_panel_scope = "all"
+show_agent_labels_on_pane_borders = true
+
+[ui.toast]
+# Avoid adding another notification layer. The value can be switched to
+# "herdr", "terminal", or "system" if agent notifications become useful.
+delivery = "off"
+
+[keys]
+prefix = "ctrl+b"
+
+detach = "prefix+q"
+workspace_picker = "prefix+w"
+goto = "prefix+g"
+new_workspace = "prefix+shift+n"
+new_worktree = "prefix+shift+g"
+rename_workspace = "prefix+shift+w"
+close_workspace = "prefix+shift+d"
+
+new_tab = "prefix+c"
+previous_tab = "prefix+p"
+next_tab = "prefix+n"
+switch_tab = "prefix+1..9"
+rename_tab = "prefix+shift+t"
+close_tab = "prefix+shift+x"
+
+copy_mode = "prefix+["
+
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+swap_pane_left = "prefix+shift+h"
+swap_pane_down = "prefix+shift+j"
+swap_pane_up = "prefix+shift+k"
+swap_pane_right = "prefix+shift+l"
+cycle_pane_next = "prefix+tab"
+cycle_pane_previous = "prefix+shift+tab"
+
+split_vertical = "prefix+v"
+split_horizontal = "prefix+minus"
+close_pane = "prefix+x"
+zoom = "prefix+z"
+resize_mode = "prefix+r"
+toggle_sidebar = "prefix+b"

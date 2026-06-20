@@ -115,7 +115,7 @@ if (( FAIL > 0 )); then
     printf "  \033[31m%d passed, %d failed\033[0m\n" $PASS $FAIL
     echo
     echo "  Visual fidelity (image preview, rounded borders, git gutter"
-    echo "  glyphs) is NOT covered here — run 'y' in a real cmux tab"
+    echo "  glyphs) is NOT covered here — run 'y' in a real Ghostty tab"
     echo "  and walk the Manual checklist in docs/yazi.md."
     exit 1
 fi

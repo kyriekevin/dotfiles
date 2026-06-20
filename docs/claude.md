@@ -14,7 +14,7 @@ The per-plugin / per-MCP / per-skill deep-dive lives in [`claude-plugins.md`](cl
 | _(excluded)_ | `~/.claude/settings.local.json` | Per-project permission allowlist; machine-specific paths only. |
 | _(excluded)_ | `~/.claude/sessions/` `projects/` `plans/` `cache/` `…` | Runtime only — see **Runtime exclusions** below. |
 
-`chezmoi apply` renders `dot_claude/settings.json` to `~/.claude/settings.json`. No hook scripts, no plugin re-install — `enabledPlugins` declares intent, Claude's internal marketplace fetcher resolves it on next launch.
+`chezmoi apply` renders `dot_claude/settings.json` to `~/.claude/settings.json`. Hook scripts are not vendored: Herdr's agent-state script is installed locally by `herdr integration install claude`. `enabledPlugins` declares plugin intent, and Claude's internal marketplace fetcher resolves plugins on next launch.
 
 ## Two persistence systems (why we only manage one)
 
@@ -37,6 +37,7 @@ The second system is worth knowing about but *must not* enter the repo: `~/.clau
 |---|---|---|
 | `$schema` | `json.schemastore.org/claude-code-settings.json` | Autocomplete + inline validation in any JSON-schema-aware editor. Zero runtime cost. |
 | `hooks.PreToolUse[Bash]` | `npx block-no-verify@1.1.2` | Intercepts `git commit --no-verify` / `git push --no-verify` — matches the "never skip hooks" rule in CLAUDE.md. |
+| `hooks.SessionStart[*]` | `$HOME/.claude/hooks/herdr-agent-state.sh session` | Reports Claude session identity/state to Herdr. The script is machine-local and installed by `herdr integration install claude`. |
 | `statusLine` | `bash -c '... bun … claude-hud/src/index.ts'` | Picks highest-versioned claude-hud install, execs it via bun. Hardcoded `/opt/homebrew/bin/bun` is fine on Apple Silicon Macs (both of ours). |
 | `enabledPlugins` | 4 entries | `claude-hud` (status HUD) · `codex` (OpenAI Codex lifecycle hooks) · `andrej-karpathy-skills` (skill pack) · `chrome-devtools-mcp` (frontend debug over live Chrome). |
 | `extraKnownMarketplaces` | 4 GitHub sources | Registers the `github:owner/repo` marketplaces that satisfy `enabledPlugins`. Needed on a fresh Mac before Claude can resolve plugin IDs. |
@@ -60,6 +61,7 @@ The second system is worth knowing about but *must not* enter the repo: `~/.clau
 | `dot_claude/telemetry/` `metrics/` `homunculus/` | Usage telemetry | Anthropic-internal shape, machine-specific. |
 | `dot_claude/session-data/` `session-env/` | Current-session env snapshots | Per-session. |
 | `dot_claude/chrome/` `downloads/` | Browser-extension cache | Machine-local. |
+| `dot_claude/hooks/` | Herdr-generated agent-state hook scripts | Machine-local integration install output. Settings pin the invocation, not the generated script. |
 | `dot_claude/*.jsonl` `*.log` `*-cache.json` | `history.jsonl`, `bash-commands.log`, `cost-tracker.log`, `stats-cache.json` | Logs and caches. |
 | `dot_claude/agents/` `skills/` `commands/` `rules/` `CLAUDE.md` | **Unused extension points** | Not currently populated. Pre-emptively ignored so a stray `chezmoi add ~/.claude` can't silently start versioning something we haven't evaluated. Delete the ignore entry before opting any of these into source. |
 | `dot_claude.json` (note: `.claude.json`, **not** under `.claude/`) | App state: `mcpServers{}` entries (often embedding API tokens / OAuth secrets in plaintext env blocks), OAuth account, onboarding + feature-flag caches | Per-machine runtime + live credentials. Defensive ignore so `chezmoi add ~/.claude.json` is a no-op. Any MCP with a token is configured per-user with `claude mcp add` and stays in this file. |
@@ -80,9 +82,10 @@ So our `dot_claude/settings.json` is the **lowest-precedence** layer — project
 
 ## Hooks at a glance
 
-Claude Code now supports **29 lifecycle events** × **4 handler types** (`command` / `http` / `prompt` / `agent`). We use one:
+Claude Code now supports lifecycle events × handler types (`command` / `http` / `prompt` / `agent`). We use two user-level hooks:
 
 - **PreToolUse, matcher=Bash** → `npx block-no-verify@1.1.2`. Runs before every Bash tool call; exits non-zero → Claude is told the command was blocked.
+- **SessionStart, matcher=\*** → Herdr's local `herdr-agent-state.sh`. Lets Herdr associate Claude sessions with panes for agent state/restore.
 
 Hooks we intentionally *don't* configure at user level:
 

@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-# Non-interactive Ghostty-compatible config check. cmux is the actual terminal
-# surface now; this validates the ~/.config/ghostty/config file that cmux/
-# libghostty reads for terminal rendering and keybind defaults. Standalone
-# Ghostty.app is optional and intentionally not required.
+# Non-interactive Ghostty health check. Ghostty is the actual terminal surface;
+# Herdr runs inside it only when agent-aware workspaces are needed.
 set -uo pipefail
 
 PASS=0
@@ -16,17 +14,23 @@ check() {
 }
 
 CFG="$HOME/.config/ghostty/config"
+BREWFILE="$(cd "$(dirname "$0")/.." && pwd)/Brewfile"
 
-echo "── Standalone app status ────────────────────────────"
+echo "── Package intent ───────────────────────────────────"
+check "Brewfile includes Ghostty cask"          "grep -qE '^cask \"ghostty\"' $BREWFILE"
+check "Brewfile does not include cmux cask"     "! grep -qE '^cask \"cmux\"' $BREWFILE"
+
+echo
+echo "── App status ───────────────────────────────────────"
 if command -v ghostty >/dev/null 2>&1; then
-    ok "ghostty on PATH (optional)"
+    ok "ghostty on PATH"
 else
-    ok "ghostty CLI absent (cmux-only setup)"
+    ok "ghostty CLI absent from PATH (app-only cask is acceptable)"
 fi
 if [[ -d /Applications/Ghostty.app ]]; then
-    ok "Ghostty.app installed (optional)"
+    ok "Ghostty.app installed"
 else
-    ok "Ghostty.app absent (cmux-only setup)"
+    bad "Ghostty.app installed" "run: brew install --cask ghostty"
 fi
 
 echo
@@ -41,8 +45,8 @@ fi
 
 echo
 echo "── Appearance fields ────────────────────────────────"
-# These back the cmux/libghostty terminal profile. If someone deletes a line
-# during refactor, the profile drifts from the workflow docs — flag here.
+# These back the primary terminal profile. If someone deletes a line during
+# refactor, the profile drifts from the workflow docs — flag here.
 check "theme = Catppuccin Mocha"                "grep -qE '^theme *= *Catppuccin Mocha' $CFG"
 check "font-family = Maple Mono NF CN"          "grep -qE '^font-family *= *Maple Mono NF CN\$' $CFG"
 check "font-size = 12"                          "grep -qE '^font-size *= *12\$' $CFG"
@@ -92,9 +96,9 @@ echo
 echo "── Runtime context ──────────────────────────────────"
 # Informational — helps debug when tests run from a non-ghostty shell.
 if [[ ${TERM_PROGRAM:-} == "ghostty" ]] || [[ ${TERM:-} == "xterm-ghostty" ]]; then
-    ok "running inside a Ghostty/libghostty terminal (TERM=$TERM)"
+    ok "running inside Ghostty (TERM=$TERM)"
 else
-    ok "not inside Ghostty/libghostty (TERM=${TERM:-?})"
+    ok "not inside Ghostty (TERM=${TERM:-?})"
 fi
 
 echo
@@ -102,10 +106,10 @@ echo "────────────────────────�
 if (( FAIL > 0 )); then
     printf "  \033[31m%d passed, %d failed\033[0m\n" $PASS $FAIL
     echo
-    echo "  Visual fidelity and chord timing are NOT covered here — test"
-    echo "  them interactively in cmux."
+    echo "  Visual fidelity, image previews, and chord timing are NOT covered"
+    echo "  here — test them interactively in Ghostty."
     exit 1
 fi
 printf "  \033[32m%d passed, %d failed\033[0m\n" $PASS $FAIL
 echo
-echo "  Config + keybind logic OK. Visual behavior still needs a real cmux window."
+echo "  Config + keybind logic OK. Visual behavior still needs a real Ghostty window."

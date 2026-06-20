@@ -11,6 +11,18 @@
           }
         ]
       }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -lc 'exec \"$HOME/.claude/hooks/herdr-agent-state.sh\" session'",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   },
   "statusLine": {

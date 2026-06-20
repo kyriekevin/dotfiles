@@ -2,119 +2,119 @@
 
 > [English](agent-workflows.md) · 中文
 
-这个分支把 Claude Code / Codex 的多开体验拆成两个实际层。结论先写清楚：**cmux 是主终端表面**。Standalone Ghostty 不再安装；`~/.config/ghostty/config` 只保留给 cmux/libghostty 读取 terminal 渲染和快捷键默认值。tmux 只是 fallback。
+这个分支把 agent 工作流改成 **Ghostty + herdr**。Ghostty 负责终端表面：字体、主题、Kitty 图片协议、原生 quick terminal 和普通 shell tab/split。Herdr 跑在 Ghostty 里面，负责 agent multiplexer：workspace、tab、pane、detach/reattach，以及 Claude/Codex 状态感知。
 
-cmux 的定位正好命中这里的问题：它是基于 Ghostty/libghostty 的 macOS 原生终端，加了 vertical tabs、workspace 元数据、内置浏览器和 CLI。也就是说，它解决的是“很多 agent session 哪个在等我”这个控制面问题，而不是让你记更多 pane。
+这次保持层次分离：不再把 cmux 当另一个终端 app，也不默认保留 tmux dashboard。
 
 ## 快速试用顺序
 
-### A. cmux
+### A. Ghostty + herdr
 
-适合：你已经开始多项目、多 Claude/Codex session 并行，核心痛点是“哪个 session 在等我”和“窗口太多看不出上下文”。
+适合：多项目、多 Claude/Codex session 并行，需要在终端里看哪个 agent idle、working、done、blocked。
 
 安装：
 
 ```bash
-brew tap manaflow-ai/cmux
-brew install --cask cmux
+brew install --cask ghostty
+brew install herdr
 ```
 
-这个分支也把它写进 Brewfile：
+这个分支也把它们写进 Brewfile：
 
 ```bash
 brew bundle --file ~/.dotfiles/Brewfile
 ```
 
-配置由 dotfiles 管：cmux 源文件是 `dot_config/cmux/cmux.json`，目标是 `~/.config/cmux/cmux.json`。Ghostty-compatible terminal 配置也保留在 `dot_config/ghostty/config`，因为 cmux/libghostty 会读取它。当前版本把左侧 sidebar 调成更安静：背景跟 terminal 走、去掉 tint、隐藏端口/PR/log 等噪声。
+dotfiles 管理的配置：
+
+| 工具 | 源文件 | 目标 |
+|---|---|---|
+| Ghostty | `dot_config/ghostty/config` | `~/.config/ghostty/config` |
+| herdr | `dot_config/herdr/config.toml` | `~/.config/herdr/config.toml` |
+
+应用：
 
 ```bash
-chezmoi --source=/Users/zyz/.dotfiles apply ~/.config/cmux/cmux.json ~/.config/ghostty/config
-cmux reload-config
+chezmoi --source=/Users/zyz/.dotfiles apply ~/.config/ghostty/config ~/.config/herdr/config.toml ~/.config/zsh/aliases.zsh
 ```
 
 入口：
 
 ```bash
-cmux
-cmux claude-teams
-cmux codex-teams
+ghostty
+herdr
+hd    # herdr alias
 ```
 
-zsh alias：
-
-```bash
-cm
-```
-
-cmux 快捷键也走同一套 `Ctrl+s` chord：
+Herdr 保留默认 tmux-like 前缀：`Ctrl+b`。不再把它改成 `Ctrl+s`。
 
 | 键 | 动作 |
 |---|---|
-| `Ctrl+s b` | 显隐左侧 workspace sidebar |
-| `Ctrl+s w` | 打开 workspace switcher |
-| `Ctrl+s n/p` | 下一个 / 上一个 workspace |
-| `Ctrl+s ;` | 新增 workspace |
-| `Ctrl+s c` | 当前 pane 新增 surface/tab |
-| `Ctrl+s \|` / `Ctrl+s -` | 左右 / 上下分屏 |
-| `Ctrl+s h/j/k/l` | pane 间移动 |
-| `Ctrl+s m` | 当前 pane 最大化 |
-| `Ctrl+s =` | 均分 panes |
-| `Ctrl+s x` | 关闭当前 surface/tab |
+| `Ctrl+b w` | workspace picker |
+| `Ctrl+b g` | session/workspace navigator |
+| `Ctrl+b Shift+n` | 新 workspace |
+| `Ctrl+b c` | 新 tab |
+| `Ctrl+b n/p` | 下一个 / 上一个 tab |
+| `Ctrl+b v` / `Ctrl+b -` | 分 pane |
+| `Ctrl+b h/j/k/l` | pane 间移动 |
+| `Ctrl+b z` | 当前 pane 最大化 |
+| `Ctrl+b x` | 关闭 pane |
+| `Ctrl+b q` | detach；pane 里的进程继续跑 |
 
-cmux 配置里 New Workspace 的 shortcut id 叫 `newTab`；真正 pane 里的 tab/surface 是 `newSurface`。这个分支把两者都显式绑定：`Ctrl+s ;` 是 workspace，`Ctrl+s c` 是 tab/surface。
+为什么这次优先于 cmux：
 
-为什么它优先于 Claude Squad / tmux：
+- Ghostty 仍然是唯一终端 app。
+- Herdr 住在终端里，不用另一个 GUI surface 包住终端。
+- pane 是真实 terminal process，复制、shell 行为、Yazi 图片预览都保留终端原生体验。
+- Herdr 对 Claude Code 和 Codex 有内置 agent 状态感知，可通过进程/输出检测和可选 integration 增强。
+- detach/reattach 给 agent desk 需要的持久性，不需要在 repo 里继续维护 tmux config。
+- 我们的配置保持通知关闭：`ui.toast.delivery = "off"`。
 
-- 不要求 tmux；session、split、tab 都是 cmux 原生表面。
-- 读 Ghostty-compatible 配置，保留现有字体、主题、颜色、快捷键投资，但不需要安装 Ghostty.app。
-- sidebar 能显示 git branch、PR 状态、工作目录、端口和 workspace 状态，比一堆窗口标题有效。
-- 内置 browser pane 和 scriptable API 更适合前端/本地服务调试。
-- 它仍然是 terminal primitive，不把你锁进某个 agent 编排模型。
+### B. Ghostty 原生 tab/split
 
-### B. tmux fallback
+不需要 agent 状态时，直接用 Ghostty。原来的 `Ctrl+s` chord 仍然保留给普通 tab/split：
 
-适合：cmux 不稳定、远程/纯 TTY 环境、或你临时需要一个低层 dashboard。
-
-```bash
-chezmoi --source=/Users/zyz/.dotfiles apply ~/.tmux.conf ~/.config/zsh/aliases.zsh ~/.config/zsh/tools.zsh
-```
-
-命令：
-
-| 命令 | 作用 |
+| 键 | 动作 |
 |---|---|
-| `am` | 在当前目录 attach/create 一个 tmux session |
-| `am name` | attach/create 指定 session |
-| `ad` | 当前目录创建 agent desk：`shell`、`claude`、`codex` 三个 window |
-| `ad name` | 指定 session 名 |
-
-tmux 前缀是 `Ctrl+a`，不是 `Ctrl+s`，避免和 cmux/libghostty 的 `Ctrl+s` chord 层抢键。
+| `Ctrl+s c` | 新 Ghostty tab |
+| `Ctrl+s \|` / `Ctrl+s -` | 左右 / 上下分屏 |
+| `Ctrl+s h/j/k/l` | Ghostty split 间移动 |
+| `Ctrl+s m` | 当前 split 最大化 |
+| `Ctrl+s x` | 关闭当前 surface |
 
 ## 怎么选
 
 | 方案 | 适合 | 不适合 |
 |---|---|---|
-| cmux | 多项目、多 agent、需要上下文 sidebar 和原生 terminal panes | 不想安装新 GUI app |
-| tmux `am` / `ad` | 远程/纯 TTY/fallback dashboard | 不想记 tmux prefix；想用 cmux 原生 UI |
+| Ghostty + herdr | 多项目、多 agent、终端内 workspace dashboard、detach/reattach | 不想多一层 terminal-mode multiplexer |
+| 只用 Ghostty | 单项目或轻量多任务 | 同时看很多 agent 的 blocked/done 状态 |
 
-我建议：主要试 cmux。tmux 暂时不要作为主方案，除非 cmux 不适合你的日常。
+建议：agent-heavy 工作默认用 Ghostty + herdr。只是开 shell 时直接用 Ghostty。
 
 ## 健康检查
 
 ```bash
 bash tests/ghostty.sh
-bash tests/cmux.sh
-bash tests/tmux.sh
+bash tests/herdr.sh
 bash tests/yazi.sh
 ```
 
-`tests/cmux.sh` 在 cmux 未安装前会红，这是预期。`tests/ghostty.sh` 只检查 cmux/libghostty 读取的 Ghostty-compatible 配置，不再要求 Ghostty.app。`tests/tmux.sh` 需要先 `chezmoi apply ~/.tmux.conf`。`tests/yazi.sh` 会抓 `y` 启动时立即暴露的配置解析错误。
+`tests/ghostty.sh` 验证 Ghostty 配置，并要求 Ghostty.app 已安装。`tests/herdr.sh` 验证 Brewfile 意图、Herdr 配置、文档和已安装 CLI。`tests/yazi.sh` 抓文件管理器配置解析和预览后端漂移。
+
+手动检查：
+
+- [ ] 打开 Ghostty，运行 `herdr`。
+- [ ] `Ctrl+b v` 和 `Ctrl+b -` 可以分 pane。
+- [ ] `Ctrl+b Shift+n` 可以创建 workspace。
+- [ ] 一个 pane 跑 `claude`，另一个 pane 跑 `codex`；Herdr sidebar 能显示 agent 状态。
+- [ ] `Ctrl+b q` detach；再次运行 `herdr` 能 reattach 到同一个 server。
+- [ ] 在 Ghostty pane 里运行 `y`；图片预览走 Ghostty Kitty 协议。
 
 ## 回滚
 
-不喜欢 cmux：不打开它即可。要从配置层撤回，checkout 回 `main` 后：
+不喜欢 Herdr：不打开它即可。要从配置层撤回，checkout 回 `main` 后：
 
 ```bash
-chezmoi --source=/Users/zyz/.dotfiles apply ~/.config/ghostty/config ~/.claude/settings.json ~/.config/zsh/aliases.zsh ~/.config/zsh/tools.zsh ~/.config/cmux/cmux.json
-rm -f ~/.tmux.conf
+chezmoi --source=/Users/zyz/.dotfiles apply ~/.config/ghostty/config ~/.config/zsh/aliases.zsh
+rm -f ~/.config/herdr/config.toml
 ```

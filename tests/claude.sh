@@ -48,6 +48,7 @@ echo "── Pinned settings fields (source-of-truth grep) ────"
 # already have failed — this section isolates the source contract.
 check "PreToolUse Bash matcher present"         "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"hooks\"][\"PreToolUse\"][0][\"matcher\"]==\"Bash\"' $SRC"
 check "PreToolUse uses npx block-no-verify"     "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"hooks\"][\"PreToolUse\"][0][\"hooks\"][0][\"command\"]==\"npx block-no-verify@1.1.2\"' $SRC"
+check "SessionStart uses Herdr agent hook"       "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); h=d[\"hooks\"][\"SessionStart\"][0][\"hooks\"][0]; assert \"herdr-agent-state.sh\" in h[\"command\"] and h[\"timeout\"]==10' $SRC"
 check "statusLine type = command"               "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"statusLine\"][\"type\"]==\"command\"' $SRC"
 check "statusLine shells to bun (Apple Silicon)" "grep -q '/opt/homebrew/bin/bun' $SRC"
 check "claude-hud plugin enabled"               "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"enabledPlugins\"][\"claude-hud@claude-hud\"] is True' $SRC"
@@ -72,6 +73,7 @@ for path in \
     "dot_claude/projects/**" \
     "dot_claude/plans/**" \
     "dot_claude/plugins/**" \
+    "dot_claude/hooks/**" \
     "dot_claude/cache/**" \
     "dot_claude/file-history/**" \
     "dot_claude/shell-snapshots/**" \
