@@ -46,16 +46,17 @@ herdr
 hd    # alias for herdr
 ```
 
-Herdr keeps its default tmux-like prefix: `Ctrl+b`. No `Ctrl+s` remapping.
+Herdr keeps the tmux prefix shape: `Ctrl+b`. Ghostty no longer defines a competing `Ctrl+s` terminal chord.
 
 | Key | Action |
 |---|---|
+| `Ctrl+b ?` | Show Herdr help and current keybindings |
 | `Ctrl+b w` | Workspace picker |
 | `Ctrl+b g` | Go to session/workspace navigator |
 | `Ctrl+b Shift+n` | New workspace |
 | `Ctrl+b c` | New tab |
 | `Ctrl+b n/p` | Next / previous tab |
-| `Ctrl+b v` / `Ctrl+b -` | Split pane |
+| `Ctrl+b %` / `Ctrl+b "` | Split pane, tmux-style |
 | `Ctrl+b h/j/k/l` | Move between panes |
 | `Ctrl+b z` | Zoom current pane |
 | `Ctrl+b x` | Close pane |
@@ -70,17 +71,9 @@ Why this is preferred over cmux here:
 - Detach/reattach gives the persistence that a busy agent desk needs without adding tmux config to this repo.
 - Notifications stay off in our config: `ui.toast.delivery = "off"`.
 
-### B. Ghostty Native Tabs/Splits
+### B. Ghostty Only
 
-If you do not need agent state, use Ghostty directly. Its `Ctrl+s` chord is still available for ordinary tabs and splits:
-
-| Key | Action |
-|---|---|
-| `Ctrl+s c` | New Ghostty tab |
-| `Ctrl+s \|` / `Ctrl+s -` | Split right / down |
-| `Ctrl+s h/j/k/l` | Move between Ghostty splits |
-| `Ctrl+s m` | Zoom current split |
-| `Ctrl+s x` | Close current surface |
+If you do not need agent state, use Ghostty directly with its app/default shortcuts. This repo no longer adds a custom Ghostty `Ctrl+s` prefix; terminal multiplexing keys live in Herdr.
 
 ## Decision Table
 
@@ -104,7 +97,8 @@ bash tests/yazi.sh
 Manual checks:
 
 - [ ] Open Ghostty and run `herdr`.
-- [ ] `Ctrl+b v` and `Ctrl+b -` split panes.
+- [ ] `Ctrl+b ?` opens Herdr help and shows the configured keybindings.
+- [ ] `Ctrl+b %` and `Ctrl+b "` split panes.
 - [ ] `Ctrl+b Shift+n` creates a workspace.
 - [ ] Start `claude` in one pane and `codex` in another; the Herdr sidebar shows agent state.
 - [ ] `Ctrl+b q` detaches; running `herdr` again reattaches to the same server.

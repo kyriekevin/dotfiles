@@ -46,16 +46,17 @@ herdr
 hd    # herdr alias
 ```
 
-Herdr 保留默认 tmux-like 前缀：`Ctrl+b`。不再把它改成 `Ctrl+s`。
+Herdr 保留 tmux 的 prefix 形状：`Ctrl+b`。Ghostty 不再定义另一套 `Ctrl+s` 终端 chord。
 
 | 键 | 动作 |
 |---|---|
+| `Ctrl+b ?` | 显示 Herdr help 和当前 keybindings |
 | `Ctrl+b w` | workspace picker |
 | `Ctrl+b g` | session/workspace navigator |
 | `Ctrl+b Shift+n` | 新 workspace |
 | `Ctrl+b c` | 新 tab |
 | `Ctrl+b n/p` | 下一个 / 上一个 tab |
-| `Ctrl+b v` / `Ctrl+b -` | 分 pane |
+| `Ctrl+b %` / `Ctrl+b "` | tmux-style 分 pane |
 | `Ctrl+b h/j/k/l` | pane 间移动 |
 | `Ctrl+b z` | 当前 pane 最大化 |
 | `Ctrl+b x` | 关闭 pane |
@@ -70,17 +71,9 @@ Herdr 保留默认 tmux-like 前缀：`Ctrl+b`。不再把它改成 `Ctrl+s`。
 - detach/reattach 给 agent desk 需要的持久性，不需要在 repo 里继续维护 tmux config。
 - 我们的配置保持通知关闭：`ui.toast.delivery = "off"`。
 
-### B. Ghostty 原生 tab/split
+### B. 只用 Ghostty
 
-不需要 agent 状态时，直接用 Ghostty。原来的 `Ctrl+s` chord 仍然保留给普通 tab/split：
-
-| 键 | 动作 |
-|---|---|
-| `Ctrl+s c` | 新 Ghostty tab |
-| `Ctrl+s \|` / `Ctrl+s -` | 左右 / 上下分屏 |
-| `Ctrl+s h/j/k/l` | Ghostty split 间移动 |
-| `Ctrl+s m` | 当前 split 最大化 |
-| `Ctrl+s x` | 关闭当前 surface |
+不需要 agent 状态时，直接用 Ghostty 自己的 app/default 快捷键。这个 repo 不再给 Ghostty 加自定义 `Ctrl+s` prefix；终端复用键位统一放在 Herdr。
 
 ## 怎么选
 
@@ -104,7 +97,8 @@ bash tests/yazi.sh
 手动检查：
 
 - [ ] 打开 Ghostty，运行 `herdr`。
-- [ ] `Ctrl+b v` 和 `Ctrl+b -` 可以分 pane。
+- [ ] `Ctrl+b ?` 打开 Herdr help，并显示当前配置后的 keybindings。
+- [ ] `Ctrl+b %` 和 `Ctrl+b "` 可以分 pane。
 - [ ] `Ctrl+b Shift+n` 可以创建 workspace。
 - [ ] 一个 pane 跑 `claude`，另一个 pane 跑 `codex`；Herdr sidebar 能显示 agent 状态。
 - [ ] `Ctrl+b q` detach；再次运行 `herdr` 能 reattach 到同一个 server。

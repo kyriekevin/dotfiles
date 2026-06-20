@@ -37,8 +37,9 @@ check "onboarding disabled"                     "grep -qE '^onboarding *= *false
 check "terminal palette theme"                  "grep -qE '^name *= *\"terminal\"' $CFG"
 check "toast delivery off"                      "grep -qE '^delivery *= *\"off\"' $CFG"
 check "Herdr prefix stays ctrl+b"               "grep -qE '^prefix *= *\"ctrl\\+b\"' $CFG"
-check "split vertical uses prefix+v"            "grep -qE '^split_vertical *= *\"prefix\\+v\"' $CFG"
-check "split horizontal uses prefix+minus"      "grep -qE '^split_horizontal *= *\"prefix\\+minus\"' $CFG"
+check "help uses prefix+?"                      "grep -qF \"help = \\\"prefix+?\\\"\" $CFG"
+check "split vertical uses tmux prefix+%"       "grep -qF \"split_vertical = \\\"prefix+%\\\"\" $CFG"
+check "split horizontal uses tmux prefix+quote" "grep -qF \"split_horizontal = 'prefix+\\\"'\" $CFG"
 check "pane focus uses prefix hjkl"             "grep -qE '^focus_pane_left *= *\"prefix\\+h\"' $CFG && grep -qE '^focus_pane_down *= *\"prefix\\+j\"' $CFG && grep -qE '^focus_pane_up *= *\"prefix\\+k\"' $CFG && grep -qE '^focus_pane_right *= *\"prefix\\+l\"' $CFG"
 check "zoom uses prefix+z"                      "grep -qE '^zoom *= *\"prefix\\+z\"' $CFG"
 

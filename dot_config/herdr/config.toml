@@ -1,6 +1,6 @@
 # Herdr config. Ghostty is the terminal; Herdr is the in-terminal agent
-# multiplexer. Keep the default tmux-like prefix rather than translating it to
-# the older Ghostty ctrl+s chord.
+# multiplexer. Keep tmux-style pane keys here and avoid a competing Ghostty
+# ctrl+s chord layer.
 onboarding = false
 
 [terminal]
@@ -30,6 +30,7 @@ delivery = "off"
 [keys]
 prefix = "ctrl+b"
 
+help = "prefix+?"
 detach = "prefix+q"
 workspace_picker = "prefix+w"
 goto = "prefix+g"
@@ -58,8 +59,8 @@ swap_pane_right = "prefix+shift+l"
 cycle_pane_next = "prefix+tab"
 cycle_pane_previous = "prefix+shift+tab"
 
-split_vertical = "prefix+v"
-split_horizontal = "prefix+minus"
+split_vertical = "prefix+%"
+split_horizontal = 'prefix+"'
 close_pane = "prefix+x"
 zoom = "prefix+z"
 resize_mode = "prefix+r"

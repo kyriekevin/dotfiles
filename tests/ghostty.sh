@@ -54,26 +54,14 @@ check "background-opacity set"                  "grep -qE '^background-opacity *
 check "macos-titlebar-style = transparent"      "grep -qE '^macos-titlebar-style *= *transparent' $CFG"
 
 echo
-echo "── Keybinds: chord prefix integrity ─────────────────"
-# Regression guards for the tmux-style chord scheme:
-#   1. Prefix must be ctrl+s (if someone changes it, they should also update docs).
-#   2. hjkl navigation must live BEHIND the prefix, not as bare ctrl+hjkl —
-#      Karabiner remaps ctrl+hjkl → arrow keys globally, so a bare binding
-#      would never fire inside ghostty.
-check "prefix chord ctrl+s>... present"         "grep -qE '^keybind *= *ctrl\\+s>' $CFG"
-check "chord: ctrl+s>h = goto_split:left"       "grep -qE '^keybind *= *ctrl\\+s>h *= *goto_split:left' $CFG"
-check "chord: ctrl+s>j = goto_split:bottom"     "grep -qE '^keybind *= *ctrl\\+s>j *= *goto_split:bottom' $CFG"
-check "chord: ctrl+s>k = goto_split:top"        "grep -qE '^keybind *= *ctrl\\+s>k *= *goto_split:top' $CFG"
-check "chord: ctrl+s>l = goto_split:right"      "grep -qE '^keybind *= *ctrl\\+s>l *= *goto_split:right' $CFG"
-check "chord: ctrl+s>c = new_tab"               "grep -qE '^keybind *= *ctrl\\+s>c *= *new_tab' $CFG"
-check "chord: ctrl+s>m = toggle_split_zoom"     "grep -qE '^keybind *= *ctrl\\+s>m *= *toggle_split_zoom' $CFG"
-check "chord: ctrl+s>x = close_surface"         "grep -qE '^keybind *= *ctrl\\+s>x *= *close_surface' $CFG"
-check "chord: ctrl+s>r = reload_config"         "grep -qE '^keybind *= *ctrl\\+s>r *= *reload_config' $CFG"
+echo "── Keybinds: minimal Ghostty layer ──────────────────"
+# Herdr owns the terminal multiplexer prefix (`ctrl+b`). Ghostty keeps only
+# the global quick terminal shortcut so there is no competing `ctrl+s` layer.
 check "global: cmd+grave → quick_terminal"      "grep -qE '^keybind *= *global:cmd\\+grave_accent *= *toggle_quick_terminal' $CFG"
+check "no Ghostty ctrl+s chord layer"           "! grep -qE '^keybind *= *ctrl\\+s>' $CFG"
 
-# Karabiner conflict guard: no line binds bare ctrl+{h,j,k,l}=... (would be
-# a live grenade — the key never reaches ghostty). chord form `ctrl+s>h`
-# contains `>` before the letter, so the negation below ignores those.
+# Karabiner conflict guard: no line binds bare ctrl+{h,j,k,l}=... because
+# those keys are globally remapped before Ghostty can handle them.
 check "no bare ctrl+hjkl binding (karabiner)"   "! grep -qE '^keybind *= *ctrl\\+[hjkl] *=' $CFG"
 
 echo

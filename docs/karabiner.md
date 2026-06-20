@@ -91,7 +91,7 @@ Pressing a leader key (`ctrl+w` / `ctrl+r` / `ctrl+x`) sets `layer_{w,r,x} = 1` 
 Raycast's Window Management extension requires the *target app* to be focused when the command runs — not Raycast itself. Using `open raycast://...` without `-g` briefly focuses Raycast, so the extension sees Raycast as the frontmost window and the resize misfires. `open -g` opens the URL "in the background" without activating Raycast, so the previously focused app stays focused and gets resized correctly.
 
 ### Coexistence with Ghostty and Herdr prefixes
-Ghostty uses `ctrl+s` as its terminal-level chord prefix, while Herdr uses its default `ctrl+b` prefix inside a pane (see `docs/agent-workflows.md`). Karabiner's sublayers use `ctrl+w / ctrl+r / ctrl+x` — all different letters — so there is no collision. Inside Ghostty: `ctrl+s` → terminal chord, `ctrl+b` → Herdr when Herdr is focused, and `ctrl+w` → Karabiner window layer (fires globally regardless of frontmost app).
+Ghostty no longer defines a terminal-level chord prefix. Herdr uses `ctrl+b` inside a pane (see `docs/agent-workflows.md`). Karabiner's sublayers use `ctrl+w / ctrl+r / ctrl+x`, so there is no collision: `ctrl+b` is Herdr-local when Herdr is focused, and `ctrl+w` remains the global Karabiner window layer.
 
 ### Coexistence with Raycast's Hyper Key
 Raycast's Hyper Key feature maps left-option → `cmd+ctrl+opt+shift`. We keep this enabled so the user's historical `hyper+space` binding for AI Chat still works. The tradeoff: left-option is consumed by Raycast and can't be used for typing option-modifier characters. Right-option is untouched.
