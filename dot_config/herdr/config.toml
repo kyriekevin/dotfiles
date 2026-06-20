@@ -32,6 +32,10 @@ prefix = "ctrl+b"
 
 help = "prefix+?"
 detach = "prefix+q"
+# Workspace = a project (old tmux "session"). Quick prev/next switching with
+# nvim-style [ ] (no shift); picker/goto stay as the "list all" fallback.
+previous_workspace = "prefix+["
+next_workspace = "prefix+]"
 workspace_picker = "prefix+w"
 goto = "prefix+g"
 new_workspace = "prefix+shift+n"
@@ -46,7 +50,10 @@ switch_tab = "prefix+1..9"
 rename_tab = "prefix+shift+t"
 close_tab = "prefix+shift+x"
 
-copy_mode = "prefix+["
+# copy_mode's built-in default is ALSO prefix+[, which we now use for
+# previous_workspace. Explicitly disable it so [ always wins, regardless of
+# herdr's conflict-resolution order. (Scroll/copy: use edit_scrollback = e.)
+copy_mode = ""
 
 focus_pane_left = "prefix+h"
 focus_pane_down = "prefix+j"
@@ -65,3 +72,16 @@ close_pane = "prefix+x"
 zoom = "prefix+z"
 resize_mode = "prefix+r"
 toggle_sidebar = "prefix+b"
+
+# Extra split keys alongside tmux-style % / " — built-in split actions take
+# only one key each, so the intuitive | and - go through pane-split commands.
+# | (vertical bar) → side-by-side (same as %);  - → stacked (same as ").
+[[keys.command]]
+key = "prefix+|"
+type = "shell"
+command = "herdr pane split --current --direction right"
+
+[[keys.command]]
+key = "prefix+minus"
+type = "shell"
+command = "herdr pane split --current --direction down"
