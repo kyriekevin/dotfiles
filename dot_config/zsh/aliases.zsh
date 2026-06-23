@@ -20,6 +20,9 @@ alias nv='nvim'
 alias s='fastfetch'
 alias cc='claude'
 alias cx='codex'
+# ccusage — token / cost usage stats (Claude Code + Codex; codex pkg merged upstream)
+# Use the brew-installed binary (Brewfile), not npx — npx fetches a cached/older copy.
+alias ccx='ccusage'
 alias hd='herdr'
 alias oc='ttadk code -t opencode'
 

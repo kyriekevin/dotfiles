@@ -85,3 +85,11 @@ command = "herdr pane split --current --direction right"
 key = "prefix+minus"
 type = "shell"
 command = "herdr pane split --current --direction down"
+
+[experimental]
+# Render inline images (Kitty graphics protocol) through Herdr to the outer
+# terminal. Needed so yazi's image preview shows up — yazi emits Kitty
+# graphics bytes, and without this Herdr swallows them mid-PTY. The "outer
+# terminal" here is Ghostty, which implements the Kitty graphics protocol
+# natively, so it satisfies the "Kitty graphics-compatible" requirement.
+kitty_graphics = true
