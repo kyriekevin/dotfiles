@@ -24,6 +24,36 @@ alias cx='codex'
 # Use the brew-installed binary (Brewfile), not npx — npx fetches a cached/older copy.
 alias ccx='ccusage'
 alias hd='herdr'
+
+# Herdr does not have a native TraeX agent kind yet. Reuse Codex detection
+# inside Herdr, but keep the sidebar label distinct from real Codex sessions.
+_traex_with_herdr() {
+    local executable=$1
+    shift
+
+    if [[ -n ${HERDR_PANE_ID:-} && -n ${HERDR_SOCKET_PATH:-} ]]; then
+        command herdr pane report-metadata "$HERDR_PANE_ID" \
+            --source traex-wrapper --agent codex --display-agent TraeX \
+            >/dev/null 2>&1 || true
+        HERDR_AGENT=codex command "$executable" "$@"
+        local exit_status=$?
+        command herdr pane report-metadata "$HERDR_PANE_ID" \
+            --source traex-wrapper --agent codex --clear-display-agent \
+            >/dev/null 2>&1 || true
+        return $exit_status
+    fi
+
+    command "$executable" "$@"
+}
+
+traex() {
+    _traex_with_herdr traex "$@"
+}
+
+traecli() {
+    _traex_with_herdr traecli "$@"
+}
+
 alias oc='ttadk code -t opencode'
 
 # ─── File tools (override POSIX defaults with eza/bat) ───────────────
