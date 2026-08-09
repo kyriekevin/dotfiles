@@ -27,6 +27,8 @@ check "Brewfile includes Ghostty cask"          "grep -qE '^cask \"ghostty\"' $B
 check "Brewfile does not include cmux"          "! grep -qE 'cmux|manaflow-ai/cmux' $BREWFILE"
 check "Brewfile does not include tmux"          "! grep -qE '^brew \"tmux\"' $BREWFILE"
 check "alias hd"                                "grep -qE \"^alias hd='herdr'\" $ALIASES"
+check "TraeX uses transparent Herdr wrapper"    "grep -qE '^traex\\(\\)' $ALIASES && grep -q 'HERDR_AGENT=codex' $ALIASES"
+check "TraeX sidebar label stays distinct"      "grep -q -- '--display-agent TraeX' $ALIASES"
 check "no cmux alias"                           "! grep -qE \"^alias cm='cmux'\" $ALIASES"
 check "no tmux agent aliases"                   "! grep -qE \"^alias a[md]='agent\" $ALIASES"
 
