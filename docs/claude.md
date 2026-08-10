@@ -2,7 +2,7 @@
 
 > English · [中文](claude.zh.md)
 
-Cross-machine Claude Code config: **`~/.claude/settings.json` only.** Everything else under `~/.claude/` — sessions, auto-memory, plugin caches, session-env, logs, allowlists — is machine-local runtime state and **ignored on purpose** (see `.chezmoiignore`).
+Cross-machine Claude Code config: **`~/.claude/settings.json` plus curated custom themes.** Sessions, auto-memory, plugin caches, session-env, logs, and allowlists remain machine-local runtime state and are **ignored on purpose** (see `.chezmoiignore`).
 
 The per-plugin / per-MCP / per-skill deep-dive lives in [`claude-plugins.md`](claude-plugins.md); this doc is the settings spine.
 
@@ -11,6 +11,7 @@ The per-plugin / per-MCP / per-skill deep-dive lives in [`claude-plugins.md`](cl
 | Source (repo) | Target (`$HOME`) | Behavior |
 |---|---|---|
 | `dot_claude/settings.json` | `~/.claude/settings.json` | Plain copy. No template — every field is currently cross-machine. |
+| `dot_claude/themes/catppuccin-mocha.json` | `~/.claude/themes/catppuccin-mocha.json` | Catppuccin Mocha semantic colors for Claude's UI, modes, diffs, fullscreen surfaces, and subagents. |
 | _(excluded)_ | `~/.claude/settings.local.json` | Per-project permission allowlist; machine-specific paths only. |
 | _(excluded)_ | `~/.claude/sessions/` `projects/` `plans/` `cache/` `…` | Runtime only — see **Runtime exclusions** below. |
 
@@ -31,7 +32,7 @@ The second system is worth knowing about but *must not* enter the repo: `~/.clau
 
 ## Pinned fields
 
-`dot_claude/settings.json` holds six keys. All are cross-machine preferences — no `{{ if .is_work }}` branching needed today.
+`dot_claude/settings.json` holds the cross-machine preferences below — no `{{ if .is_work }}` branching needed today.
 
 | Field | Value | Why pinned |
 |---|---|---|
@@ -41,6 +42,7 @@ The second system is worth knowing about but *must not* enter the repo: `~/.clau
 | `statusLine` | `bash -c '... bun … claude-hud/src/index.ts'` | Picks highest-versioned claude-hud install, execs it via bun. Hardcoded `/opt/homebrew/bin/bun` is fine on Apple Silicon Macs (both of ours). |
 | `enabledPlugins` | 4 entries | `claude-hud` (status HUD) · `codex` (OpenAI Codex lifecycle hooks) · `andrej-karpathy-skills` (skill pack) · `chrome-devtools-mcp` (frontend debug over live Chrome). |
 | `extraKnownMarketplaces` | 4 GitHub sources | Registers the `github:owner/repo` marketplaces that satisfy `enabledPlugins`. Needed on a fresh Mac before Claude can resolve plugin IDs. |
+| `theme` | `"custom:catppuccin-mocha"` | Selects the tracked custom theme so Claude matches Ghostty, Neovim, Starship, Yazi, bat, and lazygit. |
 | `syntaxHighlightingDisabled` | `true` | Response highlighting has intermittent terminal-render bugs — killed it, prefer plain. |
 | `effortLevel` | `"xhigh"` | Claude's [extended-thinking budget](https://code.claude.com/docs/en/model-config#adjust-effort-level). Persisted automatically when you run `/effort`; pin it so new Macs don't default back to medium. |
 
@@ -361,18 +363,19 @@ claude --bare -p "Summarize this paper" --allowedTools "Read"
 bash tests/claude.sh
 ```
 
-~43 checks: binary presence (`claude`, `bun`, `npx`, `node`, `ccusage`), source + target JSON validity, every pinned field (4 enabled plugins + 4 marketplaces + statusLine + PreToolUse + syntax + effort), all `.chezmoiignore` runtime exclusions (incl. `dot_claude.json` defensive guard), plugin-cache populated for all 4 plugins, smoke for `claude --version` + `npx block-no-verify` resolution.
+~50 checks: binary presence (`claude`, `bun`, `npx`, `node`, `ccusage`), source + target settings/theme JSON validity, every pinned field (theme + 4 enabled plugins + 4 marketplaces + statusLine + PreToolUse + syntax + effort), canonical Catppuccin accents, all `.chezmoiignore` runtime exclusions (incl. `dot_claude.json` defensive guard), plugin-cache populated for all 4 plugins, smoke for `claude --version` + `npx block-no-verify` resolution.
 
 ### Manual
 
 - [ ] `claude --version` runs cleanly
 - [ ] `claude` launches interactively, statusLine renders (claude-hud bun output)
+- [ ] `/theme` shows `Catppuccin Mocha` selected; prompt border is mauve, plan mode is blue, and accept-edits mode is green
 - [ ] `/hooks` lists the PreToolUse Bash hook + all plugin hooks, zero "command not found" errors
 - [ ] `/status` shows `~/.claude/settings.json` as the source for `effortLevel: xhigh` and `syntaxHighlightingDisabled: true`
 - [ ] Attempting `git commit --no-verify` inside a Claude session is blocked by the PreToolUse hook
 - [ ] `/plugin list` shows `claude-hud`, `codex`, `andrej-karpathy-skills`, `chrome-devtools-mcp` all enabled
 - [ ] `ccusage daily` prints a usage table without errors (reads `~/.claude/projects/**/*.jsonl`)
-- [ ] On the **other** machine after `chezmoi apply`: the same six fields are present in `~/.claude/settings.json`
+- [ ] On the **other** machine after `chezmoi apply`: the settings and `~/.claude/themes/catppuccin-mocha.json` are present
 
 ## Troubleshooting
 

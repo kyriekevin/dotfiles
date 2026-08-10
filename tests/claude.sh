@@ -21,6 +21,8 @@ check() {
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$REPO_ROOT/dot_claude/settings.json"
 TGT="$HOME/.claude/settings.json"
+THEME_SRC="$REPO_ROOT/dot_claude/themes/catppuccin-mocha.json"
+THEME_TGT="$HOME/.claude/themes/catppuccin-mocha.json"
 IGN="$REPO_ROOT/.chezmoiignore"
 
 echo "── Binary ───────────────────────────────────────────"
@@ -34,11 +36,16 @@ echo
 echo "── Source file ──────────────────────────────────────"
 check "dot_claude/settings.json present"        "test -r $SRC"
 check "dot_claude/settings.json is valid JSON"  "python3 -c 'import json,sys; json.load(open(sys.argv[1]))' $SRC"
+check "Catppuccin theme present"                 "test -r $THEME_SRC"
+check "Catppuccin theme is valid JSON"           "python3 -c 'import json,sys; json.load(open(sys.argv[1]))' $THEME_SRC"
 
 echo
 echo "── Target file ──────────────────────────────────────"
 check "~/.claude/settings.json present"         "test -r $TGT"
 check "~/.claude/settings.json is valid JSON"   "python3 -c 'import json,sys; json.load(open(sys.argv[1]))' $TGT"
+check "~/.claude selects Catppuccin theme"       "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"theme\"]==\"custom:catppuccin-mocha\"' $TGT"
+check "~/.claude Catppuccin theme present"       "test -r $THEME_TGT"
+check "~/.claude Catppuccin theme is valid JSON" "python3 -c 'import json,sys; json.load(open(sys.argv[1]))' $THEME_TGT"
 
 echo
 echo "── Pinned settings fields (source-of-truth grep) ────"
@@ -59,6 +66,9 @@ check "claude-hud marketplace registered"       "python3 -c 'import json,sys; d=
 check "openai-codex marketplace registered"     "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"extraKnownMarketplaces\"][\"openai-codex\"][\"source\"][\"repo\"]==\"openai/codex-plugin-cc\"' $SRC"
 check "karpathy-skills marketplace registered"  "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"extraKnownMarketplaces\"][\"karpathy-skills\"][\"source\"][\"repo\"]==\"forrestchang/andrej-karpathy-skills\"' $SRC"
 check "claude-plugins-official registered"      "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"extraKnownMarketplaces\"][\"claude-plugins-official\"][\"source\"][\"repo\"]==\"anthropics/claude-plugins-official\"' $SRC"
+check "theme = custom:catppuccin-mocha"          "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"theme\"]==\"custom:catppuccin-mocha\"' $SRC"
+check "theme inherits dark preset"               "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"name\"]==\"Catppuccin Mocha\" and d[\"base\"]==\"dark\"' $THEME_SRC"
+check "theme uses canonical Mocha accents"       "python3 -c 'import json,sys; o=json.load(open(sys.argv[1]))[\"overrides\"]; assert o[\"claude\"]==\"#cba6f7\" and o[\"text\"]==\"#cdd6f4\" and o[\"success\"]==\"#a6e3a1\" and o[\"error\"]==\"#f38ba8\"' $THEME_SRC"
 check "syntaxHighlightingDisabled = true"       "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"syntaxHighlightingDisabled\"] is True' $SRC"
 check "effortLevel = xhigh"                     "python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); assert d[\"effortLevel\"]==\"xhigh\"' $SRC"
 
