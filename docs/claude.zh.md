@@ -2,7 +2,7 @@
 
 > [English](claude.md) · 中文
 
-跨机 Claude Code 配置：**只管 `~/.claude/settings.json` 一份。** `~/.claude/` 下其他内容 —— sessions、auto-memory、插件缓存、session-env、日志、allowlist —— 都是本机 runtime 状态，**故意排除**（见 `.chezmoiignore`）。
+跨机 Claude Code 配置：**管理 `~/.claude/settings.json` 和精选自定义主题。** sessions、auto-memory、插件缓存、session-env、日志、allowlist 仍是本机 runtime 状态，**故意排除**（见 `.chezmoiignore`）。
 
 每个 plugin / MCP / skill 的详细用法放在 [`claude-plugins.zh.md`](claude-plugins.zh.md)；本文件只管 settings 主干。
 
@@ -11,6 +11,7 @@
 | 源（repo） | 目标（`$HOME`） | 行为 |
 |---|---|---|
 | `dot_claude/settings.json` | `~/.claude/settings.json` | 普通拷贝。不用模板 —— 当前所有字段都跨机通用。 |
+| `dot_claude/themes/catppuccin-mocha.json` | `~/.claude/themes/catppuccin-mocha.json` | Claude UI、模式、diff、fullscreen 表面和 subagent 的 Catppuccin Mocha 语义色。 |
 | _（排除）_ | `~/.claude/settings.local.json` | 项目级 permission allowlist；全是本机特有路径。 |
 | _（排除）_ | `~/.claude/sessions/` `projects/` `plans/` `cache/` `…` | 纯运行时 —— 见下文 **Runtime 排除**。 |
 
@@ -31,7 +32,7 @@ Claude Code 有**两套**跨 session 的记忆机制。repo 里只 version 第�
 
 ## 固定字段
 
-`dot_claude/settings.json` 六个 key，全部跨机通用 —— 今天还不需要 `{{ if .is_work }}` 分支。
+`dot_claude/settings.json` 固定下列跨机通用偏好 —— 今天还不需要 `{{ if .is_work }}` 分支。
 
 | 字段 | 值 | 为什么 pin |
 |---|---|---|
@@ -41,6 +42,7 @@ Claude Code 有**两套**跨 session 的记忆机制。repo 里只 version 第�
 | `statusLine` | `bash -c '... bun … claude-hud/src/index.ts'` | 选最高版本的 claude-hud，用 bun 执行。硬编码 `/opt/homebrew/bin/bun` 在 Apple Silicon Mac 上没问题（咱两台都是）。 |
 | `enabledPlugins` | 4 项 | `claude-hud`（状态 HUD）· `codex`（OpenAI Codex 生命周期 hooks）· `andrej-karpathy-skills`（技能包）· `chrome-devtools-mcp`（对活 Chrome 做前端 debug）。 |
 | `extraKnownMarketplaces` | 4 个 GitHub 源 | 注册 `github:owner/repo` 类 marketplace，`enabledPlugins` 才能解析。新 Mac 首启必需。 |
+| `theme` | `"custom:catppuccin-mocha"` | 选择仓库内主题，让 Claude 与 Ghostty、Neovim、Starship、Yazi、bat 和 lazygit 保持一致。 |
 | `syntaxHighlightingDisabled` | `true` | 回复高亮在终端里偶发渲染 bug —— 关了，偏好纯文本。 |
 | `effortLevel` | `"xhigh"` | Claude 的[思考预算](https://code.claude.com/docs/en/model-config#adjust-effort-level)。跑 `/effort` 会自动持久化；pin 住防止新 Mac 回退成 medium。 |
 
@@ -361,18 +363,19 @@ claude --bare -p "总结这篇论文" --allowedTools "Read"
 bash tests/claude.sh
 ```
 
-~43 项：binary 存在（`claude`、`bun`、`npx`、`node`、`ccusage`），source + target JSON 合法性，每个 pin 的字段（4 个 enabledPlugins + 4 个 marketplaces + statusLine + PreToolUse + syntax + effort），所有 `.chezmoiignore` runtime 排除（含 `dot_claude.json` 防御守护），4 个插件的 cache 已填充，`claude --version` + `npx block-no-verify` 解析烟测。
+~50 项：binary 存在（`claude`、`bun`、`npx`、`node`、`ccusage`），source + target settings/theme JSON 合法性，每个 pin 的字段（theme + 4 个 enabledPlugins + 4 个 marketplaces + statusLine + PreToolUse + syntax + effort），Catppuccin 标准 accent，所有 `.chezmoiignore` runtime 排除（含 `dot_claude.json` 防御守护），4 个插件的 cache 已填充，`claude --version` + `npx block-no-verify` 解析烟测。
 
 ### 手动
 
 - [ ] `claude --version` 正常跑
 - [ ] `claude` 交互式启动，statusLine 渲染（claude-hud bun 输出）
+- [ ] `/theme` 显示已选择 `Catppuccin Mocha`；默认输入框为 mauve、plan mode 为蓝色、accept-edits mode 为绿色
 - [ ] `/hooks` 列出 PreToolUse Bash hook + 所有插件 hooks，没有"command not found"
 - [ ] `/status` 显示 `~/.claude/settings.json` 是 `effortLevel: xhigh` 和 `syntaxHighlightingDisabled: true` 的来源
 - [ ] 在 Claude session 里试 `git commit --no-verify`，被 PreToolUse hook 拦下
 - [ ] `/plugin list` 显示 `claude-hud`、`codex`、`andrej-karpathy-skills`、`chrome-devtools-mcp` 都启用
 - [ ] `ccusage daily` 能无报错打印用量表（读 `~/.claude/projects/**/*.jsonl`）
-- [ ] 在**另一台** Mac 上 `chezmoi apply` 后：`~/.claude/settings.json` 有同样字段
+- [ ] 在**另一台** Mac 上 `chezmoi apply` 后：settings 和 `~/.claude/themes/catppuccin-mocha.json` 均存在
 
 ## 排障
 

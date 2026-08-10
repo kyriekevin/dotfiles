@@ -62,6 +62,7 @@
       }
     }
   },
+  "theme": "custom:catppuccin-mocha",
   "syntaxHighlightingDisabled": true,
   "effortLevel": "xhigh"
 }
