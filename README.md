@@ -68,8 +68,12 @@ The full package list (shell / git / editor utilities + GUI casks) lives in [`Br
 ├── .chezmoiscripts/              → apply-time hooks (run_once_before_*, run_onchange_after_*)
 ├── Brewfile                      → brew bundle (triggered by a hook)
 ├── bootstrap.sh                  → new-Mac entrypoint
-├── docs/                         → operator runbooks (secrets, …)
-├── .github/                      → issue + PR templates
+├── Makefile                      → canonical local/CI verification entrypoint
+├── scripts/                      → deterministic repository checks
+├── tests/                        → live health checks for an applied Mac
+├── docs/                         → usage + maintenance runbooks
+├── .github/                      → CI workflow + issue/PR templates
+├── AGENTS.md                     → concise repository rules for coding agents
 ├── .chezmoi.toml.tmpl            → init prompts + age recipient
 ├── .chezmoiignore                → paths chezmoi must NOT manage
 ├── .pre-commit-config.yaml       → whitespace / gitleaks / conv-commits
@@ -114,7 +118,17 @@ Full runbook — bootstrap, add, rotate, gotchas — in [docs/secrets.md](docs/s
 
 ## 🧪 Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for commit/branch conventions and pre-commit setup.
+Changing the repository starts with the [maintenance workflow](docs/maintenance.md): it maps each
+change type to its source files, deterministic checks, apply step, and live verification. The short
+version is:
+
+```bash
+make verify
+chezmoi diff
+make health PACKAGE=<name>   # after applying on a real Mac
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for branch, commit, and pull-request conventions.
 
 ## 🔗 Related
 

@@ -49,8 +49,9 @@ issue 模板会预填对应 label —— `bug_report.yml` → `fix`、`feature_r
 
 ## Pull Request
 
-1. 从 `feat/<name>` 分支对 `main` 开 PR —— [PR 模板](.github/pull_request_template.md) 提供了 checklist
-2. 通过 **GitHub Web UI** 合并。**默认用 Squash** —— phase PR 通常带 3–5 个 atomic commits，它们的细颗粒度只在 review 阶段有用，合并后 squash 能让 `main` 的 log 保持可扫读。仅当 commits 来自多个作者、或单个 PR 确实跨越了多个独立 feature 且需要保留历史时，才使用 **Rebase**
+1. 从匹配类型的分支（`feat/`、`fix/`、`docs/` 或 `chore/`）对 `main` 开 PR；[PR 模板](.github/pull_request_template.md) 提供 checklist。
+2. 等待 GitHub Actions 的 `checks` job；它执行与本地完全相同的 `make verify`。
+3. 通过 **GitHub Web UI** 合并。**默认用 Squash** —— phase PR 通常带 3–5 个 atomic commits，它们的细颗粒度只在 review 阶段有用，合并后 squash 能让 `main` 的 log 保持可扫读。仅当 commits 来自多个作者、或单个 PR 确实跨越了多个独立 feature 且需要保留历史时，才使用 **Rebase**。
 
 ## Issues
 
@@ -60,6 +61,19 @@ issue 模板会预填对应 label —— `bug_report.yml` → `fix`、`feature_r
 - **Feature request**：新工具、新配置、新自动化
 
 空白 issue 已被禁用 —— 模板让 triage 更快。
+
+## 验证
+
+Source、apply 与真实环境健康检查的边界见[维护与修改流程](docs/maintenance.zh.md)。交付前所有变更
+必须通过：
+
+```bash
+make verify
+```
+
+这是干净 checkout 可运行的源码检查，也是 CI 唯一调用的命令。在真实 Mac apply 某个 package 后，
+再运行 `make health PACKAGE=<name>` 并完成对应文档里的手工 checklist。Live health 会检查 HOME 和
+本机工具，因此刻意不放进 CI。
 
 ## Pre-commit hooks
 
@@ -94,11 +108,13 @@ pre-commit install
 
 这一条命令会同时注册 `pre-commit` 和 `commit-msg` 两个 hook（配置里有 `default_install_hook_types: [pre-commit, commit-msg]`）。
 
-### 手动跑一遍
+### 直接运行 hooks
 
 ```bash
 pre-commit run --all-files
 ```
+
+日常应使用 `make verify`，它同时包含这些 hooks 和仓库专属检查。
 
 ### 升级 hook 版本
 

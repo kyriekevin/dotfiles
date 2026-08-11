@@ -49,8 +49,9 @@ Issue templates pre-fill the right label — `bug_report.yml` → `fix`, `featur
 
 ## Pull requests
 
-1. Open a PR against `main` from your `feat/<name>` branch — the [PR template](.github/pull_request_template.md) gives you the checklist
-2. Merge via the **GitHub web UI**. **Default is Squash** — phase PRs typically ship 3–5 atomic commits whose granularity was only useful during review, and squashing keeps `main`'s log scannable. Use **Rebase** only when commits come from multiple authors, or when one PR genuinely spans multiple independent features whose history should be preserved
+1. Open a PR against `main` from the matching typed branch (`feat/`, `fix/`, `docs/`, or `chore/`). The [PR template](.github/pull_request_template.md) gives you the checklist.
+2. Wait for the GitHub Actions `checks` job. It runs the same `make verify` command required locally.
+3. Merge via the **GitHub web UI**. **Default is Squash** — phase PRs typically ship 3–5 atomic commits whose granularity was only useful during review, and squashing keeps `main`'s log scannable. Use **Rebase** only when commits come from multiple authors, or when one PR genuinely spans multiple independent features whose history should be preserved.
 
 ## Issues
 
@@ -60,6 +61,19 @@ Use the provided templates:
 - **Feature request**: new tool, new config, new automation
 
 Blank issues are disabled — templates keep the triage fast.
+
+## Verification
+
+Follow the [maintenance workflow](docs/maintenance.md) for the source/apply/live-health split. Before
+hand-off, every change must pass:
+
+```bash
+make verify
+```
+
+This is a clean-checkout source check and the only command CI invokes. After applying a package on
+a real Mac, run `make health PACKAGE=<name>` and complete that package's manual checklist. Live
+health checks inspect HOME and installed tools, so they deliberately do not run in CI.
 
 ## Pre-commit hooks
 
@@ -94,11 +108,13 @@ pre-commit install
 
 That single command registers both the `pre-commit` and `commit-msg` hooks (the config sets `default_install_hook_types: [pre-commit, commit-msg]`).
 
-### Run the suite manually
+### Run hooks directly
 
 ```bash
 pre-commit run --all-files
 ```
+
+Normally use `make verify`, which includes these hooks and the repository-specific checks.
 
 ### Bump hook versions
 
