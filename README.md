@@ -1,7 +1,7 @@
 <h1 align="center">dotfiles</h1>
 
 <p align="center">
-  The environment loadout of the <strong>Nightglass Protocol</strong> —
+  The machine loadout of the <strong>Nightglass Protocol</strong> —
   a reproducible macOS terminal and development environment, managed with
   <a href="https://www.chezmoi.io">chezmoi</a>, Homebrew, and age.
 </p>

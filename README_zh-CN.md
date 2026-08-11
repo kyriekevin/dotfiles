@@ -1,7 +1,7 @@
 <h1 align="center">dotfiles</h1>
 
 <p align="center">
-  <strong>Nightglass Protocol</strong> 的环境配装 ——
+  <strong>Nightglass Protocol</strong> 的机器配装 ——
   一套可复现的 macOS 终端与开发环境，由
   <a href="https://www.chezmoi.io">chezmoi</a>、Homebrew 和 age 管理。
 </p>
