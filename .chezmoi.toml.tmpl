@@ -3,6 +3,7 @@
 {{- $isWork := promptBoolOnce   . "is_work"   "Is this the work Mac?" -}}
 
 encryption = "age"
+sourceDir = "~/.dotfiles"
 
 [data]
   git_email = {{ $email | quote }}
