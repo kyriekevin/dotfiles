@@ -71,9 +71,9 @@ Source、apply 与真实环境健康检查的边界见[维护与修改流程](do
 make verify
 ```
 
-这是干净 checkout 可运行的源码检查，也是 CI 唯一调用的命令。在真实 Mac apply 某个 package 后，
-再运行 `make health PACKAGE=<name>` 并完成对应文档里的手工 checklist。Live health 会检查 HOME 和
-本机工具，因此刻意不放进 CI。
+这是 CI 在干净 checkout 中使用的仓库验证命令；PR 事件还会单独检查 PR 标题。在真实 Mac apply
+某个 package 后，再运行 `make health PACKAGE=<name>` 并完成对应文档里的手工 checklist。Live
+health 会检查 HOME 和本机工具，因此刻意不放进 CI。
 
 ## Pre-commit hooks
 

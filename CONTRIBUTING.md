@@ -71,9 +71,10 @@ hand-off, every change must pass:
 make verify
 ```
 
-This is a clean-checkout source check and the only command CI invokes. After applying a package on
-a real Mac, run `make health PACKAGE=<name>` and complete that package's manual checklist. Live
-health checks inspect HOME and installed tools, so they deliberately do not run in CI.
+This is the clean-checkout repository verification command used by CI. Pull-request runs also check
+the PR title. After applying a package on a real Mac, run `make health PACKAGE=<name>` and complete
+that package's manual checklist. Live health checks inspect HOME and installed tools, so they
+deliberately do not run in CI.
 
 ## Pre-commit hooks
 

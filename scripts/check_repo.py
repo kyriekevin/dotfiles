@@ -73,7 +73,7 @@ def check_shell(files, errors):
         relative = path.relative_to(ROOT)
         if path.suffix == ".sh":
             run(["bash", "-n", str(relative)], str(relative), errors)
-        elif path.suffix == ".zsh":
+        elif path.suffix == ".zsh" or path.name in {"dot_zshenv", "dot_zshrc"}:
             run(["zsh", "-n", str(relative)], str(relative), errors)
 
 
