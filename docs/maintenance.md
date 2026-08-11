@@ -92,8 +92,8 @@ The filename defines both execution timing and rerun policy. Follow these rules:
 
 `.github/workflows/verify.yml` runs `make verify` for pull requests, pushes to `main`, and manual
 dispatches. It does not reconstruct a personal computer: secrets, GUIs, real keybindings, and
-long-lived caches remain outside CI. After the workflow lands, configure the `checks` job as a
-required status check on `main` and require pull requests.
+long-lived caches remain outside CI. Branch protection requires pull requests and a successful,
+up-to-date `checks` job before `main` can advance; the same rules apply to administrators.
 
 ## Rollback
 

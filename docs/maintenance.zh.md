@@ -93,8 +93,8 @@ make health PACKAGE=<package>
 ## CI 的边界
 
 `.github/workflows/verify.yml` 在 PR、`main` push 和手动触发时运行 `make verify`。它不尝试还原
-个人电脑：不会解密 secret、启动 GUI、验证真实按键或长期缓存。合并 workflow 后，应在 GitHub
-把 `checks` 配为 `main` 的 required status check，并要求通过 PR 合并。
+个人电脑：不会解密 secret、启动 GUI、验证真实按键或长期缓存。Branch protection 要求所有改动
+通过 PR，且基于最新 `main` 的 `checks` 成功后才能合并；管理员也遵循同一规则。
 
 ## 回滚
 
