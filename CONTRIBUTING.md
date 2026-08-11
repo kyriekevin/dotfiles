@@ -2,138 +2,76 @@
 
 > English · [中文](CONTRIBUTING.zh.md)
 
-This repo is a personal dotfiles scaffold, but it's intentionally reusable by teammates. These conventions keep the history readable and review cheap.
+This file defines the Git and pull-request contract. For source files, apply behavior, package
+checks, and rollback, use the [maintenance workflow](docs/maintenance.md).
 
-## Branches
-
-- `main` — always deployable; never commit directly
-- `feat/<name>` — new package or feature (e.g. `feat/zsh`, `feat/nvim`)
-- `fix/<name>` — bug fix
-- `chore/<name>` — meta work (CI, hooks, infrastructure, README polish)
-- `docs/<name>` — docs-only changes
-
-## Commits
-
-Follow [Conventional Commits](https://www.conventionalcommits.org):
-
-```
-<type>(<scope>?): <subject>
-```
-
-- **type**: `feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `perf`, `ci`, `build`, `style`
-- **scope** (optional): package name — `feat(zsh): …`, `fix(karabiner): …`
-- **subject**: imperative mood, lowercase start, no trailing period
-
-Body and footer are optional. Breaking changes go in the footer as `BREAKING CHANGE: ...`.
-
-Commit messages are validated by the `commit-msg` pre-commit hook — non-conforming messages are rejected locally.
-
-## Labels
-
-PRs and issues share one taxonomy that mirrors the Conventional Commit types:
-
-| Label | Use for |
-|---|---|
-| `feat` | new feature or capability |
-| `fix` | bug fix |
-| `chore` | tooling, deps, infrastructure |
-| `docs` | documentation only |
-| `refactor` | code change with no behavior change |
-| `test` | test additions or fixes |
-| `perf` | performance improvement |
-| `ci` | CI configuration |
-
-Every PR must carry **at least one** type label. Multi-type PRs can stack labels (e.g. `feat,docs`). `build` / `style` commits map to `chore`.
-
-Issue templates pre-fill the right label — `bug_report.yml` → `fix`, `feature_request.yml` → `feat` — so nothing needs a manual hand-off.
-
-## Pull requests
-
-1. Open a PR against `main` from the matching typed branch (`feat/`, `fix/`, `docs/`, or `chore/`). The [PR template](.github/pull_request_template.md) gives you the checklist.
-2. Wait for the GitHub Actions `checks` job. It runs the same `make verify` command required locally.
-3. Merge via the **GitHub web UI**. **Default is Squash** — phase PRs typically ship 3–5 atomic commits whose granularity was only useful during review, and squashing keeps `main`'s log scannable. Use **Rebase** only when commits come from multiple authors, or when one PR genuinely spans multiple independent features whose history should be preserved.
-
-## Issues
-
-Use the provided templates:
-
-- **Bug**: something in a config (zsh / nvim / karabiner / ...) is misbehaving
-- **Feature request**: new tool, new config, new automation
-
-Blank issues are disabled — templates keep the triage fast.
-
-## Verification
-
-Follow the [maintenance workflow](docs/maintenance.md) for the source/apply/live-health split. Before
-hand-off, every change must pass:
+## One-time setup
 
 ```bash
-make verify
-```
-
-This is the clean-checkout repository verification command used by CI. Pull-request runs also check
-the PR title. After applying a package on a real Mac, run `make health PACKAGE=<name>` and complete
-that package's manual checklist. Live health checks inspect HOME and installed tools, so they
-deliberately do not run in CI.
-
-## Pre-commit hooks
-
-### Install pre-commit (one-time, global)
-
-Preferred path — via [uv](https://github.com/astral-sh/uv) (consistent with the rest of the Python toolchain):
-
-```bash
-# Install uv itself if you don't have it
-brew install uv
-# …or the official installer (no Homebrew needed)
-# curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Install pre-commit as an isolated global tool
+brew install chezmoi gitleaks uv
 uv tool install pre-commit
-```
-
-Alternatives if you don't use uv:
-
-```bash
-brew install pre-commit     # Homebrew-managed
-# …or
-pipx install pre-commit     # classic pipx
-```
-
-### Register hooks for this repo (one-time per clone)
-
-```bash
-cd ~/.dotfiles
 pre-commit install
 ```
 
-That single command registers both the `pre-commit` and `commit-msg` hooks (the config sets `default_install_hook_types: [pre-commit, commit-msg]`).
+The repository config installs both `pre-commit` and `commit-msg` hooks. Run the full hand-off gate
+at any time with `make verify`.
 
-### Run hooks directly
+## Branches
 
-```bash
-pre-commit run --all-files
-```
+`main` is protected and must remain deployable. Create a focused typed branch:
 
-Normally use `make verify`, which includes these hooks and the repository-specific checks.
-
-### Bump hook versions
-
-```bash
-pre-commit autoupdate
-```
-
-### Current hooks
-
-| Hook | Purpose |
+| Prefix | Use |
 |---|---|
-| `trailing-whitespace`, `end-of-file-fixer`, `mixed-line-ending` | whitespace hygiene |
-| `check-added-large-files` | blocks accidental large binaries |
-| `check-json` / `check-toml` / `check-yaml` | syntax gates |
-| `check-merge-conflict` | catches stray conflict markers |
-| [`gitleaks`](https://github.com/gitleaks/gitleaks) | scans for committed secrets (age keys, tokens) |
-| [`conventional-pre-commit`](https://github.com/compilerla/conventional-pre-commit) | enforces Conventional Commits (commit-msg stage) |
+| `feat/<name>` | New package or behavior |
+| `fix/<name>` | Bug fix |
+| `docs/<name>` | Documentation only |
+| `chore/<name>` | CI, hooks, dependencies, or repository maintenance |
+
+Do not commit or push directly to `main`.
+
+## Commits and PR titles
+
+Use [Conventional Commits](https://www.conventionalcommits.org):
+
+```text
+<type>(<scope>?): <subject>
+```
+
+Allowed types are `feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `perf`, `ci`, `build`, and
+`style`. Prefer a package scope such as `zsh`, `nvim`, `karabiner`, `maintenance`, or `automation`.
+Use an imperative, lowercase subject without a trailing period.
+
+Local hooks validate commits; the `checks` job validates the PR title because squash merge uses it
+as the final commit subject.
+
+## Before opening a PR
+
+```bash
+make verify
+chezmoi --source="$PWD" diff
+make health PACKAGE=<name>   # after applying the affected package on a real Mac
+```
+
+Also complete the package guide's manual GUI or TTY checklist when relevant. Keep English and
+Chinese user-facing docs semantically aligned.
+
+## Pull-request flow
+
+1. Open a PR from the typed branch to `main` and complete the PR template.
+2. Wait for the required `checks` job and resolve review conversations.
+3. Use **Squash merge** by default. Use rebase only when preserving separate authors or independent
+   commits materially improves the history.
+4. After merge, update local `main`; delete the feature branch only after verifying the squash tree.
+
+Branch protection requires an up-to-date successful `checks` run and applies to administrators.
+Force-pushes and branch deletion are disabled on `main`.
+
+## Issues and labels
+
+Use the bug or feature-request template. Blank issues are disabled. Every PR should have at least
+one type label matching its primary Conventional Commit type; `build` and `style` map to `chore`.
 
 ## Secrets
 
-Never commit plaintext secrets — `.gitignore` + `gitleaks` enforce this. For the add/edit/rotate workflow and common gotchas, see [docs/secrets.md](docs/secrets.md).
+Never commit plaintext credentials or an age identity. Gitleaks and ignore rules are safety nets,
+not substitutes for review. Follow the [secrets runbook](docs/secrets.md) for additions and rotation.

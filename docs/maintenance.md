@@ -5,6 +5,20 @@
 This guide explains how to change the repository safely. Installation and everyday use belong in
 the root README; package behavior and manual verification belong in `docs/<package>.md`.
 
+## Document ownership
+
+Keep each fact in the narrowest useful place:
+
+| Document | Owns |
+|---|---|
+| `README.md` | Project orientation, install/update path, component map, and navigation |
+| `docs/maintenance.md` | Source/apply workflow, repository invariants, and rollback |
+| `CONTRIBUTING.md` | Branch, commit, review, and merge policy |
+| `docs/<package>.md` | Managed behavior, package changes, health checks, and troubleshooting |
+| `tests/README.md` | Contract for live checks on an applied Mac |
+
+Do not copy detailed package instructions back into the README. Link to the owning guide instead.
+
 ## Two verification layers
 
 | Layer | Entry point | What it checks | Used by CI |
@@ -41,8 +55,8 @@ git switch -c feat/<name>       # or fix/, docs/, chore/
 
 make verify
 
-chezmoi diff
-chezmoi apply ~/.config/<package>/...
+chezmoi --source="$PWD" diff
+chezmoi --source="$PWD" apply ~/.config/<package>/...
 
 make health PACKAGE=<package>
 ```
@@ -86,18 +100,20 @@ The filename defines both execution timing and rerun policy. Follow these rules:
 - If it depends on another source file such as `Brewfile`, embed that file's hash in the template.
 - Document whether it uses the network, installs software, or mutates system state; fail nonzero.
 - Do not write back into the repository or print machine identity or secrets.
-- Review `chezmoi diff`, then apply on a recoverable real Mac.
+- Review `chezmoi --source="$PWD" diff`, then apply on a recoverable real Mac.
 
 ## CI boundary
 
 `.github/workflows/verify.yml` runs `make verify` for pull requests, pushes to `main`, and manual
 dispatches. It does not reconstruct a personal computer: secrets, GUIs, real keybindings, and
-long-lived caches remain outside CI. After the workflow lands, configure the `checks` job as a
-required status check on `main` and require pull requests.
+long-lived caches remain outside CI. Branch protection requires pull requests and a successful,
+up-to-date `checks` job before `main` can advance; the same rules apply to administrators.
 
 ## Rollback
 
-- Before apply: fix the source, rerun `make verify`, and inspect `chezmoi diff`.
-- After apply: revert the source change, then apply only the affected target again.
+- Before apply: fix the source, rerun `make verify`, and inspect
+  `chezmoi --source="$PWD" diff`.
+- After apply: revert the source change, then apply only the affected target again with the explicit
+  source path.
 - After merge: use a revert pull request; do not rewrite shared history.
 - For secrets or age keys, follow `docs/secrets.md` and never delete the only usable identity.

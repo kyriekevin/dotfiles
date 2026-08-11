@@ -1,7 +1,8 @@
 <h1 align="center">dotfiles</h1>
 
 <p align="center">
-  <em>个人 macOS 配置，使用 <a href="https://www.chezmoi.io">chezmoi</a> + <a href="https://github.com/FiloSottile/age">age</a> 管理。</em>
+  一套可复现的 macOS 终端与开发环境，由
+  <a href="https://www.chezmoi.io">chezmoi</a>、Homebrew 和 age 管理。
 </p>
 
 <p align="center">
@@ -9,131 +10,95 @@
 </p>
 
 <p align="center">
-  <a href="LICENSE"><img alt="license" src="https://img.shields.io/github/license/kyriekevin/dotfiles?style=flat-square"></a>
-  <a href="https://www.chezmoi.io"><img alt="managed by chezmoi" src="https://img.shields.io/badge/managed%20by-chezmoi-5fafd7?style=flat-square&logo=homeassistantcommunitystore&logoColor=white"></a>
-  <a href="https://www.conventionalcommits.org"><img alt="conventional commits" src="https://img.shields.io/badge/commits-conventional-fe5196?style=flat-square&logo=conventionalcommits&logoColor=white"></a>
-  <a href="https://github.com/pre-commit/pre-commit"><img alt="pre-commit" src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?style=flat-square&logo=pre-commit&logoColor=white"></a>
+  <a href="https://github.com/kyriekevin/dotfiles/actions/workflows/verify.yml"><img alt="Verify" src="https://github.com/kyriekevin/dotfiles/actions/workflows/verify.yml/badge.svg"></a>
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/kyriekevin/dotfiles?style=flat-square"></a>
+  <a href="https://www.chezmoi.io"><img alt="Managed by chezmoi" src="https://img.shields.io/badge/managed%20by-chezmoi-5fafd7?style=flat-square"></a>
 </p>
 
----
+> [!IMPORTANT]
+> 这是个人配置，不是开箱即用的通用模板。新机安装需要匹配的 age identity；如果 fork，必须先
+> 替换 age recipient 并重新加密密文，再运行 bootstrap。
 
-## ✨ 快速开始
+## 管理什么
 
-全新 Mac 上：
+- 用一份 [`Brewfile`](Brewfile) 还原 CLI、字体和 GUI app。
+- 按机器渲染 Git 身份，敏感信息只以 age 密文进入 Git。
+- 统一管理 shell、终端、编辑器、文件导航、键位和 coding agent 配置。
+- 本地与 GitHub Actions 共用同一个确定性门禁：`make verify`。
+
+| 领域 | 主要组件 | 文档 |
+|---|---|---|
+| Shell 与提示符 | Zsh、zinit、Starship、Fastfetch | [Zsh](docs/zsh.zh.md) · [Starship](docs/starship.zh.md) · [Fastfetch](docs/fastfetch.zh.md) |
+| 终端工作流 | Ghostty、Herdr、Yazi | [Ghostty](docs/ghostty.zh.md) · [Agent 工作流](docs/agent-workflows.zh.md) · [Yazi](docs/yazi.zh.md) |
+| 编辑器与 Git | Neovim、Git、Lazygit、GitHub CLI | [Neovim](docs/nvim.zh.md) · [Git](docs/git.zh.md) |
+| 自动化 | Karabiner-Elements、Homebrew hooks | [Karabiner](docs/karabiner.zh.md) · [维护流程](docs/maintenance.zh.md) |
+| Coding agents | Claude Code 设置、plugins、MCP 边界 | [Claude Code](docs/claude.zh.md) · [扩展机制](docs/claude-plugins.zh.md) |
+
+## 配置一台新 Mac
+
+先把已有 age identity 放到新 Mac，再运行 bootstrap：
 
 ```bash
-# 1. 安装 Homebrew                   https://brew.sh
+mkdir -p ~/.config/chezmoi
+chmod 700 ~/.config/chezmoi
+cp /path/to/key.txt ~/.config/chezmoi/key.txt
+chmod 600 ~/.config/chezmoi/key.txt
 
-# 2. 放入 age 私钥                   （从已有 Mac 拷出）
-mkdir -p ~/.config/chezmoi && chmod 700 ~/.config/chezmoi
-cp /path/to/key.txt ~/.config/chezmoi/key.txt && chmod 600 ~/.config/chezmoi/key.txt
-
-# 3. Bootstrap
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/kyriekevin/dotfiles/main/bootstrap.sh)"
 ```
 
-首次运行时，`chezmoi init` 会询问：
+Bootstrap 会在缺失时安装 Homebrew 和核心工具，把仓库 clone 到 `~/.dotfiles`，然后执行
+`chezmoi init --apply`。首次运行只询问两个值：
 
-| 变量        | 用途                                             |
-| ----------- | ------------------------------------------------ |
-| `git_email` | 本机 `~/.gitconfig` 的主邮箱                     |
-| `is_work`   | 工作机为 `true`，个人机为 `false`                |
+| 值 | 含义 |
+|---|---|
+| `git_email` | 这台 Mac 使用的 Git 身份 |
+| `is_work` | 选择工作机或个人机配置 |
 
-## 🧰 工具栈
+密钥传输、轮换或 fork 的具体步骤见 [Secrets 手册](docs/secrets.zh.md)。
 
-repo 依赖的核心工具。
-
-| 工具 | 作用 | 安装 |
-| --- | --- | --- |
-| [Homebrew](https://brew.sh) | macOS 包管理器 | `bootstrap.sh`（非交互式） |
-| [chezmoi](https://www.chezmoi.io) | dotfiles 管理工具 | bootstrap → `brew install chezmoi` |
-| [age](https://github.com/FiloSottile/age) | 密文加密 | bootstrap → `brew install age` |
-| [gh](https://cli.github.com) | GitHub CLI（PR / review 流程必备） | bootstrap → `brew install gh` |
-| [Claude Code](https://claude.com/claude-code) | AI coding CLI | bootstrap → `curl -fsSL https://claude.ai/install.sh \| bash` |
-| [Ghostty](https://ghostty.org/) | 主终端 app | Brewfile → `brew install --cask ghostty`；见 [Ghostty](docs/ghostty.zh.md) |
-| [herdr](https://github.com/ogulcancelik/herdr) | 终端内多 agent workspace/pane 管理器 | Brewfile → `brew install herdr`；流程见 [Agent 工作流试验](docs/agent-workflows.zh.md) |
-| [Node.js](https://nodejs.org) | Claude Code 插件 `.mjs` hook 与 `npx` 守卫的运行时 | Brewfile → `brew install node` |
-| [uv](https://github.com/astral-sh/uv) | Python 工具运行器 | Brewfile → `brew install uv` |
-| [pre-commit](https://pre-commit.com) | Git hooks（空白符/密钥/conventional-commits） | `uv tool install pre-commit` —— 流程见 [CONTRIBUTING.zh.md](CONTRIBUTING.zh.md) |
-
-完整包清单（shell / git / editor 工具 + GUI cask）见 [`Brewfile`](Brewfile)。每次 Brewfile 变更，`chezmoi apply` 都会自动重跑 `brew bundle`。
-
-## 🗂 目录结构
-
-```text
-~/.dotfiles/
-├── dot_*                         → ~/.*            （真正的 dotfiles）
-├── encrypted_private_*.age       → chmod 0600，apply 时 age 解密
-├── *.tmpl                        → 用 chezmoi data 做 Go 模板渲染
-├── .chezmoiscripts/              → apply 时触发的 hook（run_once_before_*, run_onchange_after_*）
-├── Brewfile                      → brew bundle（由 hook 触发）
-├── bootstrap.sh                  → 新 Mac 的入口脚本
-├── Makefile                      → 本地与 CI 共用的唯一验证入口
-├── scripts/                      → 确定性的仓库源码检查
-├── tests/                        → apply 后在真实 Mac 上运行的健康检查
-├── docs/                         → 使用与维护手册
-├── .github/                      → CI workflow + issue / PR 模板
-├── AGENTS.md                     → 给 coding agent 的精简仓库约束
-├── .chezmoi.toml.tmpl            → init 交互提示 + age recipient
-├── .chezmoiignore                → chezmoi 不管理的路径
-├── .pre-commit-config.yaml       → 空白符 / gitleaks / conv-commits
-├── CONTRIBUTING.zh.md            → 分支 / commit 规范
-└── README.zh.md                  → 就是你正在看的
-```
-
-> [!NOTE]
-> 本 repo 位于 `~/.dotfiles`（不是 chezmoi 默认的 `~/.local/share/chezmoi`）。每个 `chezmoi` 命令都需要带 `--source=$HOME/.dotfiles`，或者在 `~/.config/chezmoi/chezmoi.toml` 设置 `sourceDir = "~/.dotfiles"`。
-
-## ⚙️ 脚本
-
-`chezmoi apply` 会执行 [`.chezmoiscripts/`](.chezmoiscripts) 下所有 `run_*` 文件。文件名本身是一份执行契约 —— 每一段都控制一个维度的行为：
-
-```text
-run_onchange_after_20-brew-bundle.sh.tmpl
-└─┬┘ └───┬──┘ └─┬─┘ └┬┘ └────┬────┘ └─┬┘ └─┬─┘
-  │     │      │    │       │       │    └─ .tmpl = 用 chezmoi data 渲染的 Go 模板
-  │     │      │    │       │       └──── .sh    = 解释器
-  │     │      │    │       └──────────── 可读名字
-  │     │      │    └──────────────────── 排序前缀（数字，升序）
-  │     │      └───────────────────────── before / after 相对 apply 写 dotfile
-  │     └──────────────────────────────── once（成功一次）/ onchange / always
-  └────────────────────────────────────── run_ 前缀 = 脚本，非 dotfile
-```
-
-`onchange` 脚本如果依赖**外部文件**（例如 `Brewfile`），要把外部文件的 hash 内嵌在脚本注释里 —— 外部一变，脚本自身内容 hash 跟着变，chezmoi 据此决定是否重跑。
-
-完整属性列表见 [chezmoi source-state attributes](https://www.chezmoi.io/reference/source-state-attributes/)。
-
-## 🔐 Secrets
-
-敏感信息以 [age](https://github.com/FiloSottile/age) **加密后**提交到 repo。带 `encrypted_` 前缀的文件在 `chezmoi apply` 时透明解密，使用 `~/.config/chezmoi/key.txt` 作为 age 身份（chmod 600，永不入库——由 `.gitignore` + `gitleaks` 双重强制）。
-
-无需手工步骤即可编辑加密密钥：
+## 更新已有 Mac
 
 ```bash
-chezmoi edit ~/.config/zsh/secrets.zsh
+cd ~/.dotfiles
+git pull --ff-only
+chezmoi --source="$PWD" diff
+chezmoi --source="$PWD" apply
 ```
 
-完整手册——新机 bootstrap、新增、轮换、陷阱——见 [docs/secrets.zh.md](docs/secrets.zh.md)。
+Apply 前先看 diff。`Brewfile` 变化会自动触发 `brew bundle`；其他 `run_once_*` 和
+`run_onchange_*` hooks 会收敛各工具的附加状态。
 
-## 🧪 贡献
+## 工作原理
 
-修改仓库从[维护与修改流程](docs/maintenance.zh.md)开始：其中按变更类型列出 source、确定性检查、
-apply 步骤和真实环境验证。最短流程是：
+```text
+Git source (~/.dotfiles)
+├── chezmoi 渲染 / 解密 ─────→ HOME 中的目标文件
+├── Brewfile 变化 ───────────→ brew bundle
+└── apply-time hooks ────────→ plugins 和附加状态
+```
+
+仓库刻意使用 `~/.dotfiles`，而不是 chezmoi 默认 source 目录。Config template 会为新安装固定该
+路径；上面的更新命令仍显式传入 source，以兼容修复前已经 init 的旧机器。
+
+## 从哪里开始
+
+| 我想要…… | 入口 |
+|---|---|
+| 安全修改配置 | [维护与修改流程](docs/maintenance.zh.md) |
+| 建分支或开 PR | [贡献指南](CONTRIBUTING.zh.md) |
+| 新增、编辑或轮换 secret | [Secrets 手册](docs/secrets.zh.md) |
+| 排查某个工具 | 上方组件表里的对应文档 |
+| 检查 apply 后的真实环境 | `make health PACKAGE=zsh` 与 [live health 说明](tests/README.md) |
+
+仓库改动的最短交付闭环是：
 
 ```bash
 make verify
-chezmoi diff
-make health PACKAGE=<name>   # 在真实 Mac apply 后运行
+chezmoi --source="$PWD" diff
+make health PACKAGE=zsh   # 把 zsh 换成受影响的 package
 ```
 
-分支、commit 与 PR 规范见 [CONTRIBUTING.zh.md](CONTRIBUTING.zh.md)。
+## License
 
-## 🔗 相关
-
-- [nousresearch/hermes-agent](https://github.com/nousresearch/hermes-agent) —— 开源 agent 框架
-- _（未来）_ 自研的 Claude Code agents / skills —— 拆出到独立 repo
-
-## 📄 License
-
-MIT —— 见 [LICENSE](LICENSE)。
+MIT，见 [LICENSE](LICENSE)。
