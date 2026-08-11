@@ -25,14 +25,16 @@ e.g. `feat(zsh): add zinit turbo plugin loader`
 <!-- Tick what applies; skip what doesn't. / 勾选适用项；不适用的跳过。 -->
 
 - [ ] Commit messages follow Conventional Commits · Commit 信息符合 Conventional Commits
-- [ ] `pre-commit run --all-files` passes locally · 本地跑过 `pre-commit run --all-files` 且全绿
+- [ ] `make verify` passes locally · 本地 `make verify` 全绿
 - [ ] `chezmoi diff` reviewed; no surprising deletions or permission changes · 已 review `chezmoi diff`，没有意外的删除或权限变化
+- [ ] English and Chinese docs stay semantically aligned · 中英文文档保持语义一致
 
 If relevant to this PR / 与本 PR 相关时：
 
 - [ ] New package → entry added to the `Layout` section of `README.md` · 新包已加入 `README.md` 的 `Layout` 小节
 - [ ] New CLI tool → added to `Brewfile` · 新 CLI 工具已加入 `Brewfile`
-- [ ] Smoke-tested end-to-end on at least one Mac · 在至少一台 Mac 上做过端到端冒烟
+- [ ] Applied only the intended targets and ran `make health PACKAGE=<name>` · 只 apply 预期目标，并运行了对应 package 的 live health
+- [ ] Completed the package's manual GUI / TTY checklist · 完成了对应 package 的 GUI / TTY 手工检查
 
 ## Notes for reviewer / 给 reviewer 的说明
 

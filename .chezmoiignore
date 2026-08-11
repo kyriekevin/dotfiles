@@ -8,6 +8,9 @@ Brewfile
 .gitignore
 .pre-commit-config.yaml
 .github
+AGENTS.md
+Makefile
+scripts
 docs
 tests
 

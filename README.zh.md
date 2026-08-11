@@ -68,8 +68,12 @@ repo 依赖的核心工具。
 ├── .chezmoiscripts/              → apply 时触发的 hook（run_once_before_*, run_onchange_after_*）
 ├── Brewfile                      → brew bundle（由 hook 触发）
 ├── bootstrap.sh                  → 新 Mac 的入口脚本
-├── docs/                         → 运维手册（secrets 等）
-├── .github/                      → issue + PR 模板
+├── Makefile                      → 本地与 CI 共用的唯一验证入口
+├── scripts/                      → 确定性的仓库源码检查
+├── tests/                        → apply 后在真实 Mac 上运行的健康检查
+├── docs/                         → 使用与维护手册
+├── .github/                      → CI workflow + issue / PR 模板
+├── AGENTS.md                     → 给 coding agent 的精简仓库约束
 ├── .chezmoi.toml.tmpl            → init 交互提示 + age recipient
 ├── .chezmoiignore                → chezmoi 不管理的路径
 ├── .pre-commit-config.yaml       → 空白符 / gitleaks / conv-commits
@@ -114,7 +118,16 @@ chezmoi edit ~/.config/zsh/secrets.zsh
 
 ## 🧪 贡献
 
-commit / 分支规范与 pre-commit 安装见 [CONTRIBUTING.zh.md](CONTRIBUTING.zh.md)。
+修改仓库从[维护与修改流程](docs/maintenance.zh.md)开始：其中按变更类型列出 source、确定性检查、
+apply 步骤和真实环境验证。最短流程是：
+
+```bash
+make verify
+chezmoi diff
+make health PACKAGE=<name>   # 在真实 Mac apply 后运行
+```
+
+分支、commit 与 PR 规范见 [CONTRIBUTING.zh.md](CONTRIBUTING.zh.md)。
 
 ## 🔗 相关
 
