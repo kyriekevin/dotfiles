@@ -91,7 +91,7 @@ AI Chat 是高频命令。走 `ctrl+r space`（两次按键）会增加用户不
 Raycast 的 Window Management 扩展要求**目标 app 处于焦点状态**——不是 Raycast 自己。`open raycast://...`（无 `-g`）会短暂聚焦 Raycast，扩展看到的 frontmost 是 Raycast 本身，resize 就打到错误的窗口上。`open -g` 在"后台"打开 URL 不激活 Raycast，原焦点 app 保持焦点被正确 resize。
 
 ### 和 Ghostty / Herdr 前缀共存
-Ghostty 不再定义终端层 chord 前缀；Herdr 在 pane 内使用 `ctrl+b`（见 `docs/agent-workflows.zh.md`）。Karabiner sublayer 用 `ctrl+w / ctrl+r / ctrl+x`，所以不冲突：Herdr 聚焦时 `ctrl+b` 是 Herdr 本地前缀；`ctrl+w` 仍然是全局 Karabiner 窗口层。
+Ghostty 不再定义终端层 chord 前缀；Herdr 在 pane 内使用 `ctrl+b`（见 `docs/agent-workflows_zh-CN.md`）。Karabiner sublayer 用 `ctrl+w / ctrl+r / ctrl+x`，所以不冲突：Herdr 聚焦时 `ctrl+b` 是 Herdr 本地前缀；`ctrl+w` 仍然是全局 Karabiner 窗口层。
 
 ### 和 Raycast Hyper Key 的共存
 Raycast 的 Hyper Key 功能把左 option 映射成 `cmd+ctrl+opt+shift`。我们保留启用，好让用户历史上的 `hyper+space` 绑定继续给 AI Chat 用。代价：**左 option 被 Raycast 吃掉，打不出 option 修饰的字符**。右 option 不受影响。
@@ -207,5 +207,5 @@ chezmoi apply
 
 # 5. 验证
 bash ~/.dotfiles/tests/karabiner.sh        # 静态：37 项检查
-# 之后走 docs/karabiner.zh.md → 健康检查 → Manual
+# 之后走 docs/karabiner_zh-CN.md → 健康检查 → Manual
 ```

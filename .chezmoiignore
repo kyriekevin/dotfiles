@@ -1,8 +1,8 @@
 README.md
-README.zh.md
+README_zh-CN.md
 LICENSE
 CONTRIBUTING.md
-CONTRIBUTING.zh.md
+CONTRIBUTING_zh-CN.md
 bootstrap.sh
 Brewfile
 .gitignore

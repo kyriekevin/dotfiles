@@ -1,12 +1,13 @@
 <h1 align="center">dotfiles</h1>
 
 <p align="center">
+  <strong>Nightglass Protocol</strong> 的环境配装 ——
   一套可复现的 macOS 终端与开发环境，由
   <a href="https://www.chezmoi.io">chezmoi</a>、Homebrew 和 age 管理。
 </p>
 
 <p align="center">
-  <a href="README.md">English</a> · 中文
+  <a href="README.md">English</a> · 简体中文
 </p>
 
 <p align="center">
@@ -28,11 +29,11 @@
 
 | 领域 | 主要组件 | 文档 |
 |---|---|---|
-| Shell 与提示符 | Zsh、zinit、Starship、Fastfetch | [Zsh](docs/zsh.zh.md) · [Starship](docs/starship.zh.md) · [Fastfetch](docs/fastfetch.zh.md) |
-| 终端工作流 | Ghostty、Herdr、Yazi | [Ghostty](docs/ghostty.zh.md) · [Agent 工作流](docs/agent-workflows.zh.md) · [Yazi](docs/yazi.zh.md) |
-| 编辑器与 Git | Neovim、Git、Lazygit、GitHub CLI | [Neovim](docs/nvim.zh.md) · [Git](docs/git.zh.md) |
-| 自动化 | Karabiner-Elements、Homebrew hooks | [Karabiner](docs/karabiner.zh.md) · [维护流程](docs/maintenance.zh.md) |
-| Coding agents | Claude Code 设置、plugins、MCP 边界 | [Claude Code](docs/claude.zh.md) · [扩展机制](docs/claude-plugins.zh.md) |
+| Shell 与提示符 | Zsh、zinit、Starship、Fastfetch | [Zsh](docs/zsh_zh-CN.md) · [Starship](docs/starship_zh-CN.md) · [Fastfetch](docs/fastfetch_zh-CN.md) |
+| 终端工作流 | Ghostty、Herdr、Yazi | [Ghostty](docs/ghostty_zh-CN.md) · [Agent 工作流](docs/agent-workflows_zh-CN.md) · [Yazi](docs/yazi_zh-CN.md) |
+| 编辑器与 Git | Neovim、Git、Lazygit、GitHub CLI | [Neovim](docs/nvim_zh-CN.md) · [Git](docs/git_zh-CN.md) |
+| 自动化 | Karabiner-Elements、Homebrew hooks | [Karabiner](docs/karabiner_zh-CN.md) · [维护流程](docs/maintenance_zh-CN.md) |
+| Coding agents | Claude Code 设置、plugins、MCP 边界 | [Claude Code](docs/claude_zh-CN.md) · [扩展机制](docs/claude-plugins_zh-CN.md) |
 
 ## 配置一台新 Mac
 
@@ -55,7 +56,7 @@ Bootstrap 会在缺失时安装 Homebrew 和核心工具，把仓库 clone 到 `
 | `git_email` | 这台 Mac 使用的 Git 身份 |
 | `is_work` | 选择工作机或个人机配置 |
 
-密钥传输、轮换或 fork 的具体步骤见 [Secrets 手册](docs/secrets.zh.md)。
+密钥传输、轮换或 fork 的具体步骤见 [Secrets 手册](docs/secrets_zh-CN.md)。
 
 ## 更新已有 Mac
 
@@ -81,13 +82,13 @@ Git source (~/.dotfiles)
 仓库刻意使用 `~/.dotfiles`，而不是 chezmoi 默认 source 目录。Config template 会为新安装固定该
 路径；上面的更新命令仍显式传入 source，以兼容修复前已经 init 的旧机器。
 
-## 从哪里开始
+## 文档导航
 
 | 我想要…… | 入口 |
 |---|---|
-| 安全修改配置 | [维护与修改流程](docs/maintenance.zh.md) |
-| 建分支或开 PR | [贡献指南](CONTRIBUTING.zh.md) |
-| 新增、编辑或轮换 secret | [Secrets 手册](docs/secrets.zh.md) |
+| 安全修改配置 | [维护与修改流程](docs/maintenance_zh-CN.md) |
+| 建分支或开 PR | [贡献指南](CONTRIBUTING_zh-CN.md) |
+| 新增、编辑或轮换 secret | [Secrets 手册](docs/secrets_zh-CN.md) |
 | 排查某个工具 | 上方组件表里的对应文档 |
 | 检查 apply 后的真实环境 | `make health PACKAGE=zsh` 与 [live health 说明](tests/README.md) |
 

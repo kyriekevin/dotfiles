@@ -1,6 +1,6 @@
 # Maintenance and change workflow
 
-> English · [中文](maintenance.zh.md)
+> English · [中文](maintenance_zh-CN.md)
 
 This guide explains how to change the repository safely. Installation and everyday use belong in
 the root README; package behavior and manual verification belong in `docs/<package>.md`.
@@ -84,7 +84,7 @@ A new package with runtime behavior normally includes:
 
 1. Chezmoi source configuration.
 2. A `Brewfile` declaration when a binary is required.
-3. `docs/<package>.md` and `docs/<package>.zh.md`.
+3. `docs/<package>.md` and `docs/<package>_zh-CN.md`.
 4. `tests/<package>.sh` when behavior can be checked reliably; GUI and TTY behavior stays in the
    documentation's manual checklist.
 5. An entry in the README tool stack or layout when it is a user-visible component.

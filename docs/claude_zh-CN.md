@@ -4,7 +4,7 @@
 
 跨机 Claude Code 配置：**管理 `~/.claude/settings.json` 和精选自定义主题。** sessions、auto-memory、插件缓存、session-env、日志、allowlist 仍是本机 runtime 状态，**故意排除**（见 `.chezmoiignore`）。
 
-每个 plugin / MCP / skill 的详细用法放在 [`claude-plugins.zh.md`](claude-plugins.zh.md)；本文件只管 settings 主干。
+每个 plugin / MCP / skill 的详细用法放在 [`claude-plugins_zh-CN.md`](claude-plugins_zh-CN.md)；本文件只管 settings 主干。
 
 ## 运作方式
 
@@ -98,7 +98,7 @@ Claude Code 支持 lifecycle events × handler 类型（`command` / `http` / `pr
 
 `enabledPlugins` + `extraKnownMarketplaces` 是**声明**，不是 vendor。`~/.claude/plugins/` 空的情况下，Claude 会在下次启动重新拉取。
 
-当前声明的四个插件 —— 每个插件的命令 / skills / 使用详见 [`claude-plugins.zh.md`](claude-plugins.zh.md)：
+当前声明的四个插件 —— 每个插件的命令 / skills / 使用详见 [`claude-plugins_zh-CN.md`](claude-plugins_zh-CN.md)：
 
 | 插件 | 提供 | Namespace |
 |---|---|---|
@@ -425,7 +425,7 @@ rm -rf ~/.claude/projects/<proj>/memory
 
 ## 相关
 
-- [`claude-plugins.zh.md`](claude-plugins.zh.md) —— 每个 plugin / MCP / skill 的用法、bundled-skill 参考、如何加自定义 skill/agent、公司内外扩展如何划分
+- [`claude-plugins_zh-CN.md`](claude-plugins_zh-CN.md) —— 每个 plugin / MCP / skill 的用法、bundled-skill 参考、如何加自定义 skill/agent、公司内外扩展如何划分
 - [`Brewfile`](../Brewfile) —— `node` + `ccusage` 在那声明；内联注释讲为什么
 - [Claude Code settings 参考](https://code.claude.com/docs/en/settings)
 - [Claude Code hooks 参考](https://code.claude.com/docs/en/hooks)

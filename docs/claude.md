@@ -1,6 +1,6 @@
 # Claude Code
 
-> English · [中文](claude.zh.md)
+> English · [中文](claude_zh-CN.md)
 
 Cross-machine Claude Code config: **`~/.claude/settings.json` plus curated custom themes.** Sessions, auto-memory, plugin caches, session-env, logs, and allowlists remain machine-local runtime state and are **ignored on purpose** (see `.chezmoiignore`).
 

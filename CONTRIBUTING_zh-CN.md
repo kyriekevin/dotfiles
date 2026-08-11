@@ -3,7 +3,7 @@
 > [English](CONTRIBUTING.md) · 中文
 
 这份文件只定义 Git 与 PR 协作契约。Source 位置、apply 行为、package 检查和回滚方式见
-[维护与修改流程](docs/maintenance.zh.md)。
+[维护与修改流程](docs/maintenance_zh-CN.md)。
 
 ## 一次性设置
 
@@ -73,4 +73,4 @@ Commit type 对应的 label；`build` 和 `style` 统一归入 `chore`。
 ## Secrets
 
 永远不要提交明文凭据或 age identity。Gitleaks 和 ignore 只是保险绳，不能代替 review。新增或轮换
-按 [Secrets 手册](docs/secrets.zh.md)操作。
+按 [Secrets 手册](docs/secrets_zh-CN.md)操作。

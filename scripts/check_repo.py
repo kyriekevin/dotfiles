@@ -18,11 +18,11 @@ REPOSITORY_ONLY = {
     "AGENTS.md",
     "Brewfile",
     "CONTRIBUTING.md",
-    "CONTRIBUTING.zh.md",
+    "CONTRIBUTING_zh-CN.md",
     "LICENSE",
     "Makefile",
     "README.md",
-    "README.zh.md",
+    "README_zh-CN.md",
     "bootstrap.sh",
     "docs",
     "scripts",
@@ -142,10 +142,10 @@ def check_templates(files, errors):
 def check_bilingual_docs(errors):
     docs = ROOT / "docs"
     for path in docs.glob("*.md"):
-        if path.name.endswith(".zh.md"):
-            partner = path.with_name(path.name.removesuffix(".zh.md") + ".md")
+        if path.name.endswith("_zh-CN.md"):
+            partner = path.with_name(path.name.removesuffix("_zh-CN.md") + ".md")
         else:
-            partner = path.with_name(path.stem + ".zh.md")
+            partner = path.with_name(path.stem + "_zh-CN.md")
         if not partner.exists():
             errors.append(f"{path.relative_to(ROOT)}: missing bilingual partner {partner.name}")
 

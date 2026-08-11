@@ -1,6 +1,6 @@
 # Zsh runbook
 
-> English · [中文](zsh.zh.md)
+> English · [中文](zsh_zh-CN.md)
 
 zsh + zinit Turbo. Goals: fast startup (~70-100ms critical path once plugins are cached), predictable load order, and a module split where each file has exactly one job. This doc is the operator's manual — extend, debug, rebuild.
 

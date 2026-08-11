@@ -1,6 +1,6 @@
 # Fastfetch
 
-> English · [中文](fastfetch.zh.md)
+> English · [中文](fastfetch_zh-CN.md)
 
 System-info tool with an Apple-logo banner. Bound to `s` (the single-letter `$EDITOR`-adjacent alias in `aliases.zsh`) — run it in any fresh shell to see machine/VM/dev-tool state at a glance. Config is a single JSONC file; one tiny Bash helper renders the lume subtree.
 

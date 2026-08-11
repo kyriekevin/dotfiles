@@ -2,7 +2,7 @@
 
 > [English](claude-plugins.md) · 中文
 
-本文件是每个扩展的详细参考。配置总览（pin 什么、为什么、chezmoi 怎么渲染）在 [`claude.zh.md`](claude.zh.md)；这里回答 *"每一块具体干什么，什么时候用"*。
+本文件是每个扩展的详细参考。配置总览（pin 什么、为什么、chezmoi 怎么渲染）在 [`claude_zh-CN.md`](claude_zh-CN.md)；这里回答 *"每一块具体干什么，什么时候用"*。
 
 范围：**跨机、可公开发布的扩展。** 任何带 token / 内网 URL / 工作机专用凭据的东西都按 per-user 放 `~/.claude.json`（已故意 `.chezmoiignore`），不在这里。
 
@@ -192,7 +192,7 @@ argument-hint: [config-file]
 
 ## Subagents & commands —— 指路
 
-两个机制都在 [`claude.zh.md`](claude.zh.md) 的"高效使用 Claude Code"里写了 —— `/agents`、自定义 subagent 模板、内置 Explore / Plan / general-purpose、Agent Teams。commands 声明方式类似（Markdown + YAML frontmatter 放 `~/.claude/commands/<name>.md`，或打包在 plugin 的 `commands/` 目录）。
+两个机制都在 [`claude_zh-CN.md`](claude_zh-CN.md) 的"高效使用 Claude Code"里写了 —— `/agents`、自定义 subagent 模板、内置 Explore / Plan / general-purpose、Agent Teams。commands 声明方式类似（Markdown + YAML frontmatter 放 `~/.claude/commands/<name>.md`，或打包在 plugin 的 `commands/` 目录）。
 
 `dot_claude/agents/**` 和 `dot_claude/commands/**` 都在 `.chezmoiignore` 防御性 ignore —— 有值得 version 的内容时先删 ignore 条目再 opt in。
 
@@ -239,7 +239,7 @@ rm -rf ~/.claude/plugins
 
 ## 相关
 
-- [`claude.zh.md`](claude.zh.md) —— settings / hooks / 权限模式 / 快捷键 / 研究员 playbook
+- [`claude_zh-CN.md`](claude_zh-CN.md) —— settings / hooks / 权限模式 / 快捷键 / 研究员 playbook
 - [`Brewfile`](../Brewfile) —— `ccusage`、`node` 在那声明，带理由
 - [Claude Code plugin 参考](https://code.claude.com/docs/en/plugins)
 - [Claude Code MCP 参考](https://code.claude.com/docs/en/mcp)
