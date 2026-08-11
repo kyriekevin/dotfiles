@@ -2,137 +2,75 @@
 
 > [English](CONTRIBUTING.md) · 中文
 
-本 repo 是个人 dotfiles 脚手架，但从设计上就打算让同事也能复用。下面这些约定让 git 历史保持可读、让 review 更轻。
+这份文件只定义 Git 与 PR 协作契约。Source 位置、apply 行为、package 检查和回滚方式见
+[维护与修改流程](docs/maintenance.zh.md)。
 
-## 分支
-
-- `main` —— 永远可部署；不要直接 commit
-- `feat/<name>` —— 新包 / 新功能（如 `feat/zsh`、`feat/nvim`）
-- `fix/<name>` —— bug 修复
-- `chore/<name>` —— 杂活（CI、hooks、基础设施、README 润色）
-- `docs/<name>` —— 纯文档变更
-
-## Commits
-
-遵循 [Conventional Commits](https://www.conventionalcommits.org)：
-
-```
-<type>(<scope>?): <subject>
-```
-
-- **type**：`feat`、`fix`、`chore`、`docs`、`refactor`、`test`、`perf`、`ci`、`build`、`style`
-- **scope**（可选）：包名 —— `feat(zsh): …`、`fix(karabiner): …`
-- **subject**：祈使句、小写开头、无结尾句号
-
-body 和 footer 可选。Breaking change 写在 footer：`BREAKING CHANGE: ...`。
-
-commit 信息由 `commit-msg` pre-commit hook 校验 —— 不符合规范的消息会在本地被拒绝。
-
-## Labels
-
-PR 和 issue 共用一套 label，与 Conventional Commit 类型一一对应：
-
-| Label | 适用场景 |
-|---|---|
-| `feat` | 新功能 |
-| `fix` | bug 修复 |
-| `chore` | 工具、依赖、基础设施 |
-| `docs` | 纯文档 |
-| `refactor` | 纯重构（无行为变化） |
-| `test` | 测试相关 |
-| `perf` | 性能优化 |
-| `ci` | CI 配置 |
-
-每个 PR 必须至少带 **一个** type label；真正跨类型的 PR 可叠加多个（如 `feat,docs`）。`build` / `style` commit 统一归到 `chore`。
-
-issue 模板会预填对应 label —— `bug_report.yml` → `fix`、`feature_request.yml` → `feat` —— 其他入口不用手动再打 label。
-
-## Pull Request
-
-1. 从匹配类型的分支（`feat/`、`fix/`、`docs/` 或 `chore/`）对 `main` 开 PR；[PR 模板](.github/pull_request_template.md) 提供 checklist。
-2. 等待 GitHub Actions 的 `checks` job；它执行与本地完全相同的 `make verify`。
-3. 通过 **GitHub Web UI** 合并。**默认用 Squash** —— phase PR 通常带 3–5 个 atomic commits，它们的细颗粒度只在 review 阶段有用，合并后 squash 能让 `main` 的 log 保持可扫读。仅当 commits 来自多个作者、或单个 PR 确实跨越了多个独立 feature 且需要保留历史时，才使用 **Rebase**。
-
-## Issues
-
-使用提供的模板：
-
-- **Bug**：某份配置（zsh / nvim / karabiner / ...）行为异常
-- **Feature request**：新工具、新配置、新自动化
-
-空白 issue 已被禁用 —— 模板让 triage 更快。
-
-## 验证
-
-Source、apply 与真实环境健康检查的边界见[维护与修改流程](docs/maintenance.zh.md)。交付前所有变更
-必须通过：
+## 一次性设置
 
 ```bash
-make verify
-```
-
-这是 CI 在干净 checkout 中使用的仓库验证命令；PR 事件还会单独检查 PR 标题。在真实 Mac apply
-某个 package 后，再运行 `make health PACKAGE=<name>` 并完成对应文档里的手工 checklist。Live
-health 会检查 HOME 和本机工具，因此刻意不放进 CI。
-
-## Pre-commit hooks
-
-### 安装 pre-commit（一次性、全局）
-
-推荐路径 —— 通过 [uv](https://github.com/astral-sh/uv)（与其他 Python 工具链一致）：
-
-```bash
-# 如果还没装 uv
-brew install uv
-# …或用官方安装脚本（不依赖 Homebrew）
-# curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# 把 pre-commit 作为隔离的全局工具安装
+brew install chezmoi gitleaks uv
 uv tool install pre-commit
-```
-
-不想用 uv 的备选：
-
-```bash
-brew install pre-commit     # Homebrew 管理
-# …或
-pipx install pre-commit     # 经典 pipx
-```
-
-### 为本 repo 注册 hooks（每次 clone 一次）
-
-```bash
-cd ~/.dotfiles
 pre-commit install
 ```
 
-这一条命令会同时注册 `pre-commit` 和 `commit-msg` 两个 hook（配置里有 `default_install_hook_types: [pre-commit, commit-msg]`）。
+仓库配置会同时安装 `pre-commit` 和 `commit-msg` hooks。任何时候都可以用 `make verify` 执行完整
+交付门禁。
 
-### 直接运行 hooks
+## 分支
 
-```bash
-pre-commit run --all-files
-```
+`main` 受保护并且必须始终可部署。每次改动建立一个聚焦的类型分支：
 
-日常应使用 `make verify`，它同时包含这些 hooks 和仓库专属检查。
-
-### 升级 hook 版本
-
-```bash
-pre-commit autoupdate
-```
-
-### 当前启用的 hooks
-
-| Hook | 作用 |
+| 前缀 | 用途 |
 |---|---|
-| `trailing-whitespace`、`end-of-file-fixer`、`mixed-line-ending` | 空白符卫生 |
-| `check-added-large-files` | 拦截意外的大二进制 |
-| `check-json` / `check-toml` / `check-yaml` | 语法检查 |
-| `check-merge-conflict` | 捕捉残留的 conflict 标记 |
-| [`gitleaks`](https://github.com/gitleaks/gitleaks) | 扫描已提交的密钥（age key、token） |
-| [`conventional-pre-commit`](https://github.com/compilerla/conventional-pre-commit) | 在 commit-msg 阶段强制 Conventional Commits |
+| `feat/<name>` | 新 package 或新行为 |
+| `fix/<name>` | Bug 修复 |
+| `docs/<name>` | 纯文档修改 |
+| `chore/<name>` | CI、hooks、依赖或仓库维护 |
+
+不要直接 commit 或 push `main`。
+
+## Commits 与 PR 标题
+
+遵循 [Conventional Commits](https://www.conventionalcommits.org)：
+
+```text
+<type>(<scope>?): <subject>
+```
+
+允许的 type：`feat`、`fix`、`chore`、`docs`、`refactor`、`test`、`perf`、`ci`、`build`、
+`style`。Scope 优先使用 package 名，例如 `zsh`、`nvim`、`karabiner`、`maintenance` 或
+`automation`。Subject 使用祈使语气、小写开头，不加结尾句号。
+
+本地 hooks 校验 commits；`checks` job 另外校验 PR 标题，因为 squash merge 会把它作为最终 commit
+subject。
+
+## 开 PR 前
+
+```bash
+make verify
+chezmoi --source="$PWD" diff
+make health PACKAGE=<name>   # 在真实 Mac apply 受影响的 package 后运行
+```
+
+如果涉及 GUI 或 TTY，再完成对应 package 文档里的手工 checklist。面向用户的中英文文档要保持
+语义一致。
+
+## PR 流程
+
+1. 从类型分支向 `main` 开 PR，填写 PR 模板。
+2. 等待 required `checks`，解决所有 review 对话。
+3. 默认使用 **Squash merge**。只有保留不同作者或相互独立的 commits 能明显改善历史时才用 rebase。
+4. 合并后更新本地 `main`；确认 squash 文件树一致后再删除 feature branch。
+
+Branch protection 要求基于最新 `main` 的 `checks` 成功，管理员也受同一规则约束。`main` 禁止
+force-push 和删除。
+
+## Issues 与 labels
+
+使用 bug 或 feature request 模板；空白 issue 已禁用。每个 PR 至少有一个与主要 Conventional
+Commit type 对应的 label；`build` 和 `style` 统一归入 `chore`。
 
 ## Secrets
 
-永远不要提交明文 secret —— `.gitignore` + `gitleaks` 双重强制。新增 / 编辑 / 轮换流程与常见陷阱见 [docs/secrets.zh.md](docs/secrets.zh.md)。
+永远不要提交明文凭据或 age identity。Gitleaks 和 ignore 只是保险绳，不能代替 review。新增或轮换
+按 [Secrets 手册](docs/secrets.zh.md)操作。

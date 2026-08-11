@@ -1,7 +1,8 @@
 <h1 align="center">dotfiles</h1>
 
 <p align="center">
-  <em>Personal macOS setup managed with <a href="https://www.chezmoi.io">chezmoi</a> + <a href="https://github.com/FiloSottile/age">age</a>.</em>
+  A reproducible macOS terminal and development environment, managed with
+  <a href="https://www.chezmoi.io">chezmoi</a>, Homebrew, and age.
 </p>
 
 <p align="center">
@@ -9,132 +10,96 @@
 </p>
 
 <p align="center">
-  <a href="LICENSE"><img alt="license" src="https://img.shields.io/github/license/kyriekevin/dotfiles?style=flat-square"></a>
-  <a href="https://www.chezmoi.io"><img alt="managed by chezmoi" src="https://img.shields.io/badge/managed%20by-chezmoi-5fafd7?style=flat-square&logo=homeassistantcommunitystore&logoColor=white"></a>
-  <a href="https://www.conventionalcommits.org"><img alt="conventional commits" src="https://img.shields.io/badge/commits-conventional-fe5196?style=flat-square&logo=conventionalcommits&logoColor=white"></a>
-  <a href="https://github.com/pre-commit/pre-commit"><img alt="pre-commit" src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?style=flat-square&logo=pre-commit&logoColor=white"></a>
+  <a href="https://github.com/kyriekevin/dotfiles/actions/workflows/verify.yml"><img alt="Verify" src="https://github.com/kyriekevin/dotfiles/actions/workflows/verify.yml/badge.svg"></a>
+  <a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/kyriekevin/dotfiles?style=flat-square"></a>
+  <a href="https://www.chezmoi.io"><img alt="Managed by chezmoi" src="https://img.shields.io/badge/managed%20by-chezmoi-5fafd7?style=flat-square"></a>
 </p>
 
----
+> [!IMPORTANT]
+> This is a personal setup, not a universal starter kit. A fresh install requires the matching age
+> identity. Forks must replace the age recipient and encrypted files before bootstrap.
 
-## ✨ Quickstart
+## What it manages
 
-On a fresh Mac:
+- Reproduces packages and apps from one [`Brewfile`](Brewfile).
+- Renders machine-specific Git settings and keeps secrets encrypted in Git.
+- Configures the shell, terminal, editor, navigation tools, key mappings, and coding-agent surface.
+- Uses the same deterministic `make verify` gate locally and in GitHub Actions.
+
+| Area | Main components | Guide |
+|---|---|---|
+| Shell and prompt | Zsh, zinit, Starship, Fastfetch | [Zsh](docs/zsh.md) · [Starship](docs/starship.md) · [Fastfetch](docs/fastfetch.md) |
+| Terminal workflow | Ghostty, Herdr, Yazi | [Ghostty](docs/ghostty.md) · [Agent workflows](docs/agent-workflows.md) · [Yazi](docs/yazi.md) |
+| Editor and Git | Neovim, Git, Lazygit, GitHub CLI | [Neovim](docs/nvim.md) · [Git](docs/git.md) |
+| Automation | Karabiner-Elements, Homebrew hooks | [Karabiner](docs/karabiner.md) · [Maintenance](docs/maintenance.md) |
+| Coding agents | Claude Code settings, plugins, MCP boundaries | [Claude Code](docs/claude.md) · [Extensions](docs/claude-plugins.md) |
+
+## Set up a Mac
+
+Copy the existing age identity to the new Mac, then run bootstrap:
 
 ```bash
-# 1. Install Homebrew                https://brew.sh
+mkdir -p ~/.config/chezmoi
+chmod 700 ~/.config/chezmoi
+cp /path/to/key.txt ~/.config/chezmoi/key.txt
+chmod 600 ~/.config/chezmoi/key.txt
 
-# 2. Drop your age private key       (transferred from an existing Mac)
-mkdir -p ~/.config/chezmoi && chmod 700 ~/.config/chezmoi
-cp /path/to/key.txt ~/.config/chezmoi/key.txt && chmod 600 ~/.config/chezmoi/key.txt
-
-# 3. Bootstrap
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/kyriekevin/dotfiles/main/bootstrap.sh)"
 ```
 
-On first run, `chezmoi init` prompts for:
+Bootstrap installs Homebrew when missing, installs the core tools, clones this repository to
+`~/.dotfiles`, and runs `chezmoi init --apply`. The first run asks for:
 
-| Variable    | Purpose                                             |
-| ----------- | --------------------------------------------------- |
-| `git_email` | primary email for `~/.gitconfig` on this machine    |
-| `is_work`   | `true` on the work Mac, `false` on the personal one |
+| Value | Meaning |
+|---|---|
+| `git_email` | Git identity for this Mac |
+| `is_work` | Selects work or personal machine settings |
 
-## 🧰 Toolchain
+For key transfer, rotation, or a forked setup, follow the [secrets runbook](docs/secrets.md).
 
-The core tools this repo leans on.
-
-| Tool | Role | Install |
-| --- | --- | --- |
-| [Homebrew](https://brew.sh) | macOS package manager | `bootstrap.sh` (non-interactive) |
-| [chezmoi](https://www.chezmoi.io) | dotfiles manager | bootstrap → `brew install chezmoi` |
-| [age](https://github.com/FiloSottile/age) | secret encryption | bootstrap → `brew install age` |
-| [gh](https://cli.github.com) | GitHub CLI (PR / review flow) | bootstrap → `brew install gh` |
-| [Claude Code](https://claude.com/claude-code) | AI coding CLI | bootstrap → `curl -fsSL https://claude.ai/install.sh \| bash` |
-| [Ghostty](https://ghostty.org/) | Primary terminal app | Brewfile → `brew install --cask ghostty`; details in [Ghostty](docs/ghostty.md) |
-| [herdr](https://github.com/ogulcancelik/herdr) | In-terminal multi-agent workspace/pane manager | Brewfile → `brew install herdr`; workflow in [Agent Workflows](docs/agent-workflows.md) |
-| [Node.js](https://nodejs.org) | Runtime for Claude Code plugin hooks (`.mjs`) and `npx`-based guards | Brewfile → `brew install node` |
-| [uv](https://github.com/astral-sh/uv) | Python tool runner | Brewfile → `brew install uv` |
-| [pre-commit](https://pre-commit.com) | Git hooks (whitespace / secrets / conventional-commits) | `uv tool install pre-commit` — setup in [CONTRIBUTING.md](CONTRIBUTING.md) |
-
-The full package list (shell / git / editor utilities + GUI casks) lives in [`Brewfile`](Brewfile). `chezmoi apply` re-runs `brew bundle` automatically whenever Brewfile changes.
-
-## 🗂 Layout
-
-```text
-~/.dotfiles/
-├── dot_*                         → ~/.*            (real dotfiles)
-├── encrypted_private_*.age       → chmod 0600, age-decrypted on apply
-├── *.tmpl                        → Go-rendered with chezmoi data
-├── .chezmoiscripts/              → apply-time hooks (run_once_before_*, run_onchange_after_*)
-├── Brewfile                      → brew bundle (triggered by a hook)
-├── bootstrap.sh                  → new-Mac entrypoint
-├── Makefile                      → canonical local/CI verification entrypoint
-├── scripts/                      → deterministic repository checks
-├── tests/                        → live health checks for an applied Mac
-├── docs/                         → usage + maintenance runbooks
-├── .github/                      → CI workflow + issue/PR templates
-├── AGENTS.md                     → concise repository rules for coding agents
-├── .chezmoi.toml.tmpl            → init prompts + age recipient
-├── .chezmoiignore                → paths chezmoi must NOT manage
-├── .pre-commit-config.yaml       → whitespace / gitleaks / conv-commits
-├── CONTRIBUTING.md               → branch/commit conventions
-└── README.md                     → you are here
-```
-
-> [!NOTE]
-> This repo lives at `~/.dotfiles` (not chezmoi's default `~/.local/share/chezmoi`). Every `chezmoi` command needs `--source=$HOME/.dotfiles`, or set `sourceDir = "~/.dotfiles"` in `~/.config/chezmoi/chezmoi.toml`.
-
-## ⚙️ Scripts
-
-`chezmoi apply` runs any `run_*` file under [`.chezmoiscripts/`](.chezmoiscripts). The filename is the execution contract — each token controls one dimension of behavior:
-
-```text
-run_onchange_after_20-brew-bundle.sh.tmpl
-└─┬┘ └───┬──┘ └─┬─┘ └┬┘ └────┬────┘ └─┬┘ └─┬─┘
-  │     │      │    │       │       │    └─ .tmpl = Go-rendered with chezmoi data
-  │     │      │    │       │       └──── .sh    = shell interpreter
-  │     │      │    │       └──────────── descriptive name
-  │     │      │    └──────────────────── sort order (numeric, ascending)
-  │     │      └───────────────────────── before / after writing dotfiles
-  │     └──────────────────────────────── once (per success) / onchange / always
-  └────────────────────────────────────── run_ prefix = script, not a dotfile
-```
-
-`onchange` scripts that depend on an *external* file (e.g. `Brewfile`) should embed the external file's hash in a comment — the external change then flows into the script's own content hash, which is what chezmoi watches to decide re-runs.
-
-See [chezmoi source-state attributes](https://www.chezmoi.io/reference/source-state-attributes/) for the full list.
-
-## 🔐 Secrets
-
-Secrets are committed **encrypted** using [age](https://github.com/FiloSottile/age). Files with the `encrypted_` prefix are transparently decrypted on `chezmoi apply`, using the age identity at `~/.config/chezmoi/key.txt` (chmod 600, never committed — enforced by `.gitignore` + `gitleaks`).
-
-Edit an encrypted secret without manual steps:
+## Update an existing Mac
 
 ```bash
-chezmoi edit ~/.config/zsh/secrets.zsh
+cd ~/.dotfiles
+git pull --ff-only
+chezmoi --source="$PWD" diff
+chezmoi --source="$PWD" apply
 ```
 
-Full runbook — bootstrap, add, rotate, gotchas — in [docs/secrets.md](docs/secrets.md).
+Review the diff before apply. A `Brewfile` change automatically triggers `brew bundle`; other
+`run_once_*` and `run_onchange_*` hooks reconcile package-specific state.
 
-## 🧪 Contributing
+## How it works
 
-Changing the repository starts with the [maintenance workflow](docs/maintenance.md): it maps each
-change type to its source files, deterministic checks, apply step, and live verification. The short
-version is:
+```text
+Git source (~/.dotfiles)
+├── chezmoi render / decrypt ──→ files in HOME
+├── Brewfile change ───────────→ brew bundle
+└── apply-time hooks ──────────→ plugins and supporting state
+```
+
+This repository intentionally uses `~/.dotfiles` instead of chezmoi's default source directory.
+The config template pins that path for fresh installs; the update commands above pass it explicitly
+so they also work on older machines initialized before the pin existed.
+
+## Find the right guide
+
+| I want to… | Start here |
+|---|---|
+| Change configuration safely | [Maintenance workflow](docs/maintenance.md) |
+| Open a branch or pull request | [Contributing](CONTRIBUTING.md) |
+| Add, edit, or rotate a secret | [Secrets runbook](docs/secrets.md) |
+| Diagnose one tool | The matching guide in the component table above |
+| Run applied-machine checks | `make health PACKAGE=zsh` and [live health notes](tests/README.md) |
+
+The short hand-off loop for repository changes is:
 
 ```bash
 make verify
-chezmoi diff
-make health PACKAGE=<name>   # after applying on a real Mac
+chezmoi --source="$PWD" diff
+make health PACKAGE=zsh   # replace zsh with the affected package
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for branch, commit, and pull-request conventions.
-
-## 🔗 Related
-
-- [nousresearch/hermes-agent](https://github.com/nousresearch/hermes-agent) — open-source agent framework
-- _(future)_ self-authored Claude Code agents / skills — extracted to standalone repos
-
-## 📄 License
+## License
 
 MIT — see [LICENSE](LICENSE).
