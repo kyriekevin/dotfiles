@@ -1,6 +1,6 @@
 # Neovim
 
-> English · [中文](nvim.zh.md)
+> English · [中文](nvim_zh-CN.md)
 
 Kickstart-style **single-file** nvim config. The whole config lives in one `init.lua` — read top to bottom, no plugin tree, no distro. Covers **Phase 7a (core scaffold)** + **Phase 7b (navigation)**: options, keymaps, autocmds, and 12 plugins covering colorscheme, pickers, file tree, jump, git, textobjects, comment, statusbar, and tabs. Phases 7c–7d add LSP / polish in separate branches.
 

@@ -1,6 +1,6 @@
 # Contributing
 
-> English · [中文](CONTRIBUTING.zh.md)
+> English · [中文](CONTRIBUTING_zh-CN.md)
 
 This file defines the Git and pull-request contract. For source files, apply behavior, package
 checks, and rollback, use the [maintenance workflow](docs/maintenance.md).

@@ -18,7 +18,7 @@ REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 BREWFILE="$REPO_ROOT/Brewfile"
 ALIASES="$REPO_ROOT/dot_config/zsh/aliases.zsh"
 CFG="$REPO_ROOT/dot_config/herdr/config.toml"
-DOC_ZH="$REPO_ROOT/docs/agent-workflows.zh.md"
+DOC_ZH="$REPO_ROOT/docs/agent-workflows_zh-CN.md"
 DOC_EN="$REPO_ROOT/docs/agent-workflows.md"
 
 echo "── Package intent ───────────────────────────────────"

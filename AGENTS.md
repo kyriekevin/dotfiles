@@ -8,7 +8,7 @@
 - Before handing off a change, run `make verify`. This is the same deterministic source check used
   by CI and must not depend on an already-configured HOME.
 - After applying a package on a real Mac, run `make health PACKAGE=<name>` and the manual checklist
-  in `docs/<name>.md` or `docs/<name>.zh.md`. Live health checks are not CI checks.
+  in `docs/<name>.md` or `docs/<name>_zh-CN.md`. Live health checks are not CI checks.
 - Review `chezmoi diff` before applying. Prefer a target-scoped `chezmoi apply <target>` while
   iterating; reserve a full apply for changes that intentionally cross packages.
 - New `run_onchange_*` scripts must be idempotent. If they depend on another source file, embed that

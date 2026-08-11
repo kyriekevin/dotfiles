@@ -1,6 +1,6 @@
 # Yazi
 
-> English · [中文](yazi.zh.md)
+> English · [中文](yazi_zh-CN.md)
 
 Blazing-fast Rust TUI file manager. Three-column pane (parent / current / preview), vim-ish keys, native image/video/PDF preview, built-in integrations with `fzf` / `zoxide` / `fd` / `rg`. Bound to `y` (a shell function, not an alias — see below) so quitting yazi drops you into whichever directory you last browsed.
 

@@ -1,6 +1,6 @@
 # Agent Workflows
 
-> English · [中文](agent-workflows.zh.md)
+> English · [中文](agent-workflows_zh-CN.md)
 
 This branch makes **Ghostty + herdr** the agent workflow. Ghostty is the terminal surface: font, theme, Kitty image protocol, native quick terminal, and ordinary shell tabs/splits. Herdr runs inside Ghostty as the agent multiplexer: workspaces, tabs, panes, detach/reattach, and Claude/Codex state awareness.
 

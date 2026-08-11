@@ -1,6 +1,6 @@
 # Ghostty
 
-> English · [中文](ghostty.zh.md)
+> English · [中文](ghostty_zh-CN.md)
 
 Ghostty is the primary terminal app in this repo. It owns rendering, font, theme, Kitty graphics for Yazi, the quick terminal, and ordinary shell tabs/splits. Herdr runs inside Ghostty when agent-aware workspaces are needed.
 

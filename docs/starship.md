@@ -1,6 +1,6 @@
 # Starship prompt
 
-> English · [中文](starship.zh.md)
+> English · [中文](starship_zh-CN.md)
 
 Cross-shell prompt written in Rust. We use it for: single-line powerline context + trailing feedback on terminal bg, Catppuccin Mocha palette matching `$BAT_THEME`, vi-mode visual cue (paired with OMZP::vi-mode), and four feedback modules that only show when they matter.
 

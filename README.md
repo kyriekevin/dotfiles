@@ -1,12 +1,13 @@
 <h1 align="center">dotfiles</h1>
 
 <p align="center">
-  A reproducible macOS terminal and development environment, managed with
+  The machine loadout of the <strong>Nightglass Protocol</strong> —
+  a reproducible macOS terminal and development environment, managed with
   <a href="https://www.chezmoi.io">chezmoi</a>, Homebrew, and age.
 </p>
 
 <p align="center">
-  English · <a href="README.zh.md">中文</a>
+  English · <a href="README_zh-CN.md">简体中文</a>
 </p>
 
 <p align="center">
@@ -82,7 +83,7 @@ This repository intentionally uses `~/.dotfiles` instead of chezmoi's default so
 The config template pins that path for fresh installs; the update commands above pass it explicitly
 so they also work on older machines initialized before the pin existed.
 
-## Find the right guide
+## Documentation
 
 | I want to… | Start here |
 |---|---|

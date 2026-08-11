@@ -3,7 +3,7 @@
 > [English](maintenance.md) · 中文
 
 这份文档回答“如何安全地修改这个仓库”。安装和日常使用见根目录 README；各工具的具体行为与
-手工验证见对应的 `docs/<package>.zh.md`。
+手工验证见对应的 `docs/<package>_zh-CN.md`。
 
 ## 文档职责
 
@@ -11,10 +11,10 @@
 
 | 文档 | 负责内容 |
 |---|---|
-| `README.zh.md` | 项目定位、安装/更新、组件地图和文档导航 |
-| `docs/maintenance.zh.md` | Source/apply 流程、仓库约束和回滚 |
-| `CONTRIBUTING.zh.md` | 分支、commit、review 和合并规范 |
-| `docs/<package>.zh.md` | 受管行为、修改方式、健康检查和排障 |
+| `README_zh-CN.md` | 项目定位、安装/更新、组件地图和文档导航 |
+| `docs/maintenance_zh-CN.md` | Source/apply 流程、仓库约束和回滚 |
+| `CONTRIBUTING_zh-CN.md` | 分支、commit、review 和合并规范 |
+| `docs/<package>_zh-CN.md` | 受管行为、修改方式、健康检查和排障 |
 | `tests/README.md` | Apply 后在真实 Mac 上运行的 live checks 契约 |
 
 不要把 package 细节复制回 README；链接到对应手册即可。
@@ -78,7 +78,7 @@ make health PACKAGE=<package>
 | Neovim 配置 / plugin | `dot_config/nvim/` | `make verify` | `make health PACKAGE=nvim` + UI checklist |
 | Karabiner 规则 | `dot_config/karabiner/` | `make verify` | `make health PACKAGE=karabiner` + GUI checklist |
 | chezmoi hook | `.chezmoiscripts/`，必要时连同依赖文件 hash | `make verify` | 在可恢复环境中执行两次，确认幂等 |
-| Secret | age 密文、必要时 `.gitignore` / recipient | `make verify` | 按 `docs/secrets.zh.md` 操作，不在 PR 输出明文 |
+| Secret | age 密文、必要时 `.gitignore` / recipient | `make verify` | 按 `docs/secrets_zh-CN.md` 操作，不在 PR 输出明文 |
 | 用户文档 | 同一主题的英文与中文文件 | `make verify` | 检查语义一致、链接有效 |
 
 ## 新增一个 package
@@ -87,7 +87,7 @@ make health PACKAGE=<package>
 
 1. chezmoi source 配置；
 2. `Brewfile` 中的安装声明（如果需要 binary）；
-3. `docs/<package>.md` 与 `docs/<package>.zh.md`；
+3. `docs/<package>.md` 与 `docs/<package>_zh-CN.md`；
 4. 可自动验证时增加 `tests/<package>.sh`，并把 GUI / TTY 行为留在文档手工 checklist；
 5. README 工具栈或目录说明中的入口。
 
@@ -116,4 +116,4 @@ make health PACKAGE=<package>
   `chezmoi --source="$PWD" diff`。
 - Apply 后发现问题：先回退 source 变更，再带显式 source path 重新 apply 受影响目标。
 - 已合入 `main`：使用新的 revert PR，不重写共享历史。
-- Secret 或 age key：只按 `docs/secrets.zh.md` 的轮换流程操作；不要删除唯一可用的 identity。
+- Secret 或 age key：只按 `docs/secrets_zh-CN.md` 的轮换流程操作；不要删除唯一可用的 identity。

@@ -1,6 +1,6 @@
 # Claude Code extensions — plugins · MCP · skills
 
-> English · [中文](claude-plugins.zh.md)
+> English · [中文](claude-plugins_zh-CN.md)
 
 This is the per-extension reference. The overall settings model (what's pinned, why, how chezmoi renders it) is in [`claude.md`](claude.md); this doc answers *"what does each piece actually do, and when would I reach for it?"*
 

@@ -12,7 +12,7 @@ Ghostty 是这个 repo 的主终端 app。它负责渲染、字体、主题、Ya
 | App | `/Applications/Ghostty.app` | Brewfile 里 `cask "ghostty"` 安装。 |
 | 字体 | `Maple Mono NF CN` | Nerd Font 字形 + CJK 覆盖。 |
 | 主题 | `Catppuccin Mocha` | Ghostty 内置。 |
-| Agent multiplexer | Ghostty pane 里的 `herdr` | 见 [Agent 工作流试验](agent-workflows.zh.md)。 |
+| Agent multiplexer | Ghostty pane 里的 `herdr` | 见 [Agent 工作流试验](agent-workflows_zh-CN.md)。 |
 
 ## 快捷键
 

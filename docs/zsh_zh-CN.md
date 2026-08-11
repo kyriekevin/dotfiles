@@ -24,7 +24,7 @@ zsh + zinit Turbo。目标：启动快（插件缓存后 critical path 约 70-10
 | `tools.zsh` | CLI 工具运行时激活（`fzf --zsh`、`zoxide init`） | 必须在 plugins 之后加载 —— fzf-tab 依赖 fzf 的 widget |
 | `aliases.zsh` | 按 `# ─── 主题 ───` 分组的 alias | 只写 `alias` 行，其他一律不放 |
 | `keybinds.zsh` | `bindkey` 覆盖 | 预留槽位（Phase 3 暂空） |
-| `secrets.zsh` | 由 `encrypted_private_secrets.zsh.age` 解密而来 | age + chezmoi 管理，见 [secrets.zh.md](secrets.zh.md) |
+| `secrets.zsh` | 由 `encrypted_private_secrets.zsh.age` 解密而来 | age + chezmoi 管理，见 [secrets_zh-CN.md](secrets_zh-CN.md) |
 
 ### 加载顺序
 
@@ -90,7 +90,7 @@ Turbo 插件靠 `precmd` hook 触发，`zsh -i -c '...'` 或 script 子进程压
 1. 敲 `git sta` —— "tus" 应以灰色行内建议出现（autosuggestions）。
 2. 敲 `ls` —— 命令本身应着色（绿/青），而非纯白（syntax-highlighting）。
 3. 在空 `git ` 后按 Tab —— 应弹出 fzf 风格菜单（fzf-tab）。
-4. 按 Esc —— `character` 符号应变 mauve 色（starship `[character].vimcmd_symbol`），详见 [starship.zh.md](starship.zh.md)。
+4. 按 Esc —— `character` 符号应变 mauve 色（starship `[character].vimcmd_symbol`），详见 [starship_zh-CN.md](starship_zh-CN.md)。
 
 ## 启动性能
 
@@ -139,7 +139,7 @@ zinit report author/plugin-name
 
 **首次 `chezmoi apply` 下载所有 plugin 30-60s 属正常。** 之后都是秒级。看起来卡住是在从 GitHub 拉。
 
-**vi-mode 视觉提示由 starship 渲染，不由 zsh。** OMZP::vi-mode 定义 `vi_mode_prompt_info` 并切换 `$KEYMAP`；真正显示的指示是 starship 的 `[character].vimcmd_symbol`，详见 [starship.zh.md](starship.zh.md)。
+**vi-mode 视觉提示由 starship 渲染，不由 zsh。** OMZP::vi-mode 定义 `vi_mode_prompt_info` 并切换 `$KEYMAP`；真正显示的指示是 starship 的 `[character].vimcmd_symbol`，详见 [starship_zh-CN.md](starship_zh-CN.md)。
 
 ## 彻底重建
 

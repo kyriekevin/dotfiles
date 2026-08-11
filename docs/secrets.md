@@ -1,6 +1,6 @@
 # Secrets runbook
 
-> English · [中文](secrets.zh.md)
+> English · [中文](secrets_zh-CN.md)
 
 Secrets are age-encrypted at rest in this repo and decrypted transparently on `chezmoi apply`. This doc is the operator's manual — bootstrap a new Mac, add a secret, edit an existing one, rotate the key.
 
