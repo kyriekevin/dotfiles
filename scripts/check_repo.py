@@ -161,6 +161,39 @@ def check_chezmoi_boundary(errors):
         errors.append(".chezmoiignore: repository-only paths not ignored: " + ", ".join(missing))
 
 
+def check_aether_ledger_boundary(errors):
+    required = {
+        "dot_config/token-activity/node_name.tmpl",
+        "dot_config/token-activity/encrypted_private_multica.json.age",
+        "dot_config/token-activity/encrypted_private_multica_runtime_roles.json.age",
+        "docs/aether-ledger.md",
+        "docs/aether-ledger_zh-CN.md",
+        "tests/aether-ledger.sh",
+    }
+    for relative in sorted(required):
+        if not (ROOT / relative).is_file():
+            errors.append(f"missing Aether Ledger source: {relative}")
+    for relative in required:
+        if not relative.endswith(".age"):
+            continue
+        path = ROOT / relative
+        if path.is_file() and not path.read_text(encoding="utf-8").startswith(
+            "-----BEGIN AGE ENCRYPTED FILE-----"
+        ):
+            errors.append(f"Aether Ledger private source is not age-encrypted: {relative}")
+    brewfile = (ROOT / "Brewfile").read_text(encoding="utf-8")
+    for formula in ("uv", "ccusage", "zstd"):
+        if f'brew "{formula}"' not in brewfile:
+            errors.append(f"Brewfile: missing Aether Ledger dependency {formula}")
+    ignore = (ROOT / ".chezmoiignore").read_text(encoding="utf-8")
+    if ".config/token-activity/multica_dsh_profile" not in ignore:
+        errors.append(".chezmoiignore: durable Multica DSH binding is not excluded")
+    for guide in ("docs/aether-ledger.md", "docs/aether-ledger_zh-CN.md"):
+        content = (ROOT / guide).read_text(encoding="utf-8")
+        if "apply --parent-dirs ~/.config/token-activity" not in content:
+            errors.append(f"{guide}: setup must apply the managed package directory")
+
+
 def check_markdown_links(files, errors):
     for path in files:
         if path.suffix != ".md":
@@ -184,6 +217,7 @@ def main():
     check_templates(files, errors)
     check_bilingual_docs(errors)
     check_chezmoi_boundary(errors)
+    check_aether_ledger_boundary(errors)
     check_markdown_links(files, errors)
     run(["git", "diff", "--check", "HEAD", "--"], "git diff --check", errors)
 

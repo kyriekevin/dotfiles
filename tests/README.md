@@ -23,6 +23,10 @@ Exit 0 = all checks green. Exit 1 = at least one red; script prints each failure
 
 Agent workflow checks are split by layer: `tests/ghostty.sh` for the primary terminal surface, `tests/herdr.sh` for the in-terminal agent multiplexer, and `tests/claude.sh` for Claude Code hooks.
 
+Aether Ledger follows the same ownership split: `tests/aether-ledger.sh` checks dotfiles package
+intent, then delegates the live scheduler and private-config checks to Aether Ledger's own
+`make health` target.
+
 ## Add a new one
 
 1. Copy `tests/zsh.sh` as a template.

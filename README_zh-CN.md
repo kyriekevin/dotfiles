@@ -34,6 +34,7 @@
 | 编辑器与 Git | Neovim、Git、Lazygit、GitHub CLI | [Neovim](docs/nvim_zh-CN.md) · [Git](docs/git_zh-CN.md) |
 | 自动化 | Karabiner-Elements、Homebrew hooks | [Karabiner](docs/karabiner_zh-CN.md) · [维护流程](docs/maintenance_zh-CN.md) |
 | Coding agents | Claude Code 设置、plugins、MCP 边界 | [Claude Code](docs/claude_zh-CN.md) · [扩展机制](docs/claude-plugins_zh-CN.md) |
+| 用量账本 | Aether Ledger 依赖与私有输入 | [Aether Ledger](docs/aether-ledger_zh-CN.md) |
 
 ## 配置一台新 Mac
 
