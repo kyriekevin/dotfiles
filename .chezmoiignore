@@ -67,3 +67,11 @@ dot_claude/skills/**
 dot_claude/commands/**
 dot_claude/rules/**
 dot_claude/CLAUDE.md
+
+# Aether Ledger owns generated launchd files, writer worktrees, logs, sessions,
+# and the durable DSH source binding. Chezmoi supplies only declarative inputs.
+.config/token-activity/multica_dsh_profile
+{{ if not .is_work }}
+.config/token-activity/multica.json
+.config/token-activity/multica_runtime_roles.json
+{{ end }}

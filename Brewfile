@@ -43,6 +43,7 @@ brew "sevenzip"
 
 # ---- Python ----------------------------------------------------------------
 brew "uv"
+brew "zstd"  # Aether Ledger decodes DSH session frames on pinned Python 3.11
 
 # ---- Node.js ---------------------------------------------------------------
 # Required by Claude Code plugins that ship .mjs hooks (e.g. openai-codex's

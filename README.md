@@ -34,6 +34,7 @@
 | Editor and Git | Neovim, Git, Lazygit, GitHub CLI | [Neovim](docs/nvim.md) · [Git](docs/git.md) |
 | Automation | Karabiner-Elements, Homebrew hooks | [Karabiner](docs/karabiner.md) · [Maintenance](docs/maintenance.md) |
 | Coding agents | Claude Code settings, plugins, MCP boundaries | [Claude Code](docs/claude.md) · [Extensions](docs/claude-plugins.md) |
+| Usage ledger | Aether Ledger prerequisites and private inputs | [Aether Ledger](docs/aether-ledger.md) |
 
 ## Set up a Mac
 
