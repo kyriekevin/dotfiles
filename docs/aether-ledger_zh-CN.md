@@ -33,10 +33,7 @@ Chezmoi 不管理：
 先应用 dotfiles 输入，再从 Aether Ledger checkout 安装：
 
 ```bash
-chezmoi --source="$HOME/.dotfiles" apply \
-  ~/.config/token-activity/node_name \
-  ~/.config/token-activity/multica.json \
-  ~/.config/token-activity/multica_runtime_roles.json
+chezmoi --source="$HOME/.dotfiles" apply --parent-dirs ~/.config/token-activity
 
 cd "$HOME/github/Aether_Ledger"
 make install

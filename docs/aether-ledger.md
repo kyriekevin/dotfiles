@@ -34,10 +34,7 @@ collector owns the binding after creation and refuses to switch the store silent
 Apply the dotfiles inputs first, then install from an Aether Ledger checkout:
 
 ```bash
-chezmoi --source="$HOME/.dotfiles" apply \
-  ~/.config/token-activity/node_name \
-  ~/.config/token-activity/multica.json \
-  ~/.config/token-activity/multica_runtime_roles.json
+chezmoi --source="$HOME/.dotfiles" apply --parent-dirs ~/.config/token-activity
 
 cd "$HOME/github/Aether_Ledger"
 make install

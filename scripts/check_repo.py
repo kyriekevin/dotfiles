@@ -188,6 +188,10 @@ def check_aether_ledger_boundary(errors):
     ignore = (ROOT / ".chezmoiignore").read_text(encoding="utf-8")
     if ".config/token-activity/multica_dsh_profile" not in ignore:
         errors.append(".chezmoiignore: durable Multica DSH binding is not excluded")
+    for guide in ("docs/aether-ledger.md", "docs/aether-ledger_zh-CN.md"):
+        content = (ROOT / guide).read_text(encoding="utf-8")
+        if "apply --parent-dirs ~/.config/token-activity" not in content:
+            errors.append(f"{guide}: setup must apply the managed package directory")
 
 
 def check_markdown_links(files, errors):
