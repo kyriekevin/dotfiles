@@ -36,6 +36,9 @@ tmux 式扁平 `prefix → letter` 很快就把助记字母用完。语义 subla
 ### 为什么 AI Chat 保留直接 `hyper+space`（在 sublayer 之外）
 AI Chat 是高频命令。走 `ctrl+r space`（两次按键）会增加用户不需要的摩擦。Raycast 内置 Hyper Key 功能**保持开启**，Raycast Extensions 里原有的 `hyper+space` 热键保留。
 
+### 为什么 Raycast 动作放在右手主键区
+第一版把 Raycast 动作放在 `s` / `f` / `;` / `e`。这些是左手键，左小指按住 `ctrl` 时再去够它们，手会拧。现在改成 `j` / `k` / `l` / `'`：右手主键区、相邻键，左手可以一直压在 `ctrl` 上。从左到右也按使用频率排：剪贴板、文件、翻译、emoji（最少用）。助记是“剪、开、语、表”。
+
 ## Keymap 速查
 
 ### 基础层（常驻）
@@ -67,10 +70,10 @@ AI Chat 是高频命令。走 `ctrl+r space`（两次按键）会增加用户不
 
 | 键 | 动作 |
 |---|---|
-| `s` | 剪贴板历史 |
-| `f` | 搜索文件 |
-| `;` | 翻译 |
-| `e` | emoji 选择器 |
+| `j` | 剪贴板历史 |
+| `k` | 搜索文件 |
+| `l` | 翻译 |
+| `'` | emoji 选择器 |
 
 > AI Chat 有意不放在这一层——用直接的 `hyper+space` Raycast 热键。
 
@@ -84,8 +87,8 @@ AI Chat 是高频命令。走 `ctrl+r space`（两次按键）会增加用户不
 
 ## 功能细节
 
-### Sublayer 时序模型（500ms）
-按下 leader（`ctrl+w` / `ctrl+r` / `ctrl+x`）会通过 Karabiner 变量把 `layer_{w,r,x}` 置为 1。动作规则只在变量为 1 时触发——匹配 layer + 触发后把变量清零。500ms 内没后续按键，`to_delayed_action.to_if_invoked` 清零变量——**不会出现层卡住**。超时可在 `sublayers.json` → `parameters["basic.to_delayed_action_delay_milliseconds"]` 里调。
+### Sublayer 时序模型（500ms；Raycast 800ms）
+按下 leader（`ctrl+w` / `ctrl+r` / `ctrl+x`）会通过 Karabiner 变量把 `layer_{w,r,x}` 置为 1。动作规则只在变量为 1 时触发——匹配 layer + 触发后把变量清零。超时内没后续按键，`to_delayed_action.to_if_invoked` 清零变量——**不会出现层卡住**。窗口层和系统层用 500ms；Raycast 层用 800ms，避免右手 `j` / `k` / `l` / `'` 按起来赶。每个 leader 都可以在 `sublayers.json` → `parameters["basic.to_delayed_action_delay_milliseconds"]` 里单独调。
 
 ### Raycast deeplink 的 `-g` flag
 Raycast 的 Window Management 扩展要求**目标 app 处于焦点状态**——不是 Raycast 自己。`open raycast://...`（无 `-g`）会短暂聚焦 Raycast，扩展看到的 frontmost 是 Raycast 本身，resize 就打到错误的窗口上。`open -g` 在"后台"打开 URL 不激活 Raycast，原焦点 app 保持焦点被正确 resize。
@@ -136,7 +139,7 @@ bash ~/.dotfiles/tests/karabiner.sh
 - Karabiner-Elements 已装 + `karabiner_cli` 在 PATH
 - 两个 JSON 文件存在、`jq` 可解析、Karabiner 官方 linter 通过
 - 基础层和 sublayer 的每条绑定都指向预期动作（回归护栏）
-- 三个 leader 都有 `to_delayed_action` 且超时都是 500ms
+- 三个 leader 都有 `to_delayed_action`：窗口/系统 500ms，Raycast 800ms
 - AI Chat **不**在 `ctrl+r` 层（按设计保留为直接 hyper+space）
 
 ### 手动（Manual）—— 首次安装必须走
@@ -153,8 +156,8 @@ bash ~/.dotfiles/tests/karabiner.sh
 - [ ] `ctrl+h/j/k/l` → 方向键（任何文本框）
 - [ ] `ctrl+w h` → 窗口左半屏（Raycast 首次弹确认 → 点 "Always Allow"）
 - [ ] `ctrl+w l/k/j/m/n/p` → 右/上/下/最大/下一显示器/上一显示器
-- [ ] `ctrl+r s` → 剪贴板历史打开
-- [ ] `ctrl+r f/;/e` → 搜索文件 / 翻译 / emoji 选择器
+- [ ] `ctrl+r j` → 剪贴板历史打开
+- [ ] `ctrl+r k/l/'` → 搜索文件 / 翻译 / emoji 选择器
 - [ ] `ctrl+x m` → 静音切换（菜单栏图标变化）
 - [ ] `ctrl+x = / -` → 音量 +10 / −10
 - [ ] 按 `ctrl+w` 单独，等 1s，再按 `h` → 无反应（超时清层）
@@ -173,7 +176,7 @@ Karabiner 的导入是一次性的。`chezmoi apply` 写文件，但不会自动
 `open` 命令漏了 `-g` flag。检查 `sublayers.json`——每个 `window-management` deeplink 的 `shell_command` 都必须是 `open -g 'raycast://...'`。
 
 **Sublayer 键"卡住"——下一个按键还在层模式里。**
-要么 leader 规则漏了 `to_delayed_action`，要么动作规则的 `to` 数组里漏了 `{"set_variable": {"name": "layer_X", "value": 0}}`。跑 `bash tests/karabiner.sh`——`timeout = 500ms` 检查就是抓这个的。
+要么 leader 规则漏了 `to_delayed_action`，要么动作规则的 `to` 数组里漏了 `{"set_variable": {"name": "layer_X", "value": 0}}`。跑 `bash tests/karabiner.sh`——超时检查就是抓这个的。
 
 **`ctrl+hjkl` 不发箭头了。**
 Karabiner 守护进程可能没跑。`pgrep -f karabiner_console_user_server`——输出为空就去启动 Karabiner.app。
