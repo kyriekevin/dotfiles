@@ -107,7 +107,7 @@
             ]
         },
         {
-            "description": "ctrl+r → raycast layer (enter; auto-clears after 500ms timeout)",
+            "description": "ctrl+r → raycast layer (enter; auto-clears after 800ms timeout)",
             "manipulators": [
                 {
                     "type": "basic",
@@ -124,17 +124,17 @@
                         ]
                     },
                     "parameters": {
-                        "basic.to_delayed_action_delay_milliseconds": 500
+                        "basic.to_delayed_action_delay_milliseconds": 800
                     }
                 }
             ]
         },
         {
-            "description": "ctrl+r layer: Raycast built-in commands via deeplinks (AI Chat stays as direct hyper+space)",
+            "description": "ctrl+r layer: Raycast commands (J clipboard, K files, L translate, ' emoji; AI Chat stays as direct hyper+space)",
             "manipulators": [
                 {
                     "type": "basic",
-                    "from": { "key_code": "s", "modifiers": { "optional": ["any"] } },
+                    "from": { "key_code": "j", "modifiers": { "optional": ["any"] } },
                     "to": [
                         { "shell_command": "open -g 'raycast://extensions/raycast/clipboard-history/clipboard-history'" },
                         { "set_variable": { "name": "layer_r", "value": 0 } }
@@ -145,9 +145,9 @@
                 },
                 {
                     "type": "basic",
-                    "from": { "key_code": "f", "modifiers": { "optional": ["any"] } },
+                    "from": { "key_code": "k", "modifiers": { "optional": ["any"] } },
                     "to": [
-                        { "shell_command": "open -g 'raycast://extensions/raycast/navigation/search-files'" },
+                        { "shell_command": "open -g 'raycast://extensions/raycast/file-search/search-files'" },
                         { "set_variable": { "name": "layer_r", "value": 0 } }
                     ],
                     "conditions": [
@@ -156,7 +156,7 @@
                 },
                 {
                     "type": "basic",
-                    "from": { "key_code": "semicolon", "modifiers": { "optional": ["any"] } },
+                    "from": { "key_code": "l", "modifiers": { "optional": ["any"] } },
                     "to": [
                         { "shell_command": "open -g 'raycast://extensions/raycast/translator/translate'" },
                         { "set_variable": { "name": "layer_r", "value": 0 } }
@@ -167,7 +167,7 @@
                 },
                 {
                     "type": "basic",
-                    "from": { "key_code": "e", "modifiers": { "optional": ["any"] } },
+                    "from": { "key_code": "quote", "modifiers": { "optional": ["any"] } },
                     "to": [
                         { "shell_command": "open -g 'raycast://extensions/raycast/emoji-symbols/search-emoji-symbols'" },
                         { "set_variable": { "name": "layer_r", "value": 0 } }

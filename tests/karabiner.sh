@@ -91,10 +91,11 @@ check "w-layer uses open -g (no bare open)"     "! grep -qE 'shell_command.*\"op
 echo
 echo "── Raycast layer (ctrl+r) deeplinks ─────────────────"
 # AI Chat intentionally NOT in this layer — user keeps direct hyper+space.
-check "r-layer: s → clipboard-history"          "grep -qE 'open -g .*clipboard-history' $SUBL"
-check "r-layer: f → navigation/search-files"    "grep -qE 'open -g .*navigation/search-files' $SUBL"
-check "r-layer: ; → translator/translate"       "grep -qE 'open -g .*translator/translate' $SUBL"
-check "r-layer: e → emoji-symbols"              "grep -qE 'open -g .*emoji-symbols/search-emoji-symbols' $SUBL"
+check "r-layer: j → clipboard-history"          "jq -e '.rules[] | select(.description | contains(\"ctrl+r layer\")) | .manipulators[] | select(.from.key_code==\"j\") | .to[0].shell_command | contains(\"clipboard-history\") ' $SUBL >/dev/null"
+check "r-layer: k → file-search/search-files"   "jq -e '.rules[] | select(.description | contains(\"ctrl+r layer\")) | .manipulators[] | select(.from.key_code==\"k\") | .to[0].shell_command | contains(\"file-search/search-files\") ' $SUBL >/dev/null"
+check "r-layer: l → translator/translate"       "jq -e '.rules[] | select(.description | contains(\"ctrl+r layer\")) | .manipulators[] | select(.from.key_code==\"l\") | .to[0].shell_command | contains(\"translator/translate\") ' $SUBL >/dev/null"
+check "r-layer: quote → emoji-symbols"          "jq -e '.rules[] | select(.description | contains(\"ctrl+r layer\")) | .manipulators[] | select(.from.key_code==\"quote\") | .to[0].shell_command | contains(\"emoji-symbols/search-emoji-symbols\") ' $SUBL >/dev/null"
+check "r-layer: only j/k/l/quote"               "jq -e '[.rules[] | select(.description | contains(\"ctrl+r layer\")) | .manipulators[].from.key_code] | sort == [\"j\",\"k\",\"l\",\"quote\"]' $SUBL >/dev/null"
 check "r-layer: AI Chat NOT in layer (direct)"  "! grep -qE 'raycast-ai/ai-chat' $SUBL"
 
 echo
@@ -116,7 +117,8 @@ echo "── Timeout + delayed_action parameters ──────────�
 # variable if user presses nothing within the timeout. Without this, a
 # stray prefix press leaves the layer stuck.
 check "all 3 leaders have to_delayed_action"    "jq -e '[.rules[].manipulators[] | select((.to[0].set_variable.name // \"\") | startswith(\"layer_\")) | .to_delayed_action] | length == 3' $SUBL >/dev/null"
-check "timeout = 500ms"                         "jq -e '[.rules[].manipulators[] | select((.to[0].set_variable.name // \"\") | startswith(\"layer_\")) | .parameters[\"basic.to_delayed_action_delay_milliseconds\"]] | unique == [500]' $SUBL >/dev/null"
+check "timeout: w/x layers = 500ms"             "jq -e '[.rules[].manipulators[] | select((.to[0].set_variable.name // \"\") == \"layer_w\" or (.to[0].set_variable.name // \"\") == \"layer_x\") | .parameters[\"basic.to_delayed_action_delay_milliseconds\"]] | unique == [500]' $SUBL >/dev/null"
+check "timeout: r layer = 800ms"                "jq -e '.rules[].manipulators[] | select((.to[0].set_variable.name // \"\") == \"layer_r\") | .parameters[\"basic.to_delayed_action_delay_milliseconds\"] == 800' $SUBL >/dev/null"
 
 echo
 echo "── Runtime context ──────────────────────────────────"

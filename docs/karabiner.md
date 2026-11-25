@@ -36,6 +36,9 @@ Every Raycast action is invoked via `open -g raycast://extensions/...`. This dec
 ### Why AI Chat stays as direct `hyper+space` (outside sublayer)
 AI Chat is high-frequency. Routing it through `ctrl+r space` (two separate keypresses) adds friction the user didn't want. Raycast's built-in Hyper Key feature stays ON, and the original `hyper+space` hotkey stays in Raycast Extensions.
 
+### Why Raycast actions use the right-hand home row
+The first version put Raycast actions on `s` / `f` / `;` / `e`. Those are left-hand keys, so holding `ctrl` with the left pinky while reaching for them twisted the hand. The layer now uses `j` / `k` / `l` / `'`: right-hand home row, adjacent keys, and the left hand can stay on `ctrl`. The left-to-right order is also frequency order — clipboard, files, translate, emoji (least used). Mnemonic: 剪 (jiǎn) / 开 (kāi) / 语 (yǔ) / emoji.
+
 ## Keymap reference
 
 ### Base layer (always active)
@@ -67,10 +70,10 @@ AI Chat is high-frequency. Routing it through `ctrl+r space` (two separate keypr
 
 | Key | Action |
 |---|---|
-| `s` | Clipboard history |
-| `f` | Search files |
-| `;` | Translate |
-| `e` | Emoji picker |
+| `j` | Clipboard history |
+| `k` | Search files |
+| `l` | Translate |
+| `'` | Emoji picker |
 
 > AI Chat is deliberately outside this layer — use the direct `hyper+space` Raycast hotkey.
 
@@ -84,8 +87,8 @@ AI Chat is high-frequency. Routing it through `ctrl+r space` (two separate keypr
 
 ## Feature deep-dives
 
-### Sublayer timing model (500ms)
-Pressing a leader key (`ctrl+w` / `ctrl+r` / `ctrl+x`) sets `layer_{w,r,x} = 1` via Karabiner variables. The action rules fire only when that variable is 1 — matching the layer AND clearing the variable after firing. If no follow-up key arrives within 500ms, `to_delayed_action.to_if_invoked` clears the variable — no stuck-layer state. Adjust the timeout in `sublayers.json` → `parameters["basic.to_delayed_action_delay_milliseconds"]`.
+### Sublayer timing model (500ms; Raycast 800ms)
+Pressing a leader key (`ctrl+w` / `ctrl+r` / `ctrl+x`) sets `layer_{w,r,x} = 1` via Karabiner variables. The action rules fire only when that variable is 1 — matching the layer AND clearing the variable after firing. If no follow-up key arrives within the timeout, `to_delayed_action.to_if_invoked` clears the variable — no stuck-layer state. Window and system layers use 500ms; the Raycast layer uses 800ms so the right-hand `j` / `k` / `l` / `'` chord doesn't feel rushed. Adjust each leader in `sublayers.json` → `parameters["basic.to_delayed_action_delay_milliseconds"]`.
 
 ### The `-g` flag on Raycast deeplinks
 Raycast's Window Management extension requires the *target app* to be focused when the command runs — not Raycast itself. Using `open raycast://...` without `-g` briefly focuses Raycast, so the extension sees Raycast as the frontmost window and the resize misfires. `open -g` opens the URL "in the background" without activating Raycast, so the previously focused app stays focused and gets resized correctly.
@@ -136,7 +139,7 @@ Covers:
 - Karabiner-Elements installed + `karabiner_cli` on PATH
 - Both JSON files present, parse via `jq`, lint-clean per Karabiner's own validator
 - Every base-layer and sublayer binding resolves to the expected action (regression guard)
-- All three leaders have `to_delayed_action` with 500ms timeout
+- All three leaders have `to_delayed_action`: window/system 500ms, Raycast 800ms
 - AI Chat is *not* in the `ctrl+r` layer (stays as direct hyper+space by design)
 
 ### Manual — required after first install
@@ -153,8 +156,8 @@ Automated tests only verify the JSON. Runtime behavior requires Karabiner to hav
 - [ ] `ctrl+h/j/k/l` → arrow keys (check in any text field)
 - [ ] `ctrl+w h` → window snaps left half (Raycast confirms deeplink first time — click "Always Allow")
 - [ ] `ctrl+w l/k/j/m/n/p` → right/top/bottom/max/next-display/prev-display
-- [ ] `ctrl+r s` → clipboard history opens
-- [ ] `ctrl+r f/;/e` → search files / translate / emoji picker
+- [ ] `ctrl+r j` → clipboard history opens
+- [ ] `ctrl+r k/l/'` → search files / translate / emoji picker
 - [ ] `ctrl+x m` → system mute toggles (menu-bar icon updates)
 - [ ] `ctrl+x = / -` → volume +10 / −10
 - [ ] Press `ctrl+w` alone, wait 1s, press `h` → nothing happens (timeout cleared layer)
@@ -173,7 +176,7 @@ Karabiner imports are one-time. `chezmoi apply` writes the file but doesn't auto
 Missing `-g` flag on the `open` command. Check `sublayers.json` — every `shell_command` for a `window-management` deeplink must be `open -g 'raycast://...'`.
 
 **Sublayer key "sticks" — next keystroke is still in layer mode.**
-Either `to_delayed_action` is missing from the leader rule, or the action rule didn't include `{"set_variable": {"name": "layer_X", "value": 0}}` in its `to` array. Run `bash tests/karabiner.sh` — the `timeout = 500ms` check catches this.
+Either `to_delayed_action` is missing from the leader rule, or the action rule didn't include `{"set_variable": {"name": "layer_X", "value": 0}}` in its `to` array. Run `bash tests/karabiner.sh` — the timeout checks catch this.
 
 **`ctrl+hjkl` no longer emit arrows.**
 Karabiner-Elements daemon might not be running. `pgrep -f karabiner_console_user_server` — if empty, launch Karabiner.app.
